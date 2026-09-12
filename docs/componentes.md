@@ -15,6 +15,13 @@ El propio ejemplo de la documentación de `openui-lang` lo confirma:
 root = Stack([chart])
 ```
 
+**Los argumentos son posicionales**, en el orden del esquema. No admite nombres:
+
+```
+Map("Lisboa", 12)          ✅
+Map(place: "Lisboa")       ❌  rompe en silencio
+```
+
 El modelo ya piensa en contenedores envolviendo contenido. Una librería de widgets
 cerrados iría en contra del grano del formato.
 
@@ -86,13 +93,28 @@ algo falla, no hay forma de saber cuál de los dos es.
 
 ## Cómo se la damos a OUI-1
 
-Las firmas de los componentes van en el system prompt. El modelo genera **constreñido a
-la librería** — no puede inventarse componentes que no existan, y `@openuidev/lang-core`
-valida la salida.
+En `src/ui/library.js`. Cada pieza se declara con `defineComponent` — nombre, esquema
+**Zod** y **descripción** — y de ahí sale el system prompt automáticamente:
+
+```js
+const StackDef = defineComponent({
+  name: 'Stack',
+  description: 'Apila componentes en vertical...',
+  props: z.object({ children: hijos, gap: z.enum(['sm','md','lg']).optional() }),
+  component: adaptar(Stack, true),
+})
+
+export const library = createLibrary({ components: [...], root: 'Stack' })
+const prompt = library.prompt({ preamble: 'Eres AuraNote.' })
+```
+
+**Las descripciones importan**: son lo que lee el modelo para decidir cuándo usar cada
+pieza. Escribirlas bien es parte del trabajo de diseño, no un comentario.
+
+El adaptador existe porque los componentes de `src/ui/` reciben props normales de Vue,
+mientras que `openui-lang` los invoca con `{ props, renderNode }`.
 
 ## Pendiente
 
-- [ ] Definir las firmas exactas en el formato que espera OUI-1
-- [ ] Leer la spec completa de `openui-lang` (v0.5)
-- [ ] Ver si el renderer oficial de Vue permite registrar componentes propios o hay que
-      escribir uno
+- [ ] Afinar las descripciones viendo qué compone el modelo de verdad
+- [ ] Revisar si `Row` debería envolver en lugar de desbordar con piezas anchas

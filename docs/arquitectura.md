@@ -17,7 +17,7 @@
               │                                 │
         openui-lang                        iframe sandbox
               │                                 │
-    renderer → componentes Vue                  │
+  @openuidev/vue-lang                  │
               │                                 │
               └────────────────┬────────────────┘
                                ↓
@@ -103,6 +103,16 @@ Como el modelo es abierto, se puede autoalojar más tarde cambiando la URL:
 | GGUF   | menos     | Ollama, LM Studio, llama.cpp      |
 
 No merece la pena pelearse con vLLM antes de saber si la idea funciona.
+
+### Los paquetes
+
+| Paquete                 | Versión | Para qué                                          |
+| ----------------------- | ------- | -------------------------------------------------- |
+| `@openuidev/lang-core`  | 0.2.18  | Parser, validación, generación del system prompt   |
+| `@openuidev/vue-lang`   | 0.1.4   | `<Renderer>`, `defineComponent`, `createLibrary`   |
+
+Ojo a las versiones: el runtime de Vue va por detrás del de React (0.2.15). Fue el
+riesgo asumido al elegir Vue, y de momento funciona.
 
 ### El punto clave: composición, no selección
 

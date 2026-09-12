@@ -41,6 +41,7 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 | Editor     | TipTap (ProseMirror)        | Node views y decorations — ver [arquitectura](docs/arquitectura.md) |
 | Estilos    | Tailwind                    | Estética Notion hecha a mano, sin librería de componentes  |
 | Nivel 1    | OUI-1 vía Thesys C1         | Difusión, ~1 s, pesos abiertos si luego se autoaloja       |
+| Renderer   | `@openuidev/vue-lang`       | Oficial. Genera el system prompt desde tu librería         |
 | Nivel 2    | Modelo grande vía API       | Por decidir; es una línea de código                        |
 | Mapas      | Leaflet + OpenStreetMap     | Sin API key                                                |
 | Back       | Ninguno al principio        | Solo proxy para las keys. FastAPI entra con GLiNER         |

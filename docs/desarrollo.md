@@ -39,7 +39,7 @@ banco de pruebas aislado sin tocar la app:
 | --------------------- | ----------------------------------------------- |
 | `/`                   | La aplicación                                   |
 | `/ui-demo.html`       | La librería de componentes, sin modelos          |
-| `/openui-demo.html`   | El renderer con `openui-lang` escrito a mano     |
+| `/openui-demo.html`   | El renderer oficial + el system prompt generado  |
 
 Esa separación es deliberada: permite saber si un fallo viene del renderer o del modelo.
 Ver [roadmap](../ROADMAP.md), fase 4.

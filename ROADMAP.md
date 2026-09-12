@@ -57,20 +57,23 @@ interactivo dentro de la nota — y sigue ahí tras recargar.
 
 ---
 
-## Fase 4 — La librería de componentes · ~3 h
+## Fase 4 — La librería de componentes · ✅ hecha
 
 Sin modelos todavía.
 
-- [ ] Layout: `Stack`, `Row`, `Grid`, `Section`
-- [ ] Contenido: `Map` (Leaflet + OSM), `Timeline`, `Table`, `Card`, `List`, `Stat`, `Text`
-- [ ] Parser/renderer de `openui-lang` → componentes Vue
-- [ ] **Escribir `openui-lang` a mano** y verificar que renderiza bien
+- [x] Layout: `Stack`, `Row`, `Grid`, `Section`
+- [x] Contenido: `Map` (Leaflet + OSM), `Timeline`, `Table`, `Card`, `List`, `Stat`, `Text`
+- [x] Renderer oficial `@openuidev/vue-lang` + `src/ui/library.js`
+- [x] **Escribir `openui-lang` a mano** y verificar que renderiza bien
 
 ```
-map      = Map(place: "Lisboa", zoom: 12)
-timeline = Timeline(items: [...])
+map      = Map("Lisboa", 12)
+timeline = Timeline([{ label: "Jueves", description: "Llegada" }])
 root     = Stack([map, timeline])
 ```
+
+Argumentos **posicionales**, en el orden del esquema. La sintaxis con nombres
+(`Map(place: "Lisboa")`) rompe en silencio.
 
 **Listo cuando:** un `openui-lang` escrito por ti renderiza bonito.
 
@@ -82,7 +85,7 @@ root     = Stack([map, timeline])
 ## Fase 5 — Nivel 1: OUI-1 · ~3 h
 
 - [ ] Proxy hacia Thesys C1
-- [ ] System prompt con las firmas de tu librería
+- [x] System prompt: lo genera `library.prompt()` desde `src/ui/library.js`
 - [ ] Nodo `sectionBlock` que renderiza el `openui-lang` devuelto
 - [ ] Conectar el botón **Convertir en sección**
 

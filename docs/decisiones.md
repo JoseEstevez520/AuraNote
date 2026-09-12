@@ -167,11 +167,45 @@ después es incremental, no estructural.
 
 ---
 
+### 15 · Usar los paquetes oficiales de OpenUI ⭐
+
+**Decisión:** `@openuidev/lang-core` + `@openuidev/vue-lang`.
+
+**Descartado:** un parser propio de `openui-lang` (existió, se retiró).
+
+**Por qué:** al probarlos se descubrió que **la sintaxis real usa argumentos
+posicionales, no con nombre**. Es `Map("Lisboa", 12)`, no `Map(place: "Lisboa")`.
+El system prompt que genera la propia librería lo dice literalmente:
+
+> *"Arguments are POSITIONAL (order matters, not names) — colon syntax is NOT
+> supported and silently breaks"*
+
+El parser casero soportaba exactamente esa forma prohibida, así que no era un plan B:
+era incorrecto. Habría parseado un formato que el modelo nunca emite.
+
+Además los paquetes oficiales aportan tres cosas que no se pueden adivinar:
+
+1. **`library.prompt()`** — genera el system prompt desde los esquemas Zod y las
+   descripciones de tus componentes, en el formato con el que el modelo fue entrenado.
+   Es lo más valioso de los tres.
+2. **Streaming** — `createStreamingParser` y el `Renderer` pintan según llega el texto.
+3. **La spec real de v0.5** — errores tipados (`missing-required`, `unknown-component`,
+   `excess-args`), referencias adelantadas, validación contra el esquema.
+
+**Coste:** los componentes de `src/ui/` reciben props normales de Vue, pero
+`openui-lang` los invoca con `{ props, renderNode }`. Hay un adaptador en
+`src/ui/library.js` que traduce entre ambos.
+
+**Nota:** este descubrimiento fue consecuencia de una instrucción equivocada. A los
+agentes que construyeron el proyecto se les prohibió instalar paquetes para que no se
+pisaran en `package.json`, y por eso uno escribió el parser a mano.
+
+---
+
 ## Abierto
 
 | Cuestión                                          | Estado                          |
 | ------------------------------------------------- | ------------------------------- |
 | Qué modelo para el nivel 2                        | Cualquiera con API; es una línea |
 | Nombre definitivo (AuraNote / SynapseNotes)       | Sin cerrar                      |
-| Si el renderer oficial de Vue admite componentes propios | Por leer la spec         |
 | Dónde vive el proxy en producción                 | Sin decidir                     |
