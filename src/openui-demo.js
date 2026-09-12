@@ -3,5 +3,6 @@
 // Sirve /openui-demo.html en dev.
 import { createApp } from 'vue'
 import OpenUIDemoApp from './openui/OpenUIDemoApp.vue'
+import './styles/main.css'
 
 createApp(OpenUIDemoApp).mount('#app')
