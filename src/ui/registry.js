@@ -12,6 +12,10 @@ import Card from './Card.vue'
 import List from './List.vue'
 import Stat from './Stat.vue'
 import Text from './Text.vue'
+import Steps from './Steps.vue'
+import Tree from './Tree.vue'
+import Code from './Code.vue'
+import Callout from './Callout.vue'
 
 export const registry = {
   Stack,
@@ -25,6 +29,10 @@ export const registry = {
   List,
   Stat,
   Text,
+  Steps,
+  Tree,
+  Code,
+  Callout,
 }
 
 export default registry

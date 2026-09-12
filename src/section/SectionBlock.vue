@@ -7,6 +7,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { NodeViewWrapper } from '@tiptap/vue-3'
 import { motion, AnimatePresence } from 'motion-v'
+import BlockControls from '../ui/BlockControls.vue'
 import { Renderer } from '@openuidev/vue-lang'
 import { library } from '../ui/library.js'
 import { generarSeccion } from './client.js'
@@ -18,6 +19,7 @@ const props = defineProps({
 })
 
 const errores = ref([])
+const encima = ref(false)
 const estado = computed(() => props.node.attrs.status)
 
 async function regenerar() {
@@ -38,18 +40,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <NodeViewWrapper class="group relative my-6" data-section-block>
-    <!-- Controles: aparecen en hover y desaparecen. Ver docs/ux.md -->
-    <div
-      class="absolute -top-1 right-0 z-10 flex gap-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-    >
-      <button class="text-xs text-ink-faint transition-colors hover:text-accent" @click="regenerar">
-        Regenerar
-      </button>
-      <button class="text-xs text-ink-faint transition-colors hover:text-accent" @click="deleteNode">
-        Borrar
-      </button>
-    </div>
+  <NodeViewWrapper
+    class="relative my-6"
+    data-section-block
+    @mouseenter="encima = true"
+    @mouseleave="encima = false"
+  >
+    <BlockControls :visible="encima" @regenerar="regenerar" @borrar="deleteNode" />
 
     <AnimatePresence mode="wait">
       <motion.div

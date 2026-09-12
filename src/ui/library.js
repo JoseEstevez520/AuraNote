@@ -22,6 +22,10 @@ import Card from './Card.vue'
 import List from './List.vue'
 import Stat from './Stat.vue'
 import Texto from './Text.vue'
+import Steps from './Steps.vue'
+import Tree from './Tree.vue'
+import Code from './Code.vue'
+import Callout from './Callout.vue'
 
 // Los componentes de src/ui/ reciben props normales de Vue, pero openui-lang
 // los invoca con { props, renderNode }. Este adaptador traduce entre ambos.
@@ -186,6 +190,71 @@ const TextDef = defineComponent({
   component: adaptar(Texto),
 })
 
+/* ------------------------- Modo instructivo -------------------------
+   Estas cuatro piezas existen para cuando el texto abre un hueco de
+   CONOCIMIENTO ("no sé cómo...") y hay que responder, no sugerir.
+   Ver docs/interaccion.md
+   ------------------------------------------------------------------- */
+
+const StepsDef = defineComponent({
+  name: 'Steps',
+  description:
+    'Procedimiento numerado. Úsalo cuando alguien no sabe cómo hacer algo y la respuesta tiene forma de secuencia de pasos concretos.',
+  props: z.object({
+    items: z
+      .array(
+        z.object({
+          label: z.string().describe('Qué hacer, en imperativo y breve'),
+          description: z.string().optional().describe('Detalle o motivo del paso'),
+        }),
+      )
+      .describe('Pasos en el orden en que hay que hacerlos'),
+  }),
+  component: adaptar(Steps),
+})
+
+const TreeDef = defineComponent({
+  name: 'Tree',
+  description:
+    'Estructura jerárquica: carpetas de un repositorio, organización de equipos, taxonomía. Úsalo cuando la respuesta es una ESTRUCTURA concreta y no una lista.',
+  props: z.object({
+    items: z
+      .array(
+        z.object({
+          label: z.string().describe('Nombre. Termina en "/" si es una carpeta'),
+          description: z.string().optional().describe('Para qué sirve'),
+          children: z.array(z.any()).optional().describe('Nodos hijos, misma forma'),
+        }),
+      )
+      .describe('Nodos raíz del árbol'),
+    title: z.string().optional(),
+  }),
+  component: adaptar(Tree),
+})
+
+const CodeDef = defineComponent({
+  name: 'Code',
+  description:
+    'Bloque de código, comandos de terminal o un fichero de configuración de ejemplo. Úsalo cuando la respuesta se concreta mejor en código que en prosa.',
+  props: z.object({
+    content: z.string().describe('El código, con sus saltos de línea'),
+    language: z.string().optional().describe('Etiqueta: bash, json, yaml...'),
+  }),
+  component: adaptar(Code),
+})
+
+const CalloutDef = defineComponent({
+  name: 'Callout',
+  description:
+    'Recomendación o advertencia. Es la voz del sistema opinando: úsalo para decir qué harías tú, o para avisar de algo que suele salir mal. Como mucho uno por sección.',
+  props: z.object({
+    content: z.string(),
+    title: z.string().optional(),
+    tone: z.enum(['info', 'warn']).optional(),
+  }),
+  component: adaptar(Callout),
+})
+
 export const library = createLibrary({
   components: [
     StackDef,
@@ -199,6 +268,10 @@ export const library = createLibrary({
     ListDef,
     StatDef,
     TextDef,
+    StepsDef,
+    TreeDef,
+    CodeDef,
+    CalloutDef,
   ],
   root: 'Stack',
 })

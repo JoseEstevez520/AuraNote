@@ -7,6 +7,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import { motion } from 'motion-v'
+import BlockControls from '../ui/BlockControls.vue'
 import { generateArtifact } from './client.js'
 
 const props = defineProps(nodeViewProps)
@@ -141,33 +142,14 @@ watch(status, (s) => {
     @mouseenter="hovering = true"
     @mouseleave="hovering = false"
   >
-    <!-- Controles: aparecen en hover, sin borde ni sombra. -->
-    <div
-      class="absolute -top-2 right-0 z-10 flex gap-3 transition-opacity duration-200"
-      :class="hovering ? 'opacity-100' : 'opacity-0 pointer-events-none'"
-    >
-      <button
-        class="text-xs text-ink-faint transition-colors hover:text-accent"
-        title="Regenerar"
-        @click="regenerate"
-      >
-        Regenerar
-      </button>
-      <button
-        class="text-xs text-ink-faint transition-colors hover:text-accent"
-        title="Plegar"
-        @click="toggleCollapsed"
-      >
-        {{ collapsed ? 'Expandir' : 'Plegar' }}
-      </button>
-      <button
-        class="text-xs text-ink-faint transition-colors hover:text-accent"
-        title="Borrar"
-        @click="remove"
-      >
-        Borrar
-      </button>
-    </div>
+    <BlockControls
+      :visible="hovering"
+      :plegado="collapsed"
+      con-plegar
+      @regenerar="regenerate"
+      @plegar="toggleCollapsed"
+      @borrar="remove"
+    />
 
     <!-- Estado: cargando -->
     <div v-if="status === 'loading'" class="flex items-center gap-2 py-3 text-sm text-ink-faint">
@@ -193,9 +175,14 @@ watch(status, (s) => {
     </div>
 
     <!-- Estado: listo, plegado -->
-    <div v-else-if="collapsed" class="rounded border-0 py-3 text-sm text-ink-muted">
+    <button
+      v-else-if="collapsed"
+      type="button"
+      class="ui-interactive w-full px-4 py-3 text-left text-sm text-ink-muted"
+      @click="toggleCollapsed"
+    >
       Artefacto plegado — «{{ source.slice(0, 60) }}{{ source.length > 60 ? '…' : '' }}»
-    </div>
+    </button>
 
     <!-- Estado: listo -->
     <motion.div
