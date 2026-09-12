@@ -9,6 +9,7 @@ import { NoteEditor } from './editor/index.js'
 import { SectionNode } from './section/index.js'
 import { ArtifactNode } from './artifact/index.js'
 import { modoSimulado as seccionSimulada } from './section/client.js'
+import { textos, idioma, setIdioma, IDIOMAS } from './i18n/index.js'
 
 const editorRef = ref(null)
 const extensions = [SectionNode, ArtifactNode]
@@ -53,9 +54,24 @@ const onArtifact = (p) => insertarBajoLaSeleccion('artifactBlock', p)
       @generate-artifact="onArtifact"
     />
 
-    <!-- Aviso discreto mientras no haya claves: todo funciona simulado. -->
-    <p v-if="seccionSimulada" class="fixed bottom-4 left-6 text-xs text-ink-faint">
-      Modo simulado · añade las claves en <code>.env</code> para generar de verdad
-    </p>
+    <!-- Barra de pie: aviso de modo simulado e idioma. Discreta, fuera del
+         camino de lectura. -->
+    <div class="pointer-events-none fixed inset-x-0 bottom-3 flex items-center justify-between px-6 text-xs text-ink-faint">
+      <p v-if="seccionSimulada">{{ textos.app.simulated }}</p>
+      <span v-else />
+
+      <div class="pointer-events-auto flex items-center gap-1">
+        <button
+          v-for="l in IDIOMAS"
+          :key="l.id"
+          type="button"
+          class="rounded-[var(--radius-sm)] px-1.5 py-0.5 transition-colors hover:text-ink"
+          :class="idioma === l.id ? 'text-ink' : ''"
+          @click="setIdioma(l.id)"
+        >
+          {{ l.id.toUpperCase() }}
+        </button>
+      </div>
+    </div>
   </main>
 </template>

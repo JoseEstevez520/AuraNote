@@ -70,6 +70,30 @@ Ver [decisión 8](decisiones.md) sobre por qué está fuera de la v1.
 
 ---
 
+## Crayon — la librería real detrás de las demos de OpenUI
+
+`@crayonai/react-ui`, MIT, de Thesys. Es de donde salen los componentes bonitos que se
+ven en las demos de OpenUI. Solo React, pero el CSS es legible y portable.
+
+- [Repositorio](https://github.com/thesysdev/crayon)
+- [npm](https://www.npmjs.com/package/@crayonai/react-ui)
+
+## Prompting de diagramas y artefactos
+
+Lo que informa las directivas de `src/artifact/tipos.js`:
+
+- Fijar el rango de coordenadas explícitamente; salirse del `viewBox` es el fallo más
+  común al generar SVG.
+- Preferir formas primitivas a `<path>`: los modelos son poco fiables con datos de curvas.
+- Few-shot: enseñar un esqueleto de la estructura funciona mejor que describirla.
+- Planificar el layout antes de emitir el marcado.
+
+Fuentes:
+- [Best approach for generating SVG graphics with LLMs — HN](https://news.ycombinator.com/item?id=46665639)
+- [Chat2SVG (CVPR 2025)](https://openaccess.thecvf.com/content/CVPR2025/papers/Wu_Chat2SVG_Vector_Graphics_Generation_with_Large_Language_Models_and_Image_CVPR_2025_paper.pdf)
+- [Using LLMs to Generate Math Diagrams with Vector Graphics](https://people.umass.edu/~andrewlan/papers/25aied-svg.pdf)
+- [Everything I built with Claude Artifacts — Simon Willison](https://simonwillison.net/2024/Oct/21/claude-artifacts/)
+
 ## Herramientas
 
 | Qué                | Para qué                                    |

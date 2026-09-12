@@ -6,6 +6,7 @@
 // Antes eran enlaces de texto sueltos flotando sobre el contenido y quedaban
 // mal: sin fondo, sin agrupación y pisando lo generado.
 import { motion, AnimatePresence } from 'motion-v'
+import { textos } from '../i18n/index.js'
 
 defineProps({
   visible: { type: Boolean, default: false },
@@ -30,7 +31,7 @@ const emit = defineEmits(['regenerar', 'plegar', 'borrar'])
     >
       <button
         type="button"
-        title="Regenerar"
+        :title="textos.block.regenerate"
         class="rounded-[6px] p-1.5 text-ink-faint transition-colors hover:bg-surface-hover hover:text-ink"
         @click="emit('regenerar')"
       >
@@ -50,7 +51,7 @@ const emit = defineEmits(['regenerar', 'plegar', 'borrar'])
       <button
         v-if="conPlegar"
         type="button"
-        :title="plegado ? 'Expandir' : 'Plegar'"
+        :title="plegado ? textos.block.expand : textos.block.collapse"
         class="rounded-[6px] p-1.5 text-ink-faint transition-colors hover:bg-surface-hover hover:text-ink"
         @click="emit('plegar')"
       >
@@ -72,7 +73,7 @@ const emit = defineEmits(['regenerar', 'plegar', 'borrar'])
 
       <button
         type="button"
-        title="Borrar"
+        :title="textos.block.remove"
         class="rounded-[6px] p-1.5 text-ink-faint transition-colors hover:bg-red-50 hover:text-red-600"
         @click="emit('borrar')"
       >

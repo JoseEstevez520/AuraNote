@@ -37,10 +37,25 @@ etiquetas, badges ni bordes de color.
 --color-surface: #fbfbfa;      /* superficie elevada */
 --color-surface-hover: #f4f4f2;
 
---radius-sm: 8px;
---radius-md: 12px;             /* por defecto */
---radius-lg: 16px;
+--radius-sm: 6px;   /* controles: botones, ítems de menú */
+--radius-md: 10px;  /* superficies y tarjetas */
+--radius-lg: 16px;  /* contenedores grandes */
 ```
+
+## De dónde sale
+
+**OpenUI no distribuye componentes** — su paquete de Vue trae un CSS de 76 bytes con
+un único `@keyframes`. Los componentes de sus demos son **Crayon**
+([`@crayonai/react-ui`](https://github.com/thesysdev/crayon), MIT), el kit propio de
+Thesys, y es solo React.
+
+Así que el sistema es nuestro, pero con dos cosas tomadas de Crayon tras leer su CSS:
+
+- **La escala de radios** (6/10/16), más contenida que los 12px de partida.
+- **El patrón del conector** en `Steps` y `Timeline`: el círculo y la línea son
+  hermanos dentro de una columna y la línea crece con `flex-grow`. La versión anterior
+  posicionaba la línea en absoluto y el número se descentraba en cuanto el texto del
+  paso cambiaba de alto.
 
 ## Primitivas
 

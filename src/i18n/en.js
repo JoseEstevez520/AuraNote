@@ -1,0 +1,53 @@
+export default {
+  editor: {
+    placeholder: 'Write something…',
+    saved: 'Saved',
+  },
+  menu: {
+    bold: 'Bold',
+    italic: 'Italic',
+    code: 'Code',
+    section: 'Section',
+    sectionTitle: 'Turn into a section',
+    artifact: 'Artifact',
+    artifactTitle: 'Generate artifact',
+    artifactType: 'Choose artifact type',
+  },
+  types: {
+    auto: 'Automatic',
+    autoHint: 'Let the model decide',
+    diagram: 'Diagram',
+    diagramHint: 'SVG: nodes, arrows, hierarchies',
+    simulation: 'Simulation',
+    simulationHint: 'Parameters that recompute live',
+    model: 'Manipulable model',
+    modelHint: 'Reorder, drag, toggle',
+  },
+  block: {
+    regenerate: 'Regenerate',
+    collapse: 'Collapse',
+    expand: 'Expand',
+    remove: 'Delete',
+    retry: 'Retry',
+  },
+  section: {
+    composing: 'Composing the section…',
+    failed: 'Could not generate:',
+    rendererWarnings: 'renderer warning(s):',
+  },
+  artifact: {
+    collapsed: 'Artifact collapsed',
+    takesAWhile: '10-30 s',
+    failed: 'Could not generate the artifact.',
+    loading: [
+      'Thinking about what to build…',
+      'Designing the interface…',
+      'Writing the code…',
+      'Almost there…',
+    ],
+  },
+  app: {
+    simulated: 'Simulated mode · add your keys to .env to generate for real',
+    language: 'Language',
+  },
+}

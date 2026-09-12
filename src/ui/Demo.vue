@@ -12,6 +12,10 @@ import Card from './Card.vue'
 import List from './List.vue'
 import Stat from './Stat.vue'
 import Text from './Text.vue'
+import Steps from './Steps.vue'
+import Tree from './Tree.vue'
+import Code from './Code.vue'
+import Callout from './Callout.vue'
 </script>
 
 <template>
@@ -70,6 +74,63 @@ import Text from './Text.vue'
             { label: 'Web oficial de JunctionX', href: 'https://junctionx.com' },
           ]"
         />
+      </Section>
+
+      <!-- Steps -->
+      <Section title="Steps">
+        <Steps
+          :items="[
+            { label: 'Crear la organización', description: 'En github.com/organizations/new, plan Free.' },
+            { label: 'Invitar a la clase', description: 'Por correo del instituto, rol Member.' },
+            { label: 'Crear los equipos', description: 'Uno por grupo de prácticas, con acceso de escritura.' },
+            { label: 'Proteger la rama main', description: 'Exigir revisión antes de fusionar.' },
+          ]"
+        />
+      </Section>
+
+      <!-- Tree -->
+      <Section title="Tree">
+        <Tree
+          title="Estructura del repositorio"
+          :items="[
+            {
+              label: 'clase-daw/',
+              description: 'Organización',
+              children: [
+                { label: 'apuntes/', description: 'Material común', children: [
+                  { label: 'README.md' },
+                  { label: 'entornos-de-desarrollo.md' },
+                ] },
+                { label: 'ejercicios-resueltos/', description: 'Uno por unidad' },
+                { label: 'portafolios/', description: 'Un repo por alumno' },
+              ],
+            },
+          ]"
+        />
+      </Section>
+
+      <!-- Code -->
+      <Section title="Code">
+        <Code
+          language="bash"
+          content="gh repo create clase-daw/apuntes --public --clone
+cd apuntes
+git switch -c main"
+        />
+      </Section>
+
+      <!-- Callout -->
+      <Section title="Callout">
+        <Stack :gap="12">
+          <Callout
+            title="Recomendación"
+            content="Empieza con los repos privados y ábrelos al final de curso: es más fácil abrir que cerrar."
+          />
+          <Callout
+            tone="warn"
+            content="El plan Free no permite repos privados con equipos. Si los necesitáis, pedid GitHub Education."
+          />
+        </Stack>
       </Section>
 
       <!-- Table -->

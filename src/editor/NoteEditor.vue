@@ -1,11 +1,12 @@
 <script setup>
 // Editor principal de la nota. Estética Notion: columna de 720px,
 // sin bordes, sin sombras, sin cards. El aire vertical es el diseño.
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, watch } from 'vue'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import TrailingNode from './trailingNode.js'
+import { textos, idioma } from '../i18n/index.js'
 import SelectionMenu from './SelectionMenu.vue'
 import { useAutosave } from './useAutosave.js'
 
@@ -27,7 +28,7 @@ const editor = new Editor({
     // El placeholder oficial se pinta dentro del propio párrafo con ::before,
     // así que queda siempre alineado. Antes era un <p> absoluto con un
     // top fijo que no cuadraba con el padding responsivo.
-    Placeholder.configure({ placeholder: 'Escribe algo…' }),
+    Placeholder.configure({ placeholder: () => textos.value.editor.placeholder }),
     TrailingNode,
     ...props.extensions,
   ],
@@ -62,6 +63,10 @@ onBeforeUnmount(() => {
 })
 
 // Se expone para que App.vue pueda insertar bloques generados.
+// El placeholder lo resuelve una función, así que al cambiar de idioma hay
+// que pedirle a ProseMirror que repinte las decoraciones.
+watch(idioma, () => editor.view.dispatch(editor.state.tr))
+
 defineExpose({ editor })
 
 function handleGenerateSection(payload) {
@@ -97,7 +102,7 @@ function handleGenerateArtifact(payload) {
       class="fixed bottom-4 right-6 text-xs text-ink-faint transition-opacity duration-500"
       :class="status === 'saved' ? 'opacity-100' : 'opacity-0'"
     >
-      Guardado
+      {{ textos.editor.saved }}
     </p>
   </div>
 </template>

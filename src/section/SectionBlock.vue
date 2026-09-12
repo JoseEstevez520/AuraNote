@@ -8,6 +8,7 @@ import { ref, computed, onMounted } from 'vue'
 import { NodeViewWrapper } from '@tiptap/vue-3'
 import { motion, AnimatePresence } from 'motion-v'
 import BlockControls from '../ui/BlockControls.vue'
+import { textos } from '../i18n/index.js'
 import { Renderer } from '@openuidev/vue-lang'
 import { library } from '../ui/library.js'
 import { generarSeccion } from './client.js'
@@ -63,7 +64,7 @@ onMounted(() => {
           :transition="{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }"
           class="size-1.5 rounded-full bg-accent"
         />
-        Componiendo la sección…
+        {{ textos.section.composing }}
       </motion.div>
 
       <motion.div
@@ -74,8 +75,8 @@ onMounted(() => {
         :transition="{ duration: 0.15 }"
         class="text-sm"
       >
-        <p class="text-ink-muted">No se pudo generar: {{ node.attrs.error }}</p>
-        <button class="mt-1 text-xs text-accent" @click="regenerar">Reintentar</button>
+        <p class="text-ink-muted">{{ textos.section.failed }} {{ node.attrs.error }}</p>
+        <button class="mt-1 text-xs text-accent" @click="regenerar">{{ textos.block.retry }}</button>
       </motion.div>
 
       <motion.div
@@ -87,7 +88,7 @@ onMounted(() => {
       >
         <Renderer :response="node.attrs.lang" :library="library" :on-error="(e) => (errores = e)" />
         <p v-if="errores.length" class="mt-2 text-xs text-ink-faint">
-          {{ errores.length }} aviso(s) del renderer: {{ errores.map((e) => e.code).join(', ') }}
+          {{ errores.length }} {{ textos.section.rendererWarnings }} {{ errores.map((e) => e.code).join(', ') }}
         </p>
       </motion.div>
     </AnimatePresence>

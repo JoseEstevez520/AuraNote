@@ -8,6 +8,7 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import { motion } from 'motion-v'
 import BlockControls from '../ui/BlockControls.vue'
+import { textos } from '../i18n/index.js'
 import { generateArtifact } from './client.js'
 
 const props = defineProps(nodeViewProps)
@@ -25,20 +26,13 @@ const errorMessage = computed(() => props.node.attrs.error)
 
 // Mensajes rotativos para que el estado de carga se sienta honesto: el
 // artefacto tarda 10-30s de verdad, así que un spinner mudo sería engañoso.
-const loadingMessages = [
-  'Leyendo el fragmento…',
-  'Pensando en la interfaz…',
-  'Escribiendo HTML, CSS y JS…',
-  'Montando el artefacto…',
-  'Casi listo…',
-]
 const loadingIndex = ref(0)
 let loadingTimer = null
 
 function startLoadingMessages() {
   loadingIndex.value = 0
   loadingTimer = setInterval(() => {
-    loadingIndex.value = (loadingIndex.value + 1) % loadingMessages.length
+    loadingIndex.value = (loadingIndex.value + 1) % textos.value.artifact.loading.length
   }, 3000)
 }
 function stopLoadingMessages() {
@@ -46,7 +40,7 @@ function stopLoadingMessages() {
   loadingTimer = null
 }
 
-const loadingMessage = computed(() => loadingMessages[loadingIndex.value])
+const loadingMessage = computed(() => textos.value.artifact.loading[loadingIndex.value])
 
 // El srcdoc del iframe. sandbox="allow-scripts" SIN allow-same-origin: es
 // código generado, el aislamiento es obligatorio y esa combinación
@@ -159,18 +153,18 @@ watch(status, (s) => {
         class="size-1.5 shrink-0 rounded-full bg-accent"
       />
       <span>{{ loadingMessage }}</span>
-      <span class="text-ink-faint/70">· 10-30 s</span>
+      <span class="text-ink-faint/70">· {{ textos.artifact.takesAWhile }}</span>
     </div>
 
     <!-- Estado: error -->
     <div v-else-if="status === 'error'" class="rounded py-6">
-      <p class="text-sm text-ink">No se pudo generar el artefacto.</p>
+      <p class="text-sm text-ink">{{ textos.artifact.failed }}</p>
       <p class="mt-1 text-xs text-ink-muted">{{ errorMessage }}</p>
       <button
         class="mt-3 rounded-[var(--radius-sm)] bg-accent px-3 py-1.5 text-xs text-white transition-colors hover:bg-accent-hover"
         @click="regenerate"
       >
-        Reintentar
+        {{ textos.block.retry }}
       </button>
     </div>
 
@@ -181,7 +175,7 @@ watch(status, (s) => {
       class="ui-interactive w-full px-4 py-3 text-left text-sm text-ink-muted"
       @click="toggleCollapsed"
     >
-      Artefacto plegado — «{{ source.slice(0, 60) }}{{ source.length > 60 ? '…' : '' }}»
+      {{ textos.artifact.collapsed }} — «{{ source.slice(0, 60) }}{{ source.length > 60 ? '…' : '' }}»
     </button>
 
     <!-- Estado: listo -->

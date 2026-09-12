@@ -33,10 +33,12 @@
   --color-surface: #fbfbfa;      /* superficie elevada sutil */
   --color-surface-hover: #f4f4f2;
 
-  /* Radios: amplios y consistentes */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  /* Radios. Escala alineada con la de Crayon (@crayonai/react-ui, MIT),
+     que es la librería real detrás de las demos de OpenUI: más contenida
+     que 12px por defecto, se ve menos "burbuja". Ver docs/diseno.md */
+  --radius-sm: 6px;   /* controles: botones, ítems de menú */
+  --radius-md: 10px;  /* superficies y tarjetas */
+  --radius-lg: 16px;  /* contenedores grandes */
 
   --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
                Helvetica, "Apple Color Emoji", Arial, sans-serif;

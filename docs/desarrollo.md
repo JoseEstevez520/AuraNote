@@ -53,3 +53,22 @@ npm run build
 ## Claves
 
 Copia `.env.example` a `.env`. Nunca se suben: `.gitignore` bloquea todo `.env*`.
+
+## Idiomas
+
+La interfaz está en inglés y español. **El idioma no va en `.env`**: `.env` es de tiempo
+de compilación y esto es de tiempo de ejecución. El orden de resolución es:
+
+1. Lo que el usuario eligió, guardado en `localStorage`
+2. El idioma del navegador (`navigator.language`)
+3. **Inglés** como último recurso
+
+El selector vive abajo a la derecha. Las cadenas están en `src/i18n/{en,es}.js` y se
+usan con `textos.algo.otro` desde las vistas.
+
+Con ~40 cadenas, `vue-i18n` sería más peso que valor: `src/i18n/index.js` son cuarenta
+líneas. Si el proyecto crece, se cambia sin tocar las vistas.
+
+**Los prompts van siempre en inglés**, independientemente de la interfaz: los modelos
+rinden mejor y evita mantener dos juegos. Llevan la instrucción explícita de escribir
+el texto visible en el idioma del fragmento.
