@@ -30,6 +30,11 @@ export const ArtifactNode = Node.create({
       source: {
         default: '',
       },
+      // Tipo elegido en el desplegable: auto | diagrama | simulacion | modelo.
+      // Se guarda para que "Regenerar" respete lo que se pidió. Ver tipos.js
+      kind: {
+        default: 'auto',
+      },
       // 'loading' | 'ready' | 'error'
       status: {
         default: 'loading',

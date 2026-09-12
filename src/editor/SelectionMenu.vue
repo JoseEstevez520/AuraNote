@@ -6,7 +6,9 @@
 // pantallas estrechas. Ahora usa iconos, oculta el texto en móvil y tippy
 // tiene activado el anti-desbordamiento.
 import { BubbleMenu } from '@tiptap/vue-3'
-import { motion } from 'motion-v'
+import { ref } from 'vue'
+import { motion, AnimatePresence } from 'motion-v'
+import { TIPOS } from '../artifact/tipos.js'
 
 const props = defineProps({
   editor: { type: Object, required: true },
@@ -33,6 +35,15 @@ function seleccionActual() {
 }
 
 const alternar = (marca) => props.editor.chain().focus()[marca]().run()
+
+// Desplegable de tipos de artefacto. El clic normal en el botón usa 'auto';
+// el desplegable existe para dirigirlo cuando ya sabes qué quieres.
+const abierto = ref(false)
+
+function generarArtefacto(tipo = 'auto') {
+  abierto.value = false
+  emit('generate-artifact', { ...seleccionActual(), tipo })
+}
 </script>
 
 <template>
@@ -41,7 +52,7 @@ const alternar = (marca) => props.editor.chain().focus()[marca]().run()
       :initial="{ opacity: 0, y: 6, scale: 0.97 }"
       :animate="{ opacity: 1, y: 0, scale: 1 }"
       :transition="{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }"
-      class="flex max-w-[calc(100vw-24px)] items-center gap-0.5 overflow-hidden rounded-[var(--radius-md)] border border-rule bg-white/95 p-1 backdrop-blur"
+      class="relative flex max-w-[calc(100vw-24px)] items-center gap-0.5 rounded-[var(--radius-md)] border border-rule bg-white/95 p-1 backdrop-blur"
       style="box-shadow: 0 4px 16px rgba(15, 15, 15, 0.08)"
     >
       <button
@@ -75,24 +86,71 @@ const alternar = (marca) => props.editor.chain().focus()[marca]().run()
         <span class="hidden whitespace-nowrap sm:inline">Sección</span>
       </button>
 
-      <button
-        type="button"
-        title="Generar artefacto"
-        class="flex shrink-0 items-center gap-1.5 rounded-[var(--radius-sm)] px-2 py-1 text-sm text-ink-muted transition-colors hover:bg-surface-hover hover:text-ink"
-        @click="emit('generate-artifact', seleccionActual())"
-      >
-        <svg
-          class="size-4"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.4"
-          stroke-linejoin="round"
+      <!-- Botón partido: el cuerpo genera en automático, el chevron abre tipos -->
+      <div class="flex shrink-0 items-center">
+        <button
+          type="button"
+          title="Generar artefacto"
+          class="flex items-center gap-1.5 rounded-l-[var(--radius-sm)] px-2 py-1 text-sm text-ink-muted transition-colors hover:bg-surface-hover hover:text-ink"
+          @click="generarArtefacto('auto')"
         >
-          <path d="M8 1.8l1.7 3.9 4.2.4-3.2 2.8.96 4.1L8 10.9l-3.66 2.1.96-4.1L2.1 6.1l4.2-.4z" />
-        </svg>
-        <span class="hidden whitespace-nowrap sm:inline">Artefacto</span>
-      </button>
+          <svg
+            class="size-4"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linejoin="round"
+          >
+            <path d="M8 1.8l1.7 3.9 4.2.4-3.2 2.8.96 4.1L8 10.9l-3.66 2.1.96-4.1L2.1 6.1l4.2-.4z" />
+          </svg>
+          <span class="hidden whitespace-nowrap sm:inline">Artefacto</span>
+        </button>
+
+        <button
+          type="button"
+          title="Elegir tipo de artefacto"
+          class="rounded-r-[var(--radius-sm)] px-1 py-1.5 text-ink-faint transition-colors hover:bg-surface-hover hover:text-ink"
+          :class="abierto ? 'bg-surface-hover text-ink' : ''"
+          @click="abierto = !abierto"
+        >
+          <svg
+            class="size-3 transition-transform duration-200"
+            :class="abierto ? 'rotate-180' : ''"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 6.5 8 10.5 12 6.5" />
+          </svg>
+        </button>
+      </div>
+
+      <AnimatePresence>
+        <motion.div
+          v-if="abierto"
+          :initial="{ opacity: 0, y: -4 }"
+          :animate="{ opacity: 1, y: 0 }"
+          :exit="{ opacity: 0, y: -4 }"
+          :transition="{ duration: 0.14, ease: [0.22, 1, 0.36, 1] }"
+          class="absolute right-0 top-full z-30 mt-1.5 w-56 overflow-hidden rounded-[var(--radius-md)] border border-rule bg-white p-1"
+          style="box-shadow: 0 4px 16px rgba(15, 15, 15, 0.1)"
+        >
+          <button
+            v-for="t in TIPOS"
+            :key="t.id"
+            type="button"
+            class="flex w-full flex-col items-start rounded-[var(--radius-sm)] px-2.5 py-1.5 text-left transition-colors hover:bg-surface-hover"
+            @click="generarArtefacto(t.id)"
+          >
+            <span class="text-sm text-ink">{{ t.etiqueta }}</span>
+            <span class="text-xs text-ink-faint">{{ t.descripcion }}</span>
+          </button>
+        </motion.div>
+      </AnimatePresence>
     </motion.div>
   </BubbleMenu>
 </template>

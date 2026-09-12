@@ -60,7 +60,7 @@ async function run() {
     // El resto de la nota como contexto de fondo: se extrae del documento
     // completo del editor, si está disponible.
     const fullNote = props.editor ? props.editor.getText() : ''
-    const generatedHtml = await generateArtifact(source.value, fullNote)
+    const generatedHtml = await generateArtifact(source.value, fullNote, props.node.attrs.kind)
     props.updateAttributes({ html: generatedHtml, status: 'ready', error: null })
   } catch (err) {
     props.updateAttributes({ status: 'error', error: err.message || String(err) })

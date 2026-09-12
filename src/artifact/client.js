@@ -9,6 +9,8 @@
 // flujo (generación, iframe, persistencia) sin gastar créditos ni tener
 // claves. Esto es deliberado, no un atajo temporal.
 
+import { porId } from './tipos.js'
+
 const API_KEY = import.meta.env.VITE_LLM_API_KEY || ''
 const MODEL = import.meta.env.VITE_LLM_MODEL || 'gpt-4o-mini'
 // Endpoint compatible con OpenAI. Se puede apuntar a cualquier proveedor
@@ -248,7 +250,14 @@ function wait(ms) {
  * @param {string} fullNote - el resto de la nota, como contexto de fondo
  * @returns {Promise<string>} el HTML autocontenido generado
  */
-export async function generateArtifact(fragment, fullNote = '') {
+export async function generateArtifact(fragment, fullNote = '', tipo = 'auto') {
+  // El tipo solo anade una directiva al system prompt; el resto del flujo
+  // (simulado, extraccion del HTML, errores) es identico. Ver tipos.js
+  const { directiva: d } = porId(tipo)
+  const directiva = d ? `
+
+## ${d}` : ''
+
   if (!fragment || !fragment.trim()) {
     throw new Error('No hay ningún fragmento seleccionado para generar el artefacto.')
   }
@@ -270,7 +279,7 @@ export async function generateArtifact(fragment, fullNote = '') {
       body: JSON.stringify({
         model: MODEL,
         messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'system', content: SYSTEM_PROMPT + directiva },
           { role: 'user', content: buildUserPrompt(fragment, fullNote) },
         ],
         temperature: 0.7,

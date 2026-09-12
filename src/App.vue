@@ -15,7 +15,7 @@ const extensions = [SectionNode, ArtifactNode]
 
 // Inserta el bloque justo debajo del párrafo donde acaba la selección, nunca
 // encima ni dentro. El bloque nace en estado 'loading' y se genera solo.
-function insertarBajoLaSeleccion(tipo, { text, to }) {
+function insertarBajoLaSeleccion(nodo, { text, to, tipo = 'auto' }) {
   const editor = editorRef.value?.editor
   if (!editor || !text?.trim()) return
 
@@ -28,11 +28,13 @@ function insertarBajoLaSeleccion(tipo, { text, to }) {
   editor
     .chain()
     .insertContentAt(pos, {
-      type: tipo,
+      type: nodo,
       attrs: {
         source: text,
         context: editor.getText(),
         status: 'loading',
+        // Solo lo usa el artefacto; la sección lo ignora.
+        ...(nodo === 'artifactBlock' ? { kind: tipo } : {}),
       },
     })
     .run()

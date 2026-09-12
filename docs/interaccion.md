@@ -31,6 +31,30 @@ texto, no de un menú. Cuando falle, la salida es regenerar.
 - **Prohibidas las plantillas.** Nada de `Equipo-A`, `Proyecto-1`, `Ejemplo: ...`.
   Nombres reales y decisiones tomadas, como si tuviera que montarlo hoy.
 
+## Tipos de artefacto
+
+El botón de artefacto es **partido**: el cuerpo genera en automático —el modelo
+decide— y el chevron abre un desplegable para dirigirlo.
+
+| Tipo | Qué exige |
+| --- | --- |
+| **Automático** | El modelo decide |
+| **Diagrama** | SVG inline: nodos, aristas, jerarquías. Geometría real, no cajas de HTML apiladas |
+| **Simulación** | Parámetros que recalculan en vivo, con valores por defecto ya puestos |
+| **Modelo manipulable** | Reordenar, arrastrar, activar; estado inicial ya montado |
+
+El tipo se guarda en el nodo (`kind`), así que **Regenerar** respeta lo que se pidió.
+Cada tipo solo añade una directiva al system prompt: el resto del flujo es idéntico.
+Definidos en `src/artifact/tipos.js`.
+
+Por qué aquí sí se ofrece un menú y en el nivel 1 no: el artefacto ya es una acción
+deliberada y cara. Añadir "de qué tipo" a algo que el usuario pide explícitamente no
+rompe la premisa de que la interfaz emerge del texto — eso solo aplica al nivel
+ambiente, donde el modo debe inferirse.
+
+**La idea de fondo:** el artefacto solo se justifica si **no se puede hacer con la
+librería**. Si el resultado es una lista o una tabla, ese trabajo es del nivel 1.
+
 ## Para los artefactos
 
 > **Nunca un formulario vacío. Si generas uno, entrégalo relleno con tu recomendación.**
