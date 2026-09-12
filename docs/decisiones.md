@@ -202,10 +202,36 @@ pisaran en `package.json`, y por eso uno escribió el parser a mano.
 
 ---
 
+### 16 · C1 no sirve OUI-1 — el nivel 1 va contra un LLM normal ⭐
+
+**Corrección de la decisión 10.** Se dio por hecho que Thesys C1 servía OUI-1. **No es
+así.** Consultando `GET /v1/embed/models` con una clave real, C1 ofrece 34 modelos y
+todos son `c1/anthropic/claude-*` y `c1/openai/gpt-*`. Ni OUI-1 ni DiffusionGemma.
+
+Son dos productos distintos del mismo equipo:
+
+| | |
+| --- | --- |
+| **C1** | Servicio hospedado de generative UI que envuelve modelos frontera |
+| **OUI-1** | Modelo de difusión de 4B con pesos abiertos, para autoalojar |
+
+**Decisión:** el nivel 1 apunta a un LLM normal (OpenAI) con el prompt que genera
+`library.prompt()`. Es exactamente el flujo para el que está diseñado `lang-core`:
+generas el prompt desde tu librería y se lo mandas al modelo que quieras.
+
+**Verificado:** GPT-4o produce `openui-lang` válido con nuestra librería —argumentos
+posicionales, `Section` anidada, referencias adelantadas— y renderiza correctamente.
+
+**Lo que se pierde:** la latencia. OUI-1 tarda ~1 s por ser de difusión; un LLM
+autoregresivo tarda varios segundos. La promesa de "UI que aparece mientras escribes"
+necesita OUI-1 autoalojado. Queda como mejora, no como bloqueo.
+
+---
+
 ## Abierto
 
 | Cuestión                                          | Estado                          |
 | ------------------------------------------------- | ------------------------------- |
-| Qué modelo para el nivel 2                        | Cualquiera con API; es una línea |
+| Autoalojar OUI-1 para bajar la latencia del nivel 1 | Necesita GPU (FP8 ~26 GB) o GGUF |
 | Nombre definitivo (AuraNote / SynapseNotes)       | Sin cerrar                      |
 | Dónde vive el proxy en producción                 | Sin decidir                     |

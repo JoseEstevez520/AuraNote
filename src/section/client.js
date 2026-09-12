@@ -106,9 +106,10 @@ ${nota || '(sin contexto adicional)'}
   return limpiar(contenido)
 }
 
-// El modelo puede envolver el openui-lang en un bloque de markdown.
+// El modelo puede envolver el openui-lang en un bloque de markdown, y la
+// etiqueta de lenguaje que elige es impredecible. Visto con GPT-4o: ```plaintext.
 export function limpiar(bruto) {
-  const cerca = bruto.match(/```(?:openui|openui-lang|text)?\s*\n([\s\S]*?)```/)
+  const cerca = bruto.match(/```[a-zA-Z-]*[ \t]*\r?\n([\s\S]*?)```/)
   return (cerca ? cerca[1] : bruto).trim()
 }
 

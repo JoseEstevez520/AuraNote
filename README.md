@@ -24,8 +24,8 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 
 |                | Convertir en sección          | Generar artefacto              |
 | -------------- | ----------------------------- | ------------------------------ |
-| **Modelo**     | OUI-1 (4B, difusión)          | Modelo grande vía API          |
-| **Tiempo**     | ~1 s                          | 10-30 s                        |
+| **Modelo**     | LLM + prompt de tu librería   | LLM, código libre              |
+| **Tiempo**     | ~5 s (~1 s con OUI-1 local)   | 10-30 s                        |
 | **Salida**     | `openui-lang` con tus piezas  | Código libre                   |
 | **Render**     | Componentes Vue nativos       | `<iframe sandbox>`             |
 | **Garantía**   | Siempre encaja con el diseño  | Puede ser cualquier cosa       |
@@ -40,9 +40,9 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 | Front      | Vue 3 + Vite                | TipTap nació como librería de Vue                          |
 | Editor     | TipTap (ProseMirror)        | Node views y decorations — ver [arquitectura](docs/arquitectura.md) |
 | Estilos    | Tailwind                    | Estética Notion hecha a mano, sin librería de componentes  |
-| Nivel 1    | OUI-1 vía Thesys C1         | Difusión, ~1 s, pesos abiertos si luego se autoaloja       |
+| Nivel 1    | GPT-4o + `library.prompt()` | C1 no sirve OUI-1; autoalojarlo es la mejora de latencia   |
 | Renderer   | `@openuidev/vue-lang`       | Oficial. Genera el system prompt desde tu librería         |
-| Nivel 2    | Modelo grande vía API       | Por decidir; es una línea de código                        |
+| Nivel 2    | GPT-4o vía API              | Cualquier endpoint compatible con OpenAI                   |
 | Mapas      | Leaflet + OpenStreetMap     | Sin API key                                                |
 | Back       | Ninguno al principio        | Solo proxy para las keys. FastAPI entra con GLiNER         |
 
@@ -61,7 +61,8 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 
 ## Estado
 
-🌱 **Prueba de concepto.** Proyecto de fin de semana para validar la idea y
+🌿 **Funcionando de punta a punta.** Los dos niveles generan con modelos reales.
+Prueba de concepto — Proyecto de fin de semana para validar la idea y
 experimentar con generación libre de interfaces. No es un producto.
 
 ## Tesis técnica

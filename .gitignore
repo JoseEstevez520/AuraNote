@@ -49,3 +49,8 @@ venv/
 *.gguf
 *.safetensors
 models/
+
+# Archivos sueltos que no son del proyecto
+*.zip
+*.rar
+*.7z

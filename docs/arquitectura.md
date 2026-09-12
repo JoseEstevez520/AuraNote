@@ -91,8 +91,11 @@ empieza a renderizar antes de terminar de generarse.
 
 ### Cómo lo llamamos
 
-**Thesys C1** hospedado — endpoint compatible con OpenAI, 100 páginas/mes gratis,
-$0.01 después. Cero setup.
+**No a través de C1.** C1 solo sirve modelos de Anthropic y OpenAI, no OUI-1
+(comprobado contra `GET /v1/embed/models`). Ver [decisión 16](decisiones.md).
+
+Hoy el nivel 1 llama a **GPT-4o** con el prompt de `library.prompt()`, que es el flujo
+para el que `lang-core` está diseñado. Autoalojar OUI-1 es la mejora de latencia:
 
 Como el modelo es abierto, se puede autoalojar más tarde cambiando la URL:
 

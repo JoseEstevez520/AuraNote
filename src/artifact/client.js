@@ -38,9 +38,19 @@ REGLAS ESTRICTAS, SIN EXCEPCIONES:
    de un viaje, no generes texto plano — construye la interfaz que mejor represente esa
    idea (mapa esquemático, línea temporal, checklist, calculadora, visualizador, etc.)
    usando solo HTML/CSS/JS.
-7. Si necesitas comunicar tu altura real al documento que te incrusta, puedes hacer
-   opcionalmente: window.parent.postMessage({ type: 'artifact:resize', height: <px> }, '*')
-   cada vez que cambie el contenido. No es obligatorio, pero ayuda al ajuste visual.`
+7. OBLIGATORIO: el documento se incrusta en un iframe aislado que no puede medir tu
+   altura desde fuera. Si no comunicas tu altura, tu interfaz aparecerá recortada con
+   una barra de scroll. Incluye SIEMPRE este bloque al final de tu <script>:
+
+   function avisarAltura() {
+     const h = document.documentElement.scrollHeight;
+     window.parent.postMessage({ type: 'artifact:resize', height: h }, '*');
+   }
+   window.addEventListener('load', avisarAltura);
+   new ResizeObserver(avisarAltura).observe(document.body);
+
+   Llama también a avisarAltura() después de cualquier cambio que altere el tamaño.
+8. No fijes una altura al <body> ni al <html>: deja que crezca con el contenido.`
 
 function buildUserPrompt(fragment, fullNote) {
   return `FRAGMENTO SELECCIONADO (es la intención principal, genera la app sobre esto):
