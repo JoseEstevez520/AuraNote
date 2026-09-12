@@ -1,9 +1,11 @@
 <script setup>
 // Editor principal de la nota. Estética Notion: columna de 720px,
 // sin bordes, sin sombras, sin cards. El aire vertical es el diseño.
-import { onBeforeUnmount, ref } from 'vue'
+import { onBeforeUnmount } from 'vue'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
+import TrailingNode from './trailingNode.js'
 import SelectionMenu from './SelectionMenu.vue'
 import { useAutosave } from './useAutosave.js'
 
@@ -16,12 +18,19 @@ const props = defineProps({
 const emit = defineEmits(['generate-section', 'generate-artifact'])
 
 const { status, loadDocument, scheduleSave } = useAutosave()
-const isEmpty = ref(true)
 
 const savedDoc = loadDocument()
 
 const editor = new Editor({
-  extensions: [StarterKit, ...props.extensions],
+  extensions: [
+    StarterKit,
+    // El placeholder oficial se pinta dentro del propio párrafo con ::before,
+    // así que queda siempre alineado. Antes era un <p> absoluto con un
+    // top fijo que no cuadraba con el padding responsivo.
+    Placeholder.configure({ placeholder: 'Escribe algo…' }),
+    TrailingNode,
+    ...props.extensions,
+  ],
   content: savedDoc ?? '',
   editorProps: {
     attributes: {
@@ -30,12 +39,23 @@ const editor = new Editor({
     },
   },
   onUpdate: ({ editor }) => {
-    isEmpty.value = editor.isEmpty
     scheduleSave(editor.getJSON())
   },
 })
 
-isEmpty.value = editor.isEmpty
+// Clic en la zona muerta bajo el documento: lleva el cursor al final.
+//
+// Va en mousedown con preventDefault, no en click: al pulsar sobre un div no
+// editable el navegador quita el foco del editor, y lo hace DESPUÉS de que
+// corriera nuestro manejador. Con @click el comando devolvía true pero el
+// foco acababa en el body.
+function enfocarFinal() {
+  // El comando coloca la selección al final, pero no siempre lleva el foco
+  // del DOM al editor (devuelve true y activeElement se queda en body), así
+  // que se fuerza sobre el nodo de ProseMirror.
+  editor.commands.focus('end')
+  editor.view.dom.focus()
+}
 
 onBeforeUnmount(() => {
   editor.destroy()
@@ -54,17 +74,17 @@ function handleGenerateArtifact(payload) {
 </script>
 
 <template>
-  <div class="note-column relative py-10 sm:py-16">
-    <!-- Placeholder discreto cuando el documento está vacío -->
-    <p
-      v-if="isEmpty"
-      class="pointer-events-none absolute select-none text-ink-faint"
-      style="top: 4rem"
-    >
-      Escribe algo…
-    </p>
-
+  <div class="note-column relative flex min-h-screen flex-col py-10 sm:py-16">
     <EditorContent :editor="editor" />
+
+    <!-- Zona muerta bajo el documento: clicar aquí lleva el cursor al final,
+         igual que en Notion. Evita tener que subir al párrafo anterior. -->
+    <div
+      class="w-full flex-1 cursor-text"
+      style="min-height: 35vh"
+      @mousedown.prevent="enfocarFinal"
+      aria-hidden="true"
+    />
 
     <SelectionMenu
       :editor="editor"
@@ -146,7 +166,11 @@ function handleGenerateArtifact(payload) {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-.note-prose p.is-editor-empty:first-child::before {
-  content: '';
+.note-prose p.is-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--color-ink-faint);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }
 </style>
