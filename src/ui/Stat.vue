@@ -1,5 +1,6 @@
 <script setup>
-// Dato suelto destacado. Nada de caja: el tamaño tipográfico es lo que lo resalta.
+// Dato destacado. Se presenta como baldosa para que varios en Row formen
+// una fila de métricas coherente.
 defineProps({
   label: { type: String, default: '' },
   value: { type: [String, Number], default: '' },
@@ -8,11 +9,11 @@ defineProps({
 </script>
 
 <template>
-  <div class="flex flex-col gap-0.5">
+  <div class="ui-surface flex min-w-0 flex-1 flex-col gap-0.5 px-4 py-3">
     <div class="flex items-baseline gap-1">
-      <span class="text-3xl font-semibold text-ink">{{ value }}</span>
-      <span v-if="unit" class="text-base text-ink-muted">{{ unit }}</span>
+      <span class="text-2xl font-semibold tracking-tight text-ink">{{ value }}</span>
+      <span v-if="unit" class="text-sm font-medium text-ink-faint">{{ unit }}</span>
     </div>
-    <span v-if="label" class="text-sm text-ink-muted">{{ label }}</span>
+    <span v-if="label" class="truncate text-xs text-ink-muted">{{ label }}</span>
   </div>
 </template>

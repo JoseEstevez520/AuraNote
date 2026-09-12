@@ -228,6 +228,27 @@ necesita OUI-1 autoalojado. Queda como mejora, no como bloqueo.
 
 ---
 
+### 17 · Dos registros visuales, no uno
+
+**Decisión:** el documento mantiene la calma de Notion; **lo generado usa un sistema de
+componentes moderno** con superficies, bordes de bajo contraste y radios amplios.
+
+**Revisa la decisión 7** ("sin bordes, sin sombras, sin cards"), que se aplicaba a todo.
+
+**Por qué:** con todo plano, lo generado se confundía con la prosa y no se leía como
+interfaz. Separando los registros, el contraste comunica "esto lo generó el documento"
+sin badges ni etiquetas.
+
+**No hay estilo de OpenUI que copiar:** su paquete de Vue trae un CSS de 76 bytes con un
+único `@keyframes`. Los componentes bonitos de sus demos son de Crayon
+(`@crayonai/react-ui`), el kit propio de Thesys, y es solo React. Así que el sistema es
+nuestro: [diseno.md](diseno.md).
+
+**Movimiento:** Motion (`motion-v`), discreto. Entradas de bloque, pulso de carga y
+hovers de 150 ms.
+
+---
+
 ## Abierto
 
 | Cuestión                                          | Estado                          |

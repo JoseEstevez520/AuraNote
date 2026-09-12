@@ -1,26 +1,24 @@
 <script setup>
-// Contenedor horizontal. Se envuelve (wrap) para no romper la columna de 720px.
-const props = defineProps({
-  gap: { type: [String, Number], default: 16 },
-  align: { type: String, default: 'start' }, // start | center | end | stretch | baseline
+// Fila horizontal. Envuelve en pantallas estrechas en lugar de desbordar:
+// la columna del documento es de 720px y no siempre caben dos piezas anchas.
+defineProps({
+  gap: { type: String, default: 'md' },
+  align: { type: String, default: 'stretch' },
 })
 
-const gapPx = (g) => (typeof g === 'number' ? `${g}px` : g)
-
-const alignClass = {
+const huecos = { sm: 'gap-2', md: 'gap-3', lg: 'gap-5' }
+const alineaciones = {
   start: 'items-start',
   center: 'items-center',
   end: 'items-end',
   stretch: 'items-stretch',
-  baseline: 'items-baseline',
 }
 </script>
 
 <template>
   <div
-    class="flex flex-wrap"
-    :class="alignClass[props.align] || alignClass.start"
-    :style="{ gap: gapPx(gap) }"
+    class="flex flex-wrap [&>*]:min-w-[180px] [&>*]:flex-1"
+    :class="[huecos[gap] ?? huecos.md, alineaciones[align] ?? alineaciones.stretch]"
   >
     <slot />
   </div>

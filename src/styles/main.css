@@ -1,17 +1,42 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------
-   Lenguaje visual de AuraNote — estética Notion.
-   Reglas completas en docs/ux.md. Resumen:
-   columna de 720px, sin bordes, sin sombras, sin cards.
+   Lenguaje visual de AuraNote.
+
+   Dos registros deliberadamente distintos (ver docs/diseno.md):
+
+   · EL DOCUMENTO — prosa. Estética Notion: calmado, sin cajas,
+     columna de 720px. El texto no compite con nada.
+
+   · LO GENERADO — interfaz. Sistema de componentes moderno:
+     superficies suaves, radios amplios, bordes de bajo contraste,
+     elevación mínima. Debe verse como producto, no como prosa.
+
+   El contraste entre ambos es lo que comunica "esto lo generó el
+   documento" sin necesidad de etiquetas ni badges.
    --------------------------------------------------------------- */
 
 @theme {
-  --color-ink: #37352f;        /* gris muy oscuro, nunca negro puro */
-  --color-ink-muted: #787774;
+  /* Tinta */
+  --color-ink: #37352f;          /* gris muy oscuro, nunca negro puro */
+  --color-ink-muted: #6b6a66;
   --color-ink-faint: #9b9a97;
-  --color-accent: #2383e2;     /* azul contenido, solo donde hay interacción */
-  --color-rule: #ebebea;
+
+  /* Acento */
+  --color-accent: #2383e2;
+  --color-accent-hover: #1a6dc0;
+  --color-accent-soft: #eff6fd;  /* fondos de realce muy tenues */
+
+  /* Superficies y líneas */
+  --color-rule: #e9e9e7;         /* borde de bajo contraste */
+  --color-rule-strong: #dcdcd9;
+  --color-surface: #fbfbfa;      /* superficie elevada sutil */
+  --color-surface-hover: #f4f4f2;
+
+  /* Radios: amplios y consistentes */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 
   --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
                Helvetica, "Apple Color Emoji", Arial, sans-serif;
@@ -28,7 +53,37 @@
 @layer components {
   /* La columna del documento. Todo vive aquí dentro, incluido lo generado. */
   .note-column {
-    @apply mx-auto w-full px-6;
+    @apply mx-auto w-full px-5 sm:px-6;
     max-width: 720px;
+  }
+
+  /* --- Primitivas del registro "interfaz" --- */
+
+  /* Superficie base de cualquier pieza generada. */
+  .ui-surface {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+  }
+
+  /* Superficie sobre la que se puede actuar.
+     No usa @apply de .ui-surface: Tailwind 4 solo permite aplicar
+     utilidades, no clases propias. */
+  .ui-interactive {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .ui-interactive:hover {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-rule-strong);
+  }
+
+  /* Etiqueta pequeña en versalitas, para encabezar agrupaciones. */
+  .ui-eyebrow {
+    @apply text-xs font-medium uppercase text-ink-faint;
+    letter-spacing: 0.06em;
   }
 }

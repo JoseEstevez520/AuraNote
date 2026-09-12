@@ -15,7 +15,55 @@ const MODEL = import.meta.env.VITE_LLM_MODEL || 'gpt-4o-mini'
 // que hable el mismo protocolo (OpenAI, Groq, OpenRouter, un proxy propio...).
 const BASE_URL = import.meta.env.VITE_LLM_BASE_URL || 'https://api.openai.com/v1'
 
-const SYSTEM_PROMPT = `Eres un generador de aplicaciones web interactivas autocontenidas.
+// El artefacto es código libre, pero tiene que parecer parte de AuraNote.
+// Estos tokens son los mismos de src/styles/main.css: si cambian allí,
+// cámbialos aquí. Ver docs/diseno.md
+const SISTEMA_DE_DISENO = `
+## Sistema de diseño (OBLIGATORIO)
+
+Tu interfaz se incrusta dentro de un documento con estética Notion. Tiene que
+parecer parte del producto, no una página suelta.
+
+Tokens exactos, úsalos como variables CSS en :root y no inventes otros colores:
+
+  --ink: #37352f;            /* texto principal, NUNCA negro puro */
+  --ink-muted: #6b6a66;      /* texto secundario */
+  --ink-faint: #9b9a97;      /* texto terciario, etiquetas */
+  --accent: #2383e2;         /* azul, solo interacción */
+  --accent-hover: #1a6dc0;
+  --accent-soft: #eff6fd;    /* fondos de realce muy tenues */
+  --rule: #e9e9e7;           /* bordes, 1px */
+  --surface: #fbfbfa;        /* superficie elevada */
+  --surface-hover: #f4f4f2;
+  --radius: 12px;            /* radio por defecto */
+  --radius-sm: 8px;
+
+Tipografía: font-family: ui-sans-serif, -apple-system, "Segoe UI", Helvetica, Arial,
+sans-serif. Base 14-15px, line-height 1.6. Títulos con font-weight 600, nunca 700+.
+Números grandes con letter-spacing: -0.02em.
+
+REGLAS VISUALES:
+- Fondo del body: #ffffff. Sin degradados, sin colores saturados, sin neón.
+- Tarjetas y paneles: background var(--surface), border 1px solid var(--rule),
+  border-radius var(--radius). Sombras: ninguna o como mucho
+  0 1px 2px rgba(15,15,15,.04).
+- El azul SOLO en elementos accionables o para destacar un dato. Nunca títulos
+  azules grandes ni cabeceras de color.
+- Espaciado generoso: padding de 16px en tarjetas, 12-16px entre bloques.
+- Botones: fondo var(--accent), texto blanco, border-radius var(--radius-sm),
+  padding 8px 14px, font-size 14px, font-weight 500, hover a var(--accent-hover),
+  transition 150ms. Los secundarios van con fondo var(--surface) y borde.
+- Transiciones suaves de 150ms en hover. Nada de animaciones llamativas.
+- RESPONSIVE OBLIGATORIO: el ancho disponible es de unos 700px pero puede bajar
+  de 400px. Usa flex-wrap, minmax en grid y unidades relativas. Nada de anchos
+  fijos en píxeles ni scroll horizontal.
+- Sin emojis decorativos. Iconos solo como SVG inline de trazo fino (1.4px).
+- Sin barras de título, sin cabeceras de ventana, sin marcos: tu contenido
+  empieza directamente, ya va dentro de un contenedor con borde.
+`
+
+const SYSTEM_PROMPT = `Eres un generador de aplicaciones web interactivas autocontenidas
+para AuraNote, un documento que convierte lo que escribes en interfaz.
 
 Vas a recibir un fragmento de una nota (la intención principal) y, como contexto de
 fondo, el resto de la nota donde vive ese fragmento. Tu trabajo es generar UNA aplicación
@@ -34,10 +82,8 @@ REGLAS ESTRICTAS, SIN EXCEPCIONES:
    sin beacons, sin trackers. La aplicación debe ser 100% autosuficiente.
 5. No incluyas explicaciones, comentarios fuera del HTML, ni bloques de markdown en tu
    respuesta. Solo el HTML puro.
-6. Diseña algo visualmente cuidado y coherente con el contenido: si el fragmento habla
-   de un viaje, no generes texto plano — construye la interfaz que mejor represente esa
-   idea (mapa esquemático, línea temporal, checklist, calculadora, visualizador, etc.)
-   usando solo HTML/CSS/JS.
+6. Construye la interfaz que mejor represente la idea —línea temporal, checklist,
+   calculadora, comparador, visualizador— no texto plano.
 7. OBLIGATORIO: el documento se incrusta en un iframe aislado que no puede medir tu
    altura desde fuera. Si no comunicas tu altura, tu interfaz aparecerá recortada con
    una barra de scroll. Incluye SIEMPRE este bloque al final de tu <script>:
@@ -50,7 +96,9 @@ REGLAS ESTRICTAS, SIN EXCEPCIONES:
    new ResizeObserver(avisarAltura).observe(document.body);
 
    Llama también a avisarAltura() después de cualquier cambio que altere el tamaño.
-8. No fijes una altura al <body> ni al <html>: deja que crezca con el contenido.`
+8. No fijes una altura al <body> ni al <html>: deja que crezca con el contenido.
+   Márgenes del body a 0 y padding a 16px.
+${SISTEMA_DE_DISENO}`
 
 function buildUserPrompt(fragment, fullNote) {
   return `FRAGMENTO SELECCIONADO (es la intención principal, genera la app sobre esto):

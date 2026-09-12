@@ -39,7 +39,7 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 | ---------- | --------------------------- | ---------------------------------------------------------- |
 | Front      | Vue 3 + Vite                | TipTap nació como librería de Vue                          |
 | Editor     | TipTap (ProseMirror)        | Node views y decorations — ver [arquitectura](docs/arquitectura.md) |
-| Estilos    | Tailwind                    | Estética Notion hecha a mano, sin librería de componentes  |
+| Estilos    | Tailwind + Motion           | Sistema propio; OpenUI no distribuye componentes           |
 | Nivel 1    | GPT-4o + `library.prompt()` | C1 no sirve OUI-1; autoalojarlo es la mejora de latencia   |
 | Renderer   | `@openuidev/vue-lang`       | Oficial. Genera el system prompt desde tu librería         |
 | Nivel 2    | GPT-4o vía API              | Cualquier endpoint compatible con OpenAI                   |
@@ -53,7 +53,8 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 | [Concepto](docs/concepto.md)                     | La idea, los dos niveles, qué **no** es            |
 | [Arquitectura](docs/arquitectura.md)             | Pipeline y decisiones técnicas razonadas           |
 | [Componentes](docs/componentes.md)               | La librería que OUI-1 puede componer               |
-| [UX](docs/ux.md)                                 | Cuándo generar, reglas anti-molestia, diseño       |
+| [UX](docs/ux.md)                                 | Cuándo generar, reglas anti-molestia               |
+| [Diseño](docs/diseno.md)                         | Tokens, los dos registros visuales, movimiento     |
 | [Decisiones](docs/decisiones.md)                 | Registro de lo decidido **y lo descartado**        |
 | [Roadmap](ROADMAP.md)                            | Fases con criterios de "listo"                     |
 | [Referencias](docs/referencias.md)               | OUI-1, Disco, GLiNER, TipTap                       |

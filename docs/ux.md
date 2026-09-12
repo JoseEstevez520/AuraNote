@@ -74,6 +74,10 @@ No son extras. Sin ellas la app es insufrible al segundo día.
 
 ## Diseño visual
 
+> **Revisado.** Lo que sigue describe **el documento**. Las piezas generadas usan un
+> registro distinto —superficies, bordes suaves, radios— documentado en
+> [diseno.md](diseno.md). El contraste entre ambos es deliberado.
+
 Estética Notion, replicada a mano con Tailwind. Notion es deliberadamente poca cosa, y
 eso es lo que hay que copiar:
 

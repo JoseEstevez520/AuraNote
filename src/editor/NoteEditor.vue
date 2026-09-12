@@ -54,7 +54,7 @@ function handleGenerateArtifact(payload) {
 </script>
 
 <template>
-  <div class="note-column relative py-16">
+  <div class="note-column relative py-10 sm:py-16">
     <!-- Placeholder discreto cuando el documento está vacío -->
     <p
       v-if="isEmpty"

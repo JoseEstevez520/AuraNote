@@ -6,6 +6,7 @@
 // Ver docs/ux.md (Diseño visual) y docs/arquitectura.md (Nivel 2).
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import { motion } from 'motion-v'
 import { generateArtifact } from './client.js'
 
 const props = defineProps(nodeViewProps)
@@ -142,37 +143,41 @@ watch(status, (s) => {
   >
     <!-- Controles: aparecen en hover, sin borde ni sombra. -->
     <div
-      class="absolute -top-3 right-0 flex gap-1 rounded bg-white px-1 py-0.5 transition-opacity"
+      class="absolute -top-2 right-0 z-10 flex gap-3 transition-opacity duration-200"
       :class="hovering ? 'opacity-100' : 'opacity-0 pointer-events-none'"
     >
       <button
-        class="px-2 py-1 text-xs text-ink-muted hover:text-accent"
+        class="text-xs text-ink-faint transition-colors hover:text-accent"
         title="Regenerar"
         @click="regenerate"
       >
-        ↻ Regenerar
+        Regenerar
       </button>
       <button
-        class="px-2 py-1 text-xs text-ink-muted hover:text-accent"
+        class="text-xs text-ink-faint transition-colors hover:text-accent"
         title="Plegar"
         @click="toggleCollapsed"
       >
-        {{ collapsed ? '⌄ Expandir' : '⌃ Plegar' }}
+        {{ collapsed ? 'Expandir' : 'Plegar' }}
       </button>
       <button
-        class="px-2 py-1 text-xs text-ink-muted hover:text-accent"
+        class="text-xs text-ink-faint transition-colors hover:text-accent"
         title="Borrar"
         @click="remove"
       >
-        ✕ Borrar
+        Borrar
       </button>
     </div>
 
     <!-- Estado: cargando -->
-    <div v-if="status === 'loading'" class="rounded py-8 text-center">
-      <div class="mx-auto mb-3 h-5 w-5 animate-spin rounded-full border-2 border-rule border-t-accent"></div>
-      <p class="text-sm text-ink-muted">{{ loadingMessage }}</p>
-      <p class="mt-1 text-xs text-ink-faint">Los artefactos tardan 10-30 s en generarse.</p>
+    <div v-if="status === 'loading'" class="flex items-center gap-2 py-3 text-sm text-ink-faint">
+      <motion.span
+        :animate="{ opacity: [0.35, 1, 0.35] }"
+        :transition="{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }"
+        class="size-1.5 shrink-0 rounded-full bg-accent"
+      />
+      <span>{{ loadingMessage }}</span>
+      <span class="text-ink-faint/70">· 10-30 s</span>
     </div>
 
     <!-- Estado: error -->
@@ -180,7 +185,7 @@ watch(status, (s) => {
       <p class="text-sm text-ink">No se pudo generar el artefacto.</p>
       <p class="mt-1 text-xs text-ink-muted">{{ errorMessage }}</p>
       <button
-        class="mt-3 rounded bg-accent px-3 py-1.5 text-xs text-white hover:opacity-90"
+        class="mt-3 rounded-[var(--radius-sm)] bg-accent px-3 py-1.5 text-xs text-white transition-colors hover:bg-accent-hover"
         @click="regenerate"
       >
         Reintentar
@@ -193,14 +198,21 @@ watch(status, (s) => {
     </div>
 
     <!-- Estado: listo -->
-    <iframe
+    <motion.div
       v-else
-      ref="iframeEl"
-      :srcdoc="srcdoc"
-      sandbox="allow-scripts"
-      class="w-full border-0"
-      :style="{ height: iframeHeight + 'px' }"
-      @load="onIframeLoad"
-    ></iframe>
+      :initial="{ opacity: 0, y: 8 }"
+      :animate="{ opacity: 1, y: 0 }"
+      :transition="{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }"
+      class="overflow-hidden rounded-[var(--radius-md)] border border-rule"
+    >
+      <iframe
+        ref="iframeEl"
+        :srcdoc="srcdoc"
+        sandbox="allow-scripts"
+        class="w-full border-0 bg-white"
+        :style="{ height: iframeHeight + 'px' }"
+        @load="onIframeLoad"
+      ></iframe>
+    </motion.div>
   </NodeViewWrapper>
 </template>

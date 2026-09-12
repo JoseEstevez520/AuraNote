@@ -1,35 +1,41 @@
 <script setup>
-// Comparativas. Sin bordes de celda ni fondo alterno: solo una línea (rule)
-// bajo la cabecera, como en una tabla de documento, no de app.
+// Tabla comparativa. Contenedor con radio y cabecera sobre superficie.
 defineProps({
   columns: { type: Array, default: () => [] },
-  rows: { type: Array, default: () => [] }, // array de arrays
+  rows: { type: Array, default: () => [] },
 })
 </script>
 
 <template>
-  <table class="w-full text-left border-collapse">
-    <thead>
-      <tr>
-        <th
-          v-for="(col, i) in columns"
-          :key="i"
-          class="text-sm font-semibold text-ink-muted border-b border-rule pb-2 pr-4"
+  <div class="overflow-hidden rounded-[var(--radius-md)] border border-rule">
+    <table class="w-full border-collapse text-sm">
+      <thead v-if="columns.length">
+        <tr class="bg-surface">
+          <th
+            v-for="(col, i) in columns"
+            :key="i"
+            class="border-b border-rule px-4 py-2.5 text-left text-xs font-semibold text-ink-muted"
+          >
+            {{ col }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(row, r) in rows"
+          :key="r"
+          class="transition-colors last:[&>td]:border-b-0 hover:bg-surface"
         >
-          {{ col }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(row, r) in rows" :key="r">
-        <td
-          v-for="(cell, c) in row"
-          :key="c"
-          class="text-base text-ink border-b border-rule py-2 pr-4"
-        >
-          {{ cell }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td
+            v-for="(cell, c) in row"
+            :key="c"
+            class="border-b border-rule px-4 py-2.5 align-top"
+            :class="c === 0 ? 'font-medium text-ink' : 'text-ink-muted'"
+          >
+            {{ cell }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>

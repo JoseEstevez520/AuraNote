@@ -6,6 +6,7 @@
 // el documento. Dentro de la columna, sin bordes ni sombras.
 import { ref, computed, onMounted } from 'vue'
 import { NodeViewWrapper } from '@tiptap/vue-3'
+import { motion, AnimatePresence } from 'motion-v'
 import { Renderer } from '@openuidev/vue-lang'
 import { library } from '../ui/library.js'
 import { generarSeccion } from './client.js'
@@ -40,26 +41,58 @@ onMounted(() => {
   <NodeViewWrapper class="group relative my-6" data-section-block>
     <!-- Controles: aparecen en hover y desaparecen. Ver docs/ux.md -->
     <div
-      class="absolute -top-2 right-0 flex gap-3 opacity-0 transition-opacity group-hover:opacity-100"
+      class="absolute -top-1 right-0 z-10 flex gap-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
     >
-      <button class="text-xs text-ink-faint hover:text-accent" @click="regenerar">
+      <button class="text-xs text-ink-faint transition-colors hover:text-accent" @click="regenerar">
         Regenerar
       </button>
-      <button class="text-xs text-ink-faint hover:text-accent" @click="deleteNode">Borrar</button>
+      <button class="text-xs text-ink-faint transition-colors hover:text-accent" @click="deleteNode">
+        Borrar
+      </button>
     </div>
 
-    <p v-if="estado === 'loading'" class="text-sm text-ink-faint">Componiendo la sección…</p>
+    <AnimatePresence mode="wait">
+      <motion.div
+        v-if="estado === 'loading'"
+        key="cargando"
+        :initial="{ opacity: 0 }"
+        :animate="{ opacity: 1 }"
+        :exit="{ opacity: 0 }"
+        :transition="{ duration: 0.15 }"
+        class="flex items-center gap-2 py-2 text-sm text-ink-faint"
+      >
+        <motion.span
+          :animate="{ opacity: [0.35, 1, 0.35] }"
+          :transition="{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }"
+          class="size-1.5 rounded-full bg-accent"
+        />
+        Componiendo la sección…
+      </motion.div>
 
-    <div v-else-if="estado === 'error'" class="text-sm">
-      <p class="text-ink-muted">No se pudo generar: {{ node.attrs.error }}</p>
-      <button class="mt-1 text-xs text-accent" @click="regenerar">Reintentar</button>
-    </div>
+      <motion.div
+        v-else-if="estado === 'error'"
+        key="error"
+        :initial="{ opacity: 0 }"
+        :animate="{ opacity: 1 }"
+        :transition="{ duration: 0.15 }"
+        class="text-sm"
+      >
+        <p class="text-ink-muted">No se pudo generar: {{ node.attrs.error }}</p>
+        <button class="mt-1 text-xs text-accent" @click="regenerar">Reintentar</button>
+      </motion.div>
 
-    <template v-else>
-      <Renderer :response="node.attrs.lang" :library="library" :on-error="(e) => (errores = e)" />
-      <p v-if="errores.length" class="mt-2 text-xs text-ink-faint">
-        {{ errores.length }} aviso(s) del renderer: {{ errores.map((e) => e.code).join(', ') }}
-      </p>
-    </template>
+      <motion.div
+        v-else
+        key="listo"
+        :initial="{ opacity: 0, y: 8 }"
+        :animate="{ opacity: 1, y: 0 }"
+        :transition="{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }"
+      >
+        <Renderer :response="node.attrs.lang" :library="library" :on-error="(e) => (errores = e)" />
+        <p v-if="errores.length" class="mt-2 text-xs text-ink-faint">
+          {{ errores.length }} aviso(s) del renderer: {{ errores.map((e) => e.code).join(', ') }}
+        </p>
+      </motion.div>
+    </AnimatePresence>
   </NodeViewWrapper>
 </template>

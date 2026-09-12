@@ -1,6 +1,6 @@
 <script setup>
-// Agrupación con encabezado opcional. Sin caja: el título es solo tipografía,
-// separado por espacio y una línea sutil (rule), nunca un borde alrededor del bloque.
+// Agrupación con encabezado. El título va en versalitas para no competir
+// con los títulos del documento.
 defineProps({
   title: { type: String, default: '' },
 })
@@ -8,11 +8,7 @@ defineProps({
 
 <template>
   <section class="flex flex-col gap-3">
-    <header v-if="title" class="border-b border-rule pb-2">
-      <h3 class="text-sm font-semibold text-ink-muted uppercase tracking-wide">
-        {{ title }}
-      </h3>
-    </header>
+    <h3 v-if="title" class="ui-eyebrow">{{ title }}</h3>
     <div class="flex flex-col gap-3">
       <slot />
     </div>
