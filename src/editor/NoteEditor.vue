@@ -7,6 +7,12 @@ import StarterKit from '@tiptap/starter-kit'
 import SelectionMenu from './SelectionMenu.vue'
 import { useAutosave } from './useAutosave.js'
 
+const props = defineProps({
+  // Nodos adicionales (sectionBlock, artifactBlock). Se inyectan desde fuera
+  // para que el editor no dependa de los niveles de generación.
+  extensions: { type: Array, default: () => [] },
+})
+
 const emit = defineEmits(['generate-section', 'generate-artifact'])
 
 const { status, loadDocument, scheduleSave } = useAutosave()
@@ -15,7 +21,7 @@ const isEmpty = ref(true)
 const savedDoc = loadDocument()
 
 const editor = new Editor({
-  extensions: [StarterKit],
+  extensions: [StarterKit, ...props.extensions],
   content: savedDoc ?? '',
   editorProps: {
     attributes: {
@@ -34,6 +40,9 @@ isEmpty.value = editor.isEmpty
 onBeforeUnmount(() => {
   editor.destroy()
 })
+
+// Se expone para que App.vue pueda insertar bloques generados.
+defineExpose({ editor })
 
 function handleGenerateSection(payload) {
   emit('generate-section', payload)
