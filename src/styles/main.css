@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Lenguaje visual de AuraNote — estética Notion.
+   Reglas completas en docs/ux.md. Resumen:
+   columna de 720px, sin bordes, sin sombras, sin cards.
+   --------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #37352f;        /* gris muy oscuro, nunca negro puro */
+  --color-ink-muted: #787774;
+  --color-ink-faint: #9b9a97;
+  --color-accent: #2383e2;     /* azul contenido, solo donde hay interacción */
+  --color-rule: #ebebea;
+
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Helvetica, "Apple Color Emoji", Arial, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-ink font-sans antialiased;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+@layer components {
+  /* La columna del documento. Todo vive aquí dentro, incluido lo generado. */
+  .note-column {
+    @apply mx-auto w-full px-6;
+    max-width: 720px;
+  }
+}
