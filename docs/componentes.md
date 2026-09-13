@@ -57,7 +57,7 @@ Con ~11 piezas el espacio de composiciones posibles es enorme.
 No negociables, porque son las que hacen que lo generado se sienta **parte del
 documento** y no un widget pegado encima. Fue la crítica principal al primer mockup.
 
-- **Todo dentro de la columna de 720px.** Nada a ancho completo, por ahora.
+- **Todo dentro de la columna de 972px.** Nada a ancho completo, por ahora.
 - **Sin bordes, sin sombras, sin cards.** Se separa con espacio, no con cajas.
 - Misma tipografía y misma escala que el texto del documento.
 - Azul de acento muy contenido, y solo donde hay interacción.

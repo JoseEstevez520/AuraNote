@@ -6,7 +6,7 @@
    Dos registros deliberadamente distintos (ver docs/diseno.md):
 
    · EL DOCUMENTO — prosa. Estética Notion: calmado, sin cajas,
-     columna de 720px. El texto no compite con nada.
+     columna de 972px. El texto no compite con nada.
 
    · LO GENERADO — interfaz. Sistema de componentes moderno:
      superficies suaves, radios amplios, bordes de bajo contraste,
@@ -56,7 +56,7 @@
   /* La columna del documento. Todo vive aquí dentro, incluido lo generado. */
   .note-column {
     @apply mx-auto w-full px-5 sm:px-6;
-    max-width: 720px;
+    max-width: 972px;
   }
 
   /* --- Primitivas del registro "interfaz" --- */

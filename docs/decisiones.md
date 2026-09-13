@@ -79,7 +79,7 @@ y **decorations** (los futuros subrayados de GLiNER no ensucian el contenido gua
 
 ---
 
-### 7 · Todo dentro de la columna de 720px
+### 7 · Todo dentro de la columna de 972px
 
 **Decisión:** las secciones generadas respetan la columna del texto.
 

@@ -83,7 +83,7 @@ eso es lo que hay que copiar:
 
 | Aspecto        | Valor                                        |
 | -------------- | -------------------------------------------- |
-| Columna        | ~720px centrada (65-75 caracteres, la medida legible) |
+| Columna        | ~972px centrada (65-75 caracteres, la medida legible) |
 | Tamaño         | 16px                                         |
 | Interlineado   | 1.5 – 1.6                                    |
 | Color de texto | Gris muy oscuro, **no** negro puro           |
@@ -106,7 +106,7 @@ El minimalismo aquí es funcional: es lo que hace que la idea se lea.
 
 Descartado por ahora. Se consideró que las secciones generadas rompieran la columna
 para ganar espacio (Notion tiene bloques a ancho completo), pero **todo se queda dentro
-de los 720px** hasta que haya una razón concreta para cambiarlo.
+de los 972px** hasta que haya una razón concreta para cambiarlo.
 
 ---
 

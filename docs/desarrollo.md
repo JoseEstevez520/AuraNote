@@ -22,7 +22,7 @@ verificable por su cuenta.
 
 ## Convenciones
 
-- **Todo dentro de la columna de 720px** (`.note-column`). Sin bordes, sin sombras,
+- **Todo dentro de la columna de 972px** (`.note-column`). Sin bordes, sin sombras,
   sin cards. Ver [ux.md](ux.md).
 - Tokens de color desde `src/styles/main.css`: `ink`, `ink-muted`, `ink-faint`,
   `accent`, `rule`. Nada de colores sueltos de Tailwind para texto.

@@ -61,7 +61,7 @@ Así que el sistema es nuestro, pero con dos cosas tomadas de Crayon tras leer s
 
 | Clase | Para qué |
 | --- | --- |
-| `.note-column` | La columna del documento, 720px, con padding responsivo |
+| `.note-column` | La columna del documento, 972px, con padding responsivo |
 | `.ui-surface` | Superficie base de cualquier pieza generada |
 | `.ui-interactive` | Superficie accionable, con hover |
 | `.ui-eyebrow` | Etiqueta en versalitas para encabezar agrupaciones |
@@ -92,7 +92,7 @@ Curva estándar: `[0.22, 1, 0.36, 1]`.
 ## Responsive
 
 - La columna baja de padding en móvil (`px-5` → `sm:px-6`).
-- `Row` **envuelve** en lugar de desbordar: la columna es de 720px y no siempre caben
+- `Row` **envuelve** en lugar de desbordar: la columna es de 972px y no siempre caben
   dos piezas anchas.
 - La barra de selección oculta las etiquetas de texto por debajo de `sm` y deja solo
   los iconos, con anti-desbordamiento de tippy activado.

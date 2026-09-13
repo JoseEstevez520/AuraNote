@@ -89,7 +89,7 @@ makes it look designed.
 
 ## Always
 
-  · Responsive: usable width ranges ~700px down to ~360px. Use flex-wrap, grid with
+  · Responsive: usable width ranges ~950px down to ~360px. Use flex-wrap, grid with
     minmax, relative units. Never fixed pixel widths on layout, never horizontal scroll.
   · No decorative emoji — but inline SVG icons are encouraged (see above).
   · Smooth 150ms transitions on interaction; nothing flashy or bouncy.
