@@ -139,8 +139,11 @@ ciclo del agua" salía como cuatro rectángulos.
 
 ### Modelo
 
-Los artefactos usan **gpt-5.2** (vía la clave de OpenAI). gpt-4o servía para el texto,
-pero para SVG ilustrativo y composiciones ricas la diferencia es enorme. Tarda más
-(1-3 min por artefacto), lo cual es aceptable para una acción deliberada. gpt-5 y la
-serie o solo aceptan la temperatura por defecto, así que el cliente no la envía para
-esos modelos.
+Los artefactos usan **gpt-4.1** (vía la clave de OpenAI). gpt-4o se quedaba corto para
+SVG ilustrativo. Se probó gpt-5.2, que da resultados aún más ricos e interactivos pero
+tarda 1-3 min por artefacto; gpt-4.1 hace escenas ilustradas comparables en ~15 s, que
+es el equilibrio elegido. Cambiar de modelo es una línea en `.env` (`VITE_LLM_MODEL`):
+gpt-5.2 para máxima calidad, gpt-4.1 para rapidez.
+
+gpt-5 y la serie o solo aceptan la temperatura por defecto, así que el cliente no la
+envía para esos modelos (detección por el nombre en `client.js`).
