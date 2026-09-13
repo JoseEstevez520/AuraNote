@@ -110,12 +110,22 @@ makes it look designed.
     "Item 1", "Example", "<your text>".
 `
 
-const SYSTEM_PROMPT = String.raw`You generate a single self-contained, interactive HTML
-artifact for AuraNote, a document that turns what you write into interface.
+const SYSTEM_PROMPT = String.raw`You generate a single self-contained INTERACTIVE WIDGET for
+AuraNote, a study-notes app that turns what you write into interface.
+
+You are invoked ONLY when the value is in DOING something (a simulator you poke, a model
+you manipulate, a quiz) or in a BESPOKE VISUAL the component library cannot draw (a
+diagram of a process, a custom illustration or chart). Static guides, itineraries,
+comparisons and plain explanations are handled elsewhere — never produce those here.
+
+This is a WIDGET embedded inline in a note, NOT a web page. So:
+  · No page chrome: no big title bar, no long intro paragraph, no multi-section document.
+    Get straight to the interactive/visual thing. A short title line is fine, nothing more.
+  · The point is the interaction or the drawing. Everything else is minimal scaffolding
+    around it.
 
 You receive a fragment of a note (the main intent) and, as background, the rest of the
-note. Build ONE interactive artifact that captures the idea of the fragment — the best
-possible version of it, well-crafted and finished.
+note. Build the best possible version of that one interactive/visual idea, well-crafted.
 
 HARD RULES, NO EXCEPTIONS:
 1. Respond with ONLY a complete self-contained HTML document, from "<!doctype html>"

@@ -128,3 +128,48 @@ Ahora el prompt de sección pide **componer en el espacio**: usar `Row`/`Grid`, 
 el fragmento nombra un lugar, incluir un `Map` **al lado** del contenido. Ejemplo real:
 "El día 13 y 14 estaré en Oporto y aún no sé qué hacer" → `Row([Map("Oporto"), List([...])])`
 — mapa a la izquierda, sugerencias a la derecha, en vez de una lista pelada.
+
+## Un solo gesto: "Generar" (actualización)
+
+Se retira la elección manual Sección / Artefacto / tipo. Hay **un botón "Generar"** y un
+router pequeño (`src/generate/router.js`, gpt-4.1-mini) decide, sin reglas rígidas —el
+modelo juzga caso a caso—, según dónde está el valor:
+
+- **VER** — mostrar u organizar información (un lugar, fechas, una comparación, una
+  explicación, un resumen): cosas que se entienden mejor al verlas → **sección**.
+- **HACER / VISUAL A MEDIDA** — algo que manipulas (simular, mover variables, un quiz) o
+  un dibujo que la librería no puede dar (un diagrama de un proceso, una ilustración) →
+  **artefacto**.
+
+Ante la duda, sección: más rápida y siempre encaja.
+
+### El artefacto es un widget, no una página
+
+Como el artefacto solo se invoca cuando de verdad hace falta interactividad o un visual
+propio, su prompt pide **un widget para incrustar en la nota**, no un documento: sin
+barra de título grande, sin intro larga, sin multi-sección. Va directo a la cosa
+interactiva o al dibujo. Las guías/itinerarios/comparaciones son territorio de la
+sección; el artefacto no las hace.
+
+## El valor, aterrizado al estudio
+
+AuraNote es una app de notas para **estudiar**, con generación cuando ayuda a
+**comprender** o a **experimentar**. La interactividad entra solo cuando sirve a eso: el
+caso estrella es "estudias un concepto y quieres tocarlo" (un simulador donde mueves una
+variable y ves el efecto). No es un fin en sí; es exploración de una forma de interactuar
+al servicio del estudio.
+
+## Exploración aparcada (rumbo, no ahora)
+
+Ideas que interesan pero que NO son el plato principal, guardadas para no perderlas:
+
+- **Superficie viva** — que lo generado se pueda seguir moldeando apuntando a ello:
+  clicar una parte, escribir una instrucción encima ("agrúpalo por barrio", "quita
+  esto") y que se rehaga. La misma interacción del documento (seleccionar → actuar),
+  recursiva, dentro de cada bloque.
+- **Affordances perezosas** — un botón que existe antes que su comportamiento: al
+  pulsarlo, el modelo genera lo que hace, en el momento. El modelo (o el usuario) planta
+  botones cuya conducta se materializa al clicarlos.
+
+Son especia, no estructura. Se probarían como experimentos acotados, empezando por las
+secciones (que controlamos el DOM), no por los artefactos (iframe aislado).
