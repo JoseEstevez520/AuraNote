@@ -143,6 +143,13 @@ modelo juzga caso a caso—, según dónde está el valor:
 
 Ante la duda, sección: más rápida y siempre encaja.
 
+### Tipos de artefacto (los elige el router, no el usuario)
+
+`auto`, `diagrama`, `simulacion`, `modelo` y **`quiz`** (autoexamen). El router devuelve
+el `kind`; cada uno solo añade una directiva al prompt. El quiz es el más ligado al
+estudio: genera un test interactivo del concepto (4-6 preguntas reales, feedback
+inmediato con explicación y puntuación).
+
 ### El artefacto es un widget, no una página
 
 Como el artefacto solo se invoca cuando de verdad hace falta interactividad o un visual

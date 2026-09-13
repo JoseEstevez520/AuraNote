@@ -22,13 +22,13 @@ en interfaz. Recibes un fragmento y decides cómo darle vida. Dos caminos:
 
 - "artifact": el valor está en HACER algo o en un VISUAL A MEDIDA que la librería no
   puede dar. Simuladores (mueves una variable y ves el efecto), modelos manipulables,
-  quizzes, o diagramas/ilustraciones a medida (el ciclo del agua, un proceso físico).
+  tests/quizzes de repaso, o diagramas/ilustraciones a medida (el ciclo del agua, un proceso físico).
   Úsalo cuando estudiar el tema gana con interactividad o con un dibujo propio.
 
 Ante la duda, prefiere "section": es más rápida y siempre encaja. Elige "artifact" solo
 cuando la interactividad o el dibujo a medida aporten de verdad.
 
-Responde SOLO JSON: { "mode": "section" | "artifact", "kind": "auto" | "diagrama" | "simulacion" | "modelo" }
+Responde SOLO JSON: { "mode": "section" | "artifact", "kind": "auto" | "diagrama" | "simulacion" | "modelo" | "quiz" }
 kind solo importa si mode es artifact (si no, "auto").`
 
 export async function clasificar(fragmento) {
@@ -54,7 +54,7 @@ export async function clasificar(fragmento) {
     const d = await r.json()
     const p = JSON.parse(d.choices[0].message.content)
     const mode = p.mode === 'artifact' ? 'artifact' : 'section'
-    const kind = ['auto', 'diagrama', 'simulacion', 'modelo'].includes(p.kind) ? p.kind : 'auto'
+    const kind = ['auto', 'diagrama', 'simulacion', 'modelo', 'quiz'].includes(p.kind) ? p.kind : 'auto'
     return { mode, kind }
   } catch {
     return { mode: 'section', kind: 'auto' }

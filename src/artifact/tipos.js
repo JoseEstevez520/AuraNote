@@ -81,11 +81,28 @@ or connect, with the effect visible immediately.
   is unusable for some people.
 - Make drop targets obvious on hover.`
 
+const QUIZ = String.raw`REQUIRED TYPE: QUIZ / SELF-TEST.
+
+Build an interactive self-test to study the concept in the fragment. It must let the
+user actually practise, not just read.
+
+- 4-6 questions drawn from the concept: multiple choice (one correct) or true/false.
+  Write real, specific questions and options about the topic — never placeholders.
+- Immediate feedback on answering: mark right/wrong, and show a one-line explanation of
+  why. Do not reveal the answer before the user picks.
+- Track score and show it at the end, with a "retry" that resets.
+- One question visible at a time OR a clean vertical list; keep it calm and legible.
+- All logic self-contained in JS. Chrome sober (Notion-like); accent only on the
+  selected/correct state. Use <span data-icon="check"></span> / "x" for feedback marks.
+
+This is for studying, so accuracy of the content matters as much as the interaction.`
+
 export const TIPOS = [
   { id: 'auto', clave: 'auto', directiva: '' },
   { id: 'diagrama', clave: 'diagram', directiva: DIAGRAM },
   { id: 'simulacion', clave: 'simulation', directiva: SIMULATION },
   { id: 'modelo', clave: 'model', directiva: MODEL },
+  { id: 'quiz', clave: 'quiz', directiva: QUIZ },
 ]
 
 export const porId = (id) => TIPOS.find((t) => t.id === id) ?? TIPOS[0]
