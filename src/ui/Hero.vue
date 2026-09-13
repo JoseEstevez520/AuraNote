@@ -19,7 +19,8 @@ onMounted(async () => {
 
 <template>
   <div
-    class="relative flex min-h-[180px] items-end overflow-hidden rounded-[var(--radius-md)] border border-rule bg-surface"
+    class="relative flex min-h-[180px] items-end overflow-hidden rounded-[var(--radius-md)] border border-rule"
+    :style="foto ? '' : 'background: linear-gradient(135deg, var(--color-accent-soft), #eef2f7 60%, #f6efe8)'"
   >
     <img
       v-if="foto"
