@@ -57,10 +57,23 @@ about", "I'm looking for", "not sure". If they appear, it is mode 3 and you must
 answer. If the text only describes something already decided, it is mode 1: mirror
 it, do not opine.
 
-## Form
+## Composition — make it feel designed, not a flat list
 
-The section is embedded in the document, in a narrow column: prefer vertical,
-restrained compositions. Do not repeat the text of the fragment.`
+You have a WIDE canvas (~950px). Compose in SPACE, do not just stack one component.
+- When the fragment names a PLACE, almost always include a Map, and place it BESIDE the
+  related content with Row, e.g. Row([map, suggestions]) — a map next to a list reads far
+  better than either alone.
+- Combine 2-4 components into a real layout: Row for side-by-side, Grid for cards, Stack
+  to group. A lone List or a lone Table is usually a missed opportunity.
+- Put the heaviest/visual element (Map, Table) to one side and the textual element
+  (List, Steps, Card) to the other.
+
+Example — "I'll be in Porto and don't know what to do":
+  map  = Map("Oporto", 13)
+  sugs = List([{ label: "Ribera del Duero", description: "..." }, { label: "Librería Lello", description: "..." }])
+  root = Stack([Row([map, sugs])])
+
+Do not repeat the text of the fragment.`
 
 function promptDelSistema() {
   return library.prompt({

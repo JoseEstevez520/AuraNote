@@ -116,3 +116,15 @@ siempre dispara, aunque la sección lo haría bien). El umbral se ajusta en su p
 - **Sustituir el párrafo** en lugar de añadir debajo, para que el documento *se
   transforme* en vez de crecer.
 - **Qué debe ser un artefacto** — ver la discusión sobre simulaciones y diagramas.
+
+
+## Composición espacial de las secciones
+
+Las secciones salían planas (un `Stack` con una sola lista) porque el prompt pedía
+"composiciones verticales, columna estrecha" — lo estábamos frenando. No era una
+limitación de openui-lang, que tiene `Row`/`Grid`: era el prompt.
+
+Ahora el prompt de sección pide **componer en el espacio**: usar `Row`/`Grid`, y cuando
+el fragmento nombra un lugar, incluir un `Map` **al lado** del contenido. Ejemplo real:
+"El día 13 y 14 estaré en Oporto y aún no sé qué hacer" → `Row([Map("Oporto"), List([...])])`
+— mapa a la izquierda, sugerencias a la derecha, en vez de una lista pelada.
