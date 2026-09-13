@@ -121,6 +121,16 @@ Lo que hay que demostrar es que existen los dos niveles, no que tengas catálogo
 
 ---
 
+## Calidad de los artefactos (hecho)
+
+- [x] gpt-4.1 y prompt reescrito: ilustración en vez de cajas
+- [x] Dos registros (chrome sobrio / contenido rico)
+- [x] Iconos Lucide incrustados por nombre (`data-icon`), offline
+- [x] OmniSVG probado y accesible en dev (`/api/omnisvg`)
+- [ ] Director → especialistas → ensamblador (ver docs/agentes.md)
+- [ ] Mermaid para diagramas estructurales
+- [ ] OmniSVG en Inference Endpoint para producción
+
 ## Después del fin de semana
 
 | Idea                          | Nota                                                       |

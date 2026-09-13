@@ -101,6 +101,14 @@ Fuentes:
 - [Using LLMs to Generate Math Diagrams with Vector Graphics](https://people.umass.edu/~andrewlan/papers/25aied-svg.pdf)
 - [Everything I built with Claude Artifacts — Simon Willison](https://simonwillison.net/2024/Oct/21/claude-artifacts/)
 
+## OmniSVG y Lucide (artefactos)
+
+- [OmniSVG](https://github.com/OmniSVG/OmniSVG) — modelo 4B/8B texto→SVG, Apache 2.0.
+  [Space](https://huggingface.co/spaces/OmniSVG/OmniSVG-3B) · [modelo 4B](https://huggingface.co/OmniSVG/OmniSVG1.1_4B) (16 GB VRAM).
+- [StarVector](https://github.com/joanrod/star-vector) — alternativa, imagen/texto→SVG.
+- [lucide-static](https://www.npmjs.com/package/lucide-static) — 2098 iconos, ISC. Set
+  curado incrustado en `src/artifact/icons.js`.
+
 ## Herramientas
 
 | Qué                | Para qué                                    |

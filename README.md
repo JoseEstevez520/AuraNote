@@ -55,6 +55,7 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 | [Componentes](docs/componentes.md)               | La librería que OUI-1 puede componer               |
 | [UX](docs/ux.md)                                 | Cuándo generar, reglas anti-molestia               |
 | [Diseño](docs/diseno.md)                         | Tokens, los dos registros visuales, movimiento     |
+| [Agentes](docs/agentes.md)                       | Arquitectura agentizada: director + especialistas  |
 | [Decisiones](docs/decisiones.md)                 | Registro de lo decidido **y lo descartado**        |
 | [Roadmap](ROADMAP.md)                            | Fases con criterios de "listo"                     |
 | [Referencias](docs/referencias.md)               | OUI-1, Disco, GLiNER, TipTap                       |
