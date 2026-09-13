@@ -44,7 +44,7 @@ etiquetas, badges ni bordes de color.
 
 ## De dónde sale
 
-**OpenUI no distribuye componentes** — su paquete de Vue trae un CSS de 76 bytes con
+**OpenUI no distribuye componentes**, su paquete de Vue trae un CSS de 76 bytes con
 un único `@keyframes`. Los componentes de sus demos son **Crayon**
 ([`@crayonai/react-ui`](https://github.com/thesysdev/crayon), MIT), el kit propio de
 Thesys, y es solo React.
@@ -101,10 +101,10 @@ Curva estándar: `[0.22, 1, 0.36, 1]`.
 
 ## Cómo se lo damos al modelo
 
-**Nivel 1** — no hace falta: solo puede usar los componentes de `src/ui/`, así que el
+**Nivel 1**, no hace falta: solo puede usar los componentes de `src/ui/`, así que el
 diseño está garantizado por construcción.
 
-**Nivel 2** — el artefacto es código libre, así que los tokens y las reglas van
+**Nivel 2**, el artefacto es código libre, así que los tokens y las reglas van
 literalmente en el system prompt (constante `SISTEMA_DE_DISENO` en
 `src/artifact/client.js`).
 
@@ -121,17 +121,17 @@ que salieran pobres:
   parecer un paisaje, no un diagrama de flujo.
 
 El contraste entre ambos es lo que hace que se vea diseñado. La primera versión aplicaba
-las reglas sobrias del chrome también al contenido —"sin degradados, iconos de trazo
-fino"— y por eso los diagramas salían en gris plano. Ver `src/artifact/client.js`.
+las reglas sobrias del chrome también al contenido,"sin degradados, iconos de trazo
+fino", y por eso los diagramas salían en gris plano. Ver `src/artifact/client.js`.
 
 ### Diagramas: ilustrar, no encajonar
 
 El prompt de diagrama (`src/artifact/tipos.js`) distingue dos casos:
 
-- **Ilustrativo** — el tema existe en el mundo real (un ciclo, una anatomía, una
+- **Ilustrativo**, el tema existe en el mundo real (un ciclo, una anatomía, una
   máquina). Se dibuja *la cosa*, descomponiéndola en formas primitivas (sol = círculo +
   rayos; nube = elipses solapadas; montaña = polígono + cima nevada).
-- **Estructural** — solo cuando la relación es abstracta (organigrama, arquitectura).
+- **Estructural**, solo cuando la relación es abstracta (organigrama, arquitectura).
   Ahí sí, cajas redondeadas y flechas, pero limpias.
 
 La versión anterior prohibía `<path>` y forzaba cajas para todo; por eso un "diagrama del
@@ -151,11 +151,11 @@ envía para esos modelos (detección por el nombre en `client.js`).
 ## Imágenes reales (Unsplash)
 
 Las secciones se renderizan en la app (no en el iframe sandbox), así que pueden cargar
-fotos reales — esto es lo que da el salto al look tipo OpenUI (su demo "Plan a trip to
+fotos reales, esto es lo que da el salto al look tipo OpenUI (su demo "Plan a trip to
 tokyo"). Dos componentes:
 
-- **Hero** — portada con foto de fondo y título encima (viajes, lugares, temas).
-- **Image** — foto por consulta, para miniaturas o apoyo.
+- **Hero**, portada con foto de fondo y título encima (viajes, lugares, temas).
+- **Image**, foto por consulta, para miniaturas o apoyo.
 
 Las fotos vienen de **Unsplash** (`src/ui/unsplash.js`), buscadas por texto, con caché en
 localStorage para no gastar el límite (50 req/h en desarrollo). Se hotlinkea la URL

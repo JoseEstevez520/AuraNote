@@ -6,7 +6,7 @@
 ## Principio de diseño
 
 Si OUI-1 **compone** en vez de elegir, las piezas tienen que ser **componibles**:
-apilarse, ponerse en fila, anidarse. No son seis widgets terminados — son primitivas
+apilarse, ponerse en fila, anidarse. No son seis widgets terminados, son primitivas
 más contenedores de layout.
 
 El propio ejemplo de la documentación de `openui-lang` lo confirma:
@@ -93,8 +93,8 @@ algo falla, no hay forma de saber cuál de los dos es.
 
 ## Cómo se la damos a OUI-1
 
-En `src/ui/library.js`. Cada pieza se declara con `defineComponent` — nombre, esquema
-**Zod** y **descripción** — y de ahí sale el system prompt automáticamente:
+En `src/ui/library.js`. Cada pieza se declara con `defineComponent`, nombre, esquema
+**Zod** y **descripción**, y de ahí sale el system prompt automáticamente:
 
 ```js
 const StackDef = defineComponent({

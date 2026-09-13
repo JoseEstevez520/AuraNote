@@ -72,9 +72,9 @@ Lo honesto tras probarlo:
 
 Por eso el orden de construcción es incremental y cada paso vale por sí solo:
 
-1. ✅ **Lucide incrustado** — arregla los iconos ya, sin infraestructura.
-2. ✅ **OmniSVG probado** — endpoint `/api/omnisvg` en dev; capacidad disponible.
-3. ⏳ **Director → ensamblador** — cuando compense la latencia. Empezar por: el director
+1. ✅ **Lucide incrustado**, arregla los iconos ya, sin infraestructura.
+2. ✅ **OmniSVG probado**, endpoint `/api/omnisvg` en dev; capacidad disponible.
+3. ⏳ **Director → ensamblador**, cuando compense la latencia. Empezar por: el director
    emite el plan, se piden los SVG en paralelo, gpt-4.1 ensambla con placeholders.
 4. ⏳ **Mermaid** para diagramas estructurales.
 
@@ -83,13 +83,13 @@ Por eso el orden de construcción es incremental y cada paso vale por sí solo:
 - **Ahora:** su Space de HuggingFace (ZeroGPU), gratis, vía `/api/omnisvg` (el
   `HF_TOKEN` vive en el servidor de dev, nunca en el navegador).
 - **Producción:** HF Inference Endpoint dedicado (una GPU de 24 GB sobra para los 16 GB
-  que pide el 4B), se apaga solo, ~0,80 $/h. O autoalojar si hay GPU ≥16 GB — la de este
+  que pide el 4B), se apaga solo, ~0,80 $/h. O autoalojar si hay GPU ≥16 GB, la de este
   equipo (RTX 4060, 8 GB) no llega al 4B.
 
 
 ---
 
-## Pipeline dividido (en uso) — actualización 13 sep
+## Pipeline dividido (en uso), actualización 13 sep
 
 Tras descartar OmniSVG, se mantuvo la idea de **dividir** pero con gpt-4.1 como
 ilustrador. Validado con A/B (`docs/agentes.md`): cuando un agente **solo** dibuja el
@@ -105,7 +105,7 @@ Montado en `src/artifact/pipeline.js` y enchufado vía `generateArtifactSmart`:
 - Si el pipeline falla, cae a la llamada única.
 
 **Estado honesto:** el texto y la estructura salen muy bien; la **ilustración es
-irregular** — a veces limpia (ciclo del agua), a veces con flechas mal dibujadas
+irregular**, a veces limpia (ciclo del agua), a veces con flechas mal dibujadas
 (fotosíntesis: triángulos negros). Se reforzó el prompt del ilustrador para que las
 flechas vayan siempre por `<marker>` y nunca como polígonos sueltos. Sigue siendo la
 parte a pulir.

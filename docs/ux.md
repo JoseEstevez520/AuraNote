@@ -11,16 +11,16 @@ Así que la pregunta no es *"¿cuándo genero?"* sino *"¿qué puedo hacer sin m
 
 | Escalón       | Cuándo             | ¿Mueve el layout? |
 | ------------- | ------------------ | ----------------- |
-| **Detectar**  | automático         | No — solo pinta   |
-| **Ofrecer**   | al hover           | No — flota        |
-| **Generar**   | click explícito    | Sí — pero lo pidió el usuario |
+| **Detectar**  | automático         | No, solo pinta   |
+| **Ofrecer**   | al hover           | No, flota        |
+| **Generar**   | click explícito    | Sí, pero lo pidió el usuario |
 
 **Nada se genera solo. Nunca. Pero todo se ofrece sin que haya que buscarlo.**
 
 ### Detectar
 
 Cuando entre GLiNER: corre en pausa (~800 ms sin teclear) y subraya entidades. Es seguro
-hacerlo automático porque no mueve nada — es un subrayado de 1px sobre texto que ya
+hacerlo automático porque no mueve nada, es un subrayado de 1px sobre texto que ya
 estaba ahí.
 
 ### Ofrecer
@@ -44,7 +44,7 @@ esperado, no molesto.
 
 El botón de generar es **siempre sobre el fragmento seleccionado**, nunca global.
 
-- **La selección es el prompt.** Desaparece el problema de "¿sobre qué genero?" — el
+- **La selección es el prompt.** Desaparece el problema de "¿sobre qué genero?", el
   usuario acaba de decirlo con el ratón.
 - **El artefacto queda anclado a su origen.** El fragmento se marca sutilmente, el
   bloque se inserta debajo del párrafo donde acaba la selección, y ambos saben que están
@@ -65,7 +65,7 @@ No son extras. Sin ellas la app es insufrible al segundo día.
 | Regla                              | Por qué                                             |
 | ---------------------------------- | --------------------------------------------------- |
 | Nada se genera automáticamente     | Detectar es automático; generar es siempre a petición |
-| Nunca en el párrafo activo         | Si el cursor está ahí, estás escribiendo — te dejan en paz |
+| Nunca en el párrafo activo         | Si el cursor está ahí, estás escribiendo, te dejan en paz |
 | Descartar es permanente            | Por nota y entidad. Sin esto, se hace insoportable  |
 | Un bloque por sección              | Si no, acabas con el dashboard que no querías       |
 | Interruptor global de detección    | Escape hatch                                        |
@@ -75,7 +75,7 @@ No son extras. Sin ellas la app es insufrible al segundo día.
 ## Diseño visual
 
 > **Revisado.** Lo que sigue describe **el documento**. Las piezas generadas usan un
-> registro distinto —superficies, bordes suaves, radios— documentado en
+> registro distinto,superficies, bordes suaves, radios, documentado en
 > [diseno.md](diseno.md). El contraste entre ambos es deliberado.
 
 Estética Notion, replicada a mano con Tailwind. Notion es deliberadamente poca cosa, y
@@ -92,7 +92,7 @@ eso es lo que hay que copiar:
 | Sombras        | Ninguna                                      |
 | Cards          | Ninguna                                      |
 | Controles      | Aparecen en hover, desaparecen               |
-| Padding lateral| Generoso — el espacio en blanco **es** el diseño |
+| Padding lateral| Generoso, el espacio en blanco **es** el diseño |
 
 ### Por qué esto no es solo estética
 

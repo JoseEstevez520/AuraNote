@@ -5,14 +5,14 @@
 > **La interfaz cierra el hueco que abre el texto. No abre uno nuevo.**
 
 El error más grave no es generar algo feo: es **equivocarse de modo**. Ante
-*"no sé cómo organizarlo"*, devolver un formulario vacío no cierra el hueco —
+*"no sé cómo organizarlo"*, devolver un formulario vacío no cierra el hueco,
 convierte una pregunta en deberes.
 
 ## Los cuatro modos
 
 | El texto | Hueco | Qué genera | Componentes |
 | --- | --- | --- | --- |
-| **Declara hechos**<br>*"El viernes voy a Lisboa"* | ninguno | **Espejo** — renderiza lo dicho | `Map`, `Timeline` |
+| **Declara hechos**<br>*"El viernes voy a Lisboa"* | ninguno | **Espejo**, renderiza lo dicho | `Map`, `Timeline` |
 | **Compara**<br>*"Spring Boot y FastAPI"* | estructura | **Estructura** | `Table` |
 | **No sabe**<br>*"no sé cómo organizarlo"* | conocimiento | **Respuesta** | `Steps`, `Tree`, `Code`, `Callout` |
 | **Quiere algo abierto**<br>*"algo por el mar"* | opciones | **Propuestas** | `List`, `Card` |
@@ -21,7 +21,7 @@ convierte una pregunta en deberes.
 *estoy pensando en*, *busco*, *no tengo claro*.
 
 El modo lo infiere el modelo, no lo elige el usuario. Darle botones
-—*Mostrar* / *Explicar* / *Comparar*— rompería la premisa: la interfaz debe emerger del
+, *Mostrar* / *Explicar* / *Comparar*, rompería la premisa: la interfaz debe emerger del
 texto, no de un menú. Cuando falle, la salida es regenerar.
 
 ## Reglas duras del modo 3
@@ -33,8 +33,8 @@ texto, no de un menú. Cuando falle, la salida es regenerar.
 
 ## Tipos de artefacto
 
-El botón de artefacto es **partido**: el cuerpo genera en automático —el modelo
-decide— y el chevron abre un desplegable para dirigirlo.
+El botón de artefacto es **partido**: el cuerpo genera en automático,el modelo
+decide, y el chevron abre un desplegable para dirigirlo.
 
 | Tipo | Qué exige |
 | --- | --- |
@@ -49,7 +49,7 @@ Definidos en `src/artifact/tipos.js`.
 
 Por qué aquí sí se ofrece un menú y en el nivel 1 no: el artefacto ya es una acción
 deliberada y cara. Añadir "de qué tipo" a algo que el usuario pide explícitamente no
-rompe la premisa de que la interfaz emerge del texto — eso solo aplica al nivel
+rompe la premisa de que la interfaz emerge del texto, eso solo aplica al nivel
 ambiente, donde el modo debe inferirse.
 
 **La idea de fondo:** el artefacto solo se justifica si **no se puede hacer con la
@@ -87,7 +87,7 @@ está. Antes eran enlaces de texto sueltos sobre el contenido y quedaban mal.
 La interacción ya no obliga a seleccionar todo el rato. Al **cerrar un párrafo** (el
 cursor sale de él), un modelo pequeño y barato (el router, `src/suggest/router.js`,
 `gpt-4.1-mini`) decide si merece la pena ofrecer algo. Si sí, aparece una pista tenue al
-final del párrafo — un chip "＋ ver itinerario" / "＋ comparar" — que al pulsarla genera
+final del párrafo, un chip "＋ ver itinerario" / "＋ comparar", que al pulsarla genera
 la sección o el artefacto justo debajo.
 
 - **Detectar es automático; generar sigue siendo un clic.** El chip es barato; el bloque
@@ -112,32 +112,32 @@ siempre dispara, aunque la sección lo haría bien). El umbral se ajusta en su p
 
 ## Abierto
 
-- **Refinar un bloque ya generado** — la salida cuando el modo falla.
+- **Refinar un bloque ya generado**, la salida cuando el modo falla.
 - **Sustituir el párrafo** en lugar de añadir debajo, para que el documento *se
   transforme* en vez de crecer.
-- **Qué debe ser un artefacto** — ver la discusión sobre simulaciones y diagramas.
+- **Qué debe ser un artefacto**, ver la discusión sobre simulaciones y diagramas.
 
 
 ## Composición espacial de las secciones
 
 Las secciones salían planas (un `Stack` con una sola lista) porque el prompt pedía
-"composiciones verticales, columna estrecha" — lo estábamos frenando. No era una
+"composiciones verticales, columna estrecha", lo estábamos frenando. No era una
 limitación de openui-lang, que tiene `Row`/`Grid`: era el prompt.
 
 Ahora el prompt de sección pide **componer en el espacio**: usar `Row`/`Grid`, y cuando
 el fragmento nombra un lugar, incluir un `Map` **al lado** del contenido. Ejemplo real:
 "El día 13 y 14 estaré en Oporto y aún no sé qué hacer" → `Row([Map("Oporto"), List([...])])`
-— mapa a la izquierda, sugerencias a la derecha, en vez de una lista pelada.
+, mapa a la izquierda, sugerencias a la derecha, en vez de una lista pelada.
 
 ## Un solo gesto: "Generar" (actualización)
 
 Se retira la elección manual Sección / Artefacto / tipo. Hay **un botón "Generar"** y un
-router pequeño (`src/generate/router.js`, gpt-4.1-mini) decide, sin reglas rígidas —el
-modelo juzga caso a caso—, según dónde está el valor:
+router pequeño (`src/generate/router.js`, gpt-4.1-mini) decide, sin reglas rígidas,el
+modelo juzga caso a caso, según dónde está el valor:
 
-- **VER** — mostrar u organizar información (un lugar, fechas, una comparación, una
+- **VER**, mostrar u organizar información (un lugar, fechas, una comparación, una
   explicación, un resumen): cosas que se entienden mejor al verlas → **sección**.
-- **HACER / VISUAL A MEDIDA** — algo que manipulas (simular, mover variables, un quiz) o
+- **HACER / VISUAL A MEDIDA**, algo que manipulas (simular, mover variables, un quiz) o
   un dibujo que la librería no puede dar (un diagrama de un proceso, una ilustración) →
   **artefacto**.
 
@@ -170,11 +170,11 @@ al servicio del estudio.
 
 Ideas que interesan pero que NO son el plato principal, guardadas para no perderlas:
 
-- **Superficie viva** — que lo generado se pueda seguir moldeando apuntando a ello:
+- **Superficie viva**, que lo generado se pueda seguir moldeando apuntando a ello:
   clicar una parte, escribir una instrucción encima ("agrúpalo por barrio", "quita
   esto") y que se rehaga. La misma interacción del documento (seleccionar → actuar),
   recursiva, dentro de cada bloque.
-- **Affordances perezosas** — un botón que existe antes que su comportamiento: al
+- **Affordances perezosas**, un botón que existe antes que su comportamiento: al
   pulsarlo, el modelo genera lo que hace, en el momento. El modelo (o el usuario) planta
   botones cuya conducta se materializa al clicarlos.
 

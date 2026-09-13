@@ -75,7 +75,7 @@ menos rodado que el de React.
 
 ---
 
-## Nivel 1 — OUI-1
+## Nivel 1, OUI-1
 
 ### Qué es
 
@@ -121,7 +121,7 @@ riesgo asumido al elegir Vue, y de momento funciona.
 
 **OUI-1 no elige un componente. Compone una sección.**
 
-Una tabla `tipo de entidad → componente` sería un `switch`, no un modelo — no haría
+Una tabla `tipo de entidad → componente` sería un `switch`, no un modelo, no haría
 falta IA para eso. El valor está en decidir que *este* párrafo merece un mapa grande
 arriba, un timeline estrecho al lado y una lista debajo a dos columnas; y que el
 siguiente párrafo merece algo completamente distinto.
@@ -130,13 +130,13 @@ Por eso la unidad de generación es **fragmento → sección**, no **entidad →
 
 ---
 
-## Nivel 2 — el artefacto
+## Nivel 2, el artefacto
 
 - **Disparo:** selección + botón en el `BubbleMenu`. Nunca automático, nunca global.
   La selección *es* el prompt: el usuario acaba de decir sobre qué generar.
 - **Contexto:** el fragmento manda; el resto de la nota va como contexto de fondo.
 - **Salida:** un único HTML autocontenido, CSS y JS inline, sin dependencias externas.
-- **Render:** `<iframe sandbox>`. Aislamiento obligatorio — es código generado.
+- **Render:** `<iframe sandbox>`. Aislamiento obligatorio, es código generado.
 - **Anclaje:** el fragmento origen queda marcado y el bloque se inserta bajo el párrafo
   donde acaba la selección. Eso hace que "regenerar" esté bien definido y que el usuario
   sienta que el artefacto *salió de ahí*.
@@ -160,7 +160,7 @@ POST /artifact    fragmento + contexto → HTML    (proxy modelo grande)
 
 ---
 
-## GLiNER — aplazado, no descartado
+## GLiNER, aplazado, no descartado
 
 NER zero-shot: le pasas las etiquetas que quieras (`lugar`, `fecha`, `evento`,
 `tecnología`…) y las encuentra aunque no las viera en entrenamiento. Corre en CPU en

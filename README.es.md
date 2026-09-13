@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Una app de notas para estudiar — cosas para ver, y cosas para tocar.
+  Una app de notas para estudiar, cosas para ver, y cosas para tocar.
 </p>
 
 <p align="center">
@@ -58,8 +58,8 @@ se le pide.
 - **Genera una sección** a partir de un fragmento seleccionado, renderizada con la librería
   de componentes Vue nativos (mapas, líneas de tiempo, tablas, tarjetas, stats) vía
   `@openuidev/vue-lang`.
-- **Genera un artefacto** como HTML interactivo autocontenido — un simulador, quiz o
-  diagrama — aislado en un iframe sandbox bajo el párrafo que seleccionaste.
+- **Genera un artefacto** como HTML interactivo autocontenido, un simulador, quiz o
+  diagrama, aislado en un iframe sandbox bajo el párrafo que seleccionaste.
 - **Deja que el modelo enrute** cada petición entre sección y artefacto con gpt-4.1-mini,
   cayendo a sección ante la duda.
 - **Mantén todo en el documento**: los bloques generados se guardan en el JSON de TipTap y
@@ -102,7 +102,7 @@ Guía completa, propiedad de directorios y páginas de prueba en
 - [Interacción](docs/interaccion.md): cuándo generar ayuda y cuándo estorba.
 - [UX](docs/ux.md): cuándo generar, reglas anti-molestia.
 - [Diseño](docs/diseno.md): tokens, los dos registros visuales, movimiento.
-- [Agentes](docs/agentes.md): arquitectura agentizada — director + especialistas.
+- [Agentes](docs/agentes.md): arquitectura agentizada, director + especialistas.
 - [Decisiones](docs/decisiones.md): lo decidido **y lo descartado**.
 - [Referencias](docs/referencias.md): OUI-1, Disco, GLiNER, TipTap.
 - [Desarrollo](docs/desarrollo.md): cómo ejecutarlo y propiedad de directorios.

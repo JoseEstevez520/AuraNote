@@ -24,7 +24,7 @@ es la fuga de ese vocabulario.
 `fecha` → `Timeline`…).
 
 **Por qué:** esa tabla es un `switch`, no un modelo. Si `lugar` siempre da `Map`, OUI-1
-sobra — estaríamos pagando un modelo generativo para hacer de router. Su valor está en
+sobra, estaríamos pagando un modelo generativo para hacer de router. Su valor está en
 decidir que *este* párrafo merece un mapa grande arriba, un timeline al lado y una lista
 debajo, y que el siguiente merece otra cosa. Eso una tabla no lo hace.
 
@@ -38,7 +38,7 @@ debajo, y que el siguiente merece otra cosa. Eso una tabla no lo hace.
 
 **Descartado:** un botón global arriba que trabaje sobre la nota entera.
 
-**Por qué:** la selección *es* el prompt — desaparece el problema de "¿sobre qué genero?".
+**Por qué:** la selección *es* el prompt, desaparece el problema de "¿sobre qué genero?".
 Además ancla el resultado a su origen, lo que hace que "regenerar" esté bien definido.
 Quien quiera la nota entera, Ctrl+A.
 
@@ -73,7 +73,7 @@ rodado que el de React.
 
 **Decisión:** TipTap sobre ProseMirror.
 
-**Por qué:** más allá de no reimplementar un editor, sus dos primitivas encajan solas —
+**Por qué:** más allá de no reimplementar un editor, sus dos primitivas encajan solas,
 **node views** (los bloques generados son nodos del documento, así que persisten gratis)
 y **decorations** (los futuros subrayados de GLiNER no ensucian el contenido guardado).
 
@@ -94,7 +94,7 @@ de que lo generado *es parte del documento*. Reconsiderable si el espacio apriet
 
 **Decisión:** fuera de la primera versión.
 
-**Por qué:** su trabajo original —enrutar entidad → componente— desapareció con la
+**Por qué:** su trabajo original,enrutar entidad → componente, desapareció con la
 decisión 2. Como enriquecedor es marginal: un modelo grande ya entiende que Lisboa es
 una ciudad sin que se lo anoten.
 
@@ -111,7 +111,7 @@ optimización, y las optimizaciones no van en un PoC.
 
 **Por qué:** consecuencia de la 8. Sin GLiNER no hay nada que ejecutar en servidor.
 Montar Python, descargar pesos y desplegar un servicio el día que hay que arrancar es
-gasto puro. FastAPI entra cuando entre GLiNER — y entonces sí, porque `gliner` es una
+gasto puro. FastAPI entra cuando entre GLiNER, y entonces sí, porque `gliner` es una
 librería de Python.
 
 ---
@@ -177,7 +177,7 @@ después es incremental, no estructural.
 posicionales, no con nombre**. Es `Map("Lisboa", 12)`, no `Map(place: "Lisboa")`.
 El system prompt que genera la propia librería lo dice literalmente:
 
-> *"Arguments are POSITIONAL (order matters, not names) — colon syntax is NOT
+> *"Arguments are POSITIONAL (order matters, not names), colon syntax is NOT
 > supported and silently breaks"*
 
 El parser casero soportaba exactamente esa forma prohibida, así que no era un plan B:
@@ -185,11 +185,11 @@ era incorrecto. Habría parseado un formato que el modelo nunca emite.
 
 Además los paquetes oficiales aportan tres cosas que no se pueden adivinar:
 
-1. **`library.prompt()`** — genera el system prompt desde los esquemas Zod y las
+1. **`library.prompt()`**, genera el system prompt desde los esquemas Zod y las
    descripciones de tus componentes, en el formato con el que el modelo fue entrenado.
    Es lo más valioso de los tres.
-2. **Streaming** — `createStreamingParser` y el `Renderer` pintan según llega el texto.
-3. **La spec real de v0.5** — errores tipados (`missing-required`, `unknown-component`,
+2. **Streaming**, `createStreamingParser` y el `Renderer` pintan según llega el texto.
+3. **La spec real de v0.5**, errores tipados (`missing-required`, `unknown-component`,
    `excess-args`), referencias adelantadas, validación contra el esquema.
 
 **Coste:** los componentes de `src/ui/` reciben props normales de Vue, pero
@@ -202,7 +202,7 @@ pisaran en `package.json`, y por eso uno escribió el parser a mano.
 
 ---
 
-### 16 · C1 no sirve OUI-1 — el nivel 1 va contra un LLM normal ⭐
+### 16 · C1 no sirve OUI-1, el nivel 1 va contra un LLM normal ⭐
 
 **Corrección de la decisión 10.** Se dio por hecho que Thesys C1 servía OUI-1. **No es
 así.** Consultando `GET /v1/embed/models` con una clave real, C1 ofrece 34 modelos y
@@ -219,8 +219,8 @@ Son dos productos distintos del mismo equipo:
 `library.prompt()`. Es exactamente el flujo para el que está diseñado `lang-core`:
 generas el prompt desde tu librería y se lo mandas al modelo que quieras.
 
-**Verificado:** GPT-4o produce `openui-lang` válido con nuestra librería —argumentos
-posicionales, `Section` anidada, referencias adelantadas— y renderiza correctamente.
+**Verificado:** GPT-4o produce `openui-lang` válido con nuestra librería,argumentos
+posicionales, `Section` anidada, referencias adelantadas, y renderiza correctamente.
 
 **Lo que se pierde:** la latencia. OUI-1 tarda ~1 s por ser de difusión; un LLM
 autoregresivo tarda varios segundos. La promesa de "UI que aparece mientras escribes"
@@ -263,7 +263,7 @@ consistencia; para ilustración gpt-4.1 es muy superior.
 **Eliminado del repo.** Se probó y no dio la talla, así que se retiró el cliente (`server/omnisvg.mjs`), el endpoint `/api/omnisvg` y la demo. Si en el futuro aparece un modelo texto→SVG mejor (StarVector u otra versión), se reengancharía desde cero.
 
 **Coste:** se activó HF Pro (~10 €/mes) para hacer esta prueba sin toparse con la cuota.
-No malgastado —quita el muro y sirve para todo HuggingFace— pero la premisa de que
+No malgastado,quita el muro y sirve para todo HuggingFace, pero la premisa de que
 OmniSVG brillaría en objetos sueltos no se sostuvo. El valor fue justo ese: probarlo
 antes de construir el orquestador encima.
 

@@ -1,6 +1,6 @@
 # Referencias
 
-## OUI-1 — el modelo del nivel 1
+## OUI-1, el modelo del nivel 1
 
 Primer modelo de pesos abiertos para Generative UI. Finetune de DiffusionGemma 26B-A4B
 (26B totales, 4B activos). Apache 2.0. Septiembre de 2026.
@@ -13,7 +13,7 @@ pantalla simple.
 - [Pesos en Hugging Face](https://huggingface.co/thesysdev/OUI-1)
 - [Cuantizaciones GGUF](https://huggingface.co/Abiray/OUI-1-GGUF)
 - [Documentación de openui-lang](https://openui.com/docs/openui-lang)
-- [Thesys C1 — API hospedada y precios](https://www.thesys.dev/pricing)
+- [Thesys C1, API hospedada y precios](https://www.thesys.dev/pricing)
 - [Discusión en Hacker News](https://news.ycombinator.com/item?id=49613182)
 
 > ⚠️ Modelo muy reciente. La documentación de `openui-lang` está incompleta y el tooling
@@ -28,10 +28,10 @@ pantalla simple.
 
 ---
 
-## Google Disco / GenTabs — el referente del nivel 2
+## Google Disco / GenTabs, el referente del nivel 2
 
 Experimento de Google Labs (diciembre de 2025): un navegador que coge tus pestañas
-abiertas y, con Gemini 3, las remezcla en una aplicación interactiva a medida —
+abiertas y, con Gemini 3, las remezcla en una aplicación interactiva a medida,
 un plan de comidas, un itinerario de viaje, lo que sea. No un resumen: una app.
 
 Es exactamente el nivel 2, pero aplicado al navegador entero en vez de a un documento.
@@ -42,7 +42,7 @@ Es exactamente el nivel 2, pero aplicado al navegador entero en vez de a un docu
 
 ---
 
-## GLiNER — aplazado
+## GLiNER, aplazado
 
 Generalist and Lightweight NER. Transformer bidireccional tipo BERT que hace NER
 **zero-shot**: le pasas las etiquetas que quieras y las encuentra aunque no estuvieran
@@ -70,7 +70,7 @@ Ver [decisión 8](decisiones.md) sobre por qué está fuera de la v1.
 
 ---
 
-## Crayon — la librería real detrás de las demos de OpenUI
+## Crayon, la librería real detrás de las demos de OpenUI
 
 `@crayonai/react-ui`, MIT, de Thesys. Es de donde salen los componentes bonitos que se
 ven en las demos de OpenUI. Solo React, pero el CSS es legible y portable.
@@ -95,23 +95,23 @@ en partes. Para ilustración concreta, la técnica es dibujar la cosa por partes
 formas primitivas, no encajonarla.
 
 Fuentes:
-- [system_prompts_leaks — Anthropic (Claude Design)](https://github.com/asgeirtj/system_prompts_leaks)
-- [Best approach for generating SVG graphics with LLMs — HN](https://news.ycombinator.com/item?id=46665639)
+- [system_prompts_leaks, Anthropic (Claude Design)](https://github.com/asgeirtj/system_prompts_leaks)
+- [Best approach for generating SVG graphics with LLMs, HN](https://news.ycombinator.com/item?id=46665639)
 - [Chat2SVG (CVPR 2025)](https://openaccess.thecvf.com/content/CVPR2025/papers/Wu_Chat2SVG_Vector_Graphics_Generation_with_Large_Language_Models_and_Image_CVPR_2025_paper.pdf)
 - [Using LLMs to Generate Math Diagrams with Vector Graphics](https://people.umass.edu/~andrewlan/papers/25aied-svg.pdf)
-- [Everything I built with Claude Artifacts — Simon Willison](https://simonwillison.net/2024/Oct/21/claude-artifacts/)
+- [Everything I built with Claude Artifacts, Simon Willison](https://simonwillison.net/2024/Oct/21/claude-artifacts/)
 
 ## OmniSVG y Lucide (artefactos)
 
-- [OmniSVG](https://github.com/OmniSVG/OmniSVG) — modelo 4B/8B texto→SVG, Apache 2.0.
+- [OmniSVG](https://github.com/OmniSVG/OmniSVG), modelo 4B/8B texto→SVG, Apache 2.0.
   [Space](https://huggingface.co/spaces/OmniSVG/OmniSVG-3B) · [modelo 4B](https://huggingface.co/OmniSVG/OmniSVG1.1_4B) (16 GB VRAM).
-- [StarVector](https://github.com/joanrod/star-vector) — alternativa, imagen/texto→SVG.
-- [lucide-static](https://www.npmjs.com/package/lucide-static) — 2098 iconos, ISC. Set
+- [StarVector](https://github.com/joanrod/star-vector), alternativa, imagen/texto→SVG.
+- [lucide-static](https://www.npmjs.com/package/lucide-static), 2098 iconos, ISC. Set
   curado incrustado en `src/artifact/icons.js`.
 
 ## Mapas
 
-- [Stadia Maps](https://stadiamaps.com) — teselas "Alidade Smooth", estilo limpio
+- [Stadia Maps](https://stadiamaps.com), teselas "Alidade Smooth", estilo limpio
   tipo iOS Maps. Requiere API key (gratis). `VITE_STADIA_KEY` en `.env`.
 - Respaldo sin key: Esri World Light Gray.
 
@@ -129,5 +129,5 @@ Fuentes:
 ## Origen
 
 La idea salió de una conversación previa sobre modelos pequeños y especializados.
-Está en [conversacion-original.md](conversacion-original.md) — sin editar, incluyendo
+Está en [conversacion-original.md](conversacion-original.md), sin editar, incluyendo
 el prompt que generó el mockup.

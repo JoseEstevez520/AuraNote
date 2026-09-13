@@ -27,9 +27,9 @@ Escribes normal:
 
 Seleccionas ese párrafo y el documento puede convertirlo en:
 
-- una **sección compuesta** — mapa de Lisboa, línea temporal jueves→viernes→JunctionX,
-  sugerencias costeras — montada con tus componentes, en un segundo; o
-- un **artefacto** — una aplicación interactiva de verdad, código libre, lo que el
+- una **sección compuesta**, mapa de Lisboa, línea temporal jueves→viernes→JunctionX,
+  sugerencias costeras, montada con tus componentes, en un segundo; o
+- un **artefacto**, una aplicación interactiva de verdad, código libre, lo que el
   modelo considere útil.
 
 Y si en vez de eso hubieras escrito *"estoy comparando Spring Boot y FastAPI"*, la
@@ -75,7 +75,7 @@ piezas. El nivel 2 es la ambición: aislado en un sandbox, puede intentar cualqu
 
 La tesis técnica del proyecto: **usar el modelo más pequeño que resuelva cada tarea**.
 
-OUI-1 tiene 4B de parámetros activos y es de difusión, no autoregresivo — genera bloques
+OUI-1 tiene 4B de parámetros activos y es de difusión, no autoregresivo, genera bloques
 de 256 tokens partiendo de ruido, así que una pantalla llega en ~1 segundo. Eso hace
 viable generar interfaz *como parte de la interacción*, no como algo que esperas.
 
@@ -84,10 +84,10 @@ tardar 20 segundos porque lo has pedido explícitamente.
 
 ## Referentes
 
-- **Google Disco / GenTabs** (Labs, dic 2025) — Gemini 3 remezcla tus pestañas abiertas
+- **Google Disco / GenTabs** (Labs, dic 2025), Gemini 3 remezcla tus pestañas abiertas
   en aplicaciones a medida. Es el nivel 2 llevado al navegador entero.
-- **Artifacts de Claude** — código generado que se renderiza y persiste.
-- **Notion** — el lenguaje visual. Columna estrecha, mucho blanco, controles en hover.
+- **Artifacts de Claude**, código generado que se renderiza y persiste.
+- **Notion**, el lenguaje visual. Columna estrecha, mucho blanco, controles en hover.
 
 La diferencia con todos ellos: aquí el contenedor es **el documento**, y lo generado
 vive dentro de él en vez de en un panel, una pestaña o una ventana aparte.

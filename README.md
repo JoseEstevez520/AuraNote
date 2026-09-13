@@ -1,11 +1,11 @@
-<h1 align="center">The interface a note deserves is not designed in advance — it emerges from what you write</h1>
+<h1 align="center">The interface a note deserves is not designed in advance, it emerges from what you write</h1>
 
 <p align="center">
   <strong>AuraNote turns a passage you select into the interface it deserves: a live section built from your own component library, or a sandboxed interactive artifact.</strong>
 </p>
 
 <p align="center">
-  A note-taking app for studying — things to see, and things to touch.
+  A note-taking app for studying, things to see, and things to touch.
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@
 
 Study notes tend to end up in one of two places: plain text you reread, or a wall of
 pre-built widgets waiting for their keyword to appear. Neither reacts to what the passage
-actually is. AuraNote takes the opposite bet — the interface is not designed in advance, it
+actually is. AuraNote takes the opposite bet, the interface is not designed in advance, it
 is generated from the content you just wrote.
 
 You write normally. You select a fragment, you press **Generar**, and the document turns
@@ -58,8 +58,8 @@ generates on demand.
 
 - **Generate a section** from a selected passage, rendered with the native Vue component
   library (maps, timelines, tables, cards, stats) via `@openuidev/vue-lang`.
-- **Generate an artifact** as self-contained interactive HTML — a simulator, quiz or
-  diagram — isolated inside a sandboxed iframe under the paragraph you selected.
+- **Generate an artifact** as self-contained interactive HTML, a simulator, quiz or
+  diagram, isolated inside a sandboxed iframe under the paragraph you selected.
 - **Let the model route** each request between section and artifact with gpt-4.1-mini,
   falling back to a section when unsure.
 - **Keep everything in the document**: generated blocks are stored in the TipTap JSON and
@@ -101,7 +101,7 @@ Full guide, directory ownership and test pages in [docs/desarrollo.md](docs/desa
 - [Interacción](docs/interaccion.md): when generating helps and when it gets in the way.
 - [UX](docs/ux.md): when to generate, anti-annoyance rules.
 - [Diseño](docs/diseno.md): tokens, the two visual registers, motion.
-- [Agentes](docs/agentes.md): agentised architecture — director + specialists.
+- [Agentes](docs/agentes.md): agentised architecture, director + specialists.
 - [Decisiones](docs/decisiones.md): what was decided **and what was ruled out**.
 - [Referencias](docs/referencias.md): OUI-1, Disco, GLiNER, TipTap.
 - [Desarrollo](docs/desarrollo.md): how to run it and directory ownership.
