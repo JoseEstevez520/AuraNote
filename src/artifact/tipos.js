@@ -17,53 +17,41 @@
 //   · Show a skeleton of the expected structure (few-shot beats description).
 //   · Plan the layout before emitting markup.
 
-const DIAGRAM = `REQUIRED TYPE: DIAGRAM.
+const DIAGRAM = String.raw`REQUIRED TYPE: DIAGRAM.
 
-Draw an inline SVG diagram: nodes, edges, hierarchies, flows or relationships.
-Real geometry — not HTML boxes stacked on top of each other.
+Draw an inline SVG that makes the idea visible. There are two kinds; pick the right one.
 
-Before writing any markup, plan the layout: list the nodes, decide their
-columns and rows, and only then assign coordinates.
+A) ILLUSTRATIVE — when the subject exists in the real world (a natural cycle, a piece of
+   anatomy, how a machine works, a physical process, a scene). DRAW THE ACTUAL THING,
+   not abstract boxes. This is where you use full colour, gradients and custom shapes.
+   Method: decompose the subject into parts and build each from primitive shapes:
+     · a sun  = a circle (radial-gradient fill) + short <line> rays
+     · a cloud = 3-4 overlapping <ellipse>s
+     · a mountain = a <polygon> + a small snow-cap <polygon>
+     · water = a <path> wavy top over a filled rect, in blues
+   Add labels near each part and coloured arrows for each process/flow (a <marker> in
+   <defs>, reused). Give it depth: gradients, layered shapes, a subtle background wash
+   appropriate to the subject. A water cycle should look like a little landscape, not a
+   flowchart.
 
-Coordinate rules (this is where these diagrams usually fail):
-- Use exactly: <svg viewBox="0 0 800 H" width="100%" style="max-width:100%;height:auto">
-  where H is the height you actually need.
-- EVERY x coordinate must fall between 20 and 780. EVERY y between 20 and H-20.
-  Never emit negative coordinates.
-- Leave at least 40px of horizontal and 30px of vertical space between node
-  boxes. Nothing may overlap.
-- Size each box to its label: roughly 9px per character, minimum 110px wide.
+B) STRUCTURAL — only when the relationship is genuinely abstract (an org chart, a
+   software architecture, a decision tree). Then rounded-rect nodes + arrows are right,
+   kept clean: node fill var(--surface), stroke var(--rule), one accent node at most.
 
-Shape rules:
-- Use <rect rx="10">, <line>, <circle>, <polyline> and <text>. Do NOT use <path>
-  unless a curve is genuinely required — coordinate data in paths is error-prone.
-- Arrowheads go through a single <marker> defined once in <defs>.
-- Labels: <text> with text-anchor="middle" and dominant-baseline="middle",
-  font-size 13, font-family inherit. Never smaller than 12.
-- Strokes 1.5px. Node fill var(--surface), stroke var(--rule), text var(--ink).
-  Accent colour only to highlight one node, never all of them.
+Either way, layout discipline:
+- Plan positions before drawing. Nothing overlaps that should not; leave breathing room.
+- Use <svg viewBox="0 0 W H" width="100%" style="max-width:100%;height:auto"> and keep
+  EVERY coordinate inside the viewBox with a small margin. Out-of-viewBox output is the
+  most common failure — check your extremes.
+- Text via <text>, min 12px, readable against whatever is behind it.
+- One <marker> in <defs> for arrowheads, reused. Never leave a dangling arrow that
+  points at nothing.
+- Paths and gradients are allowed and encouraged for illustrations; keep individual
+  paths simple (a handful of points), compose complexity from many simple shapes.
 
-Skeleton to follow:
-
-  <svg viewBox="0 0 800 260" width="100%" style="max-width:100%;height:auto">
-    <defs>
-      <marker id="a" viewBox="0 0 10 10" refX="9" refY="5"
-              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M0,0 L10,5 L0,10 z" fill="#9b9a97"/>
-      </marker>
-    </defs>
-    <rect x="40" y="90" width="160" height="56" rx="10"
-          fill="#fbfbfa" stroke="#e9e9e7"/>
-    <text x="120" y="118" text-anchor="middle" dominant-baseline="middle"
-          font-size="13" fill="#37352f">Label</text>
-    <line x1="200" y1="118" x2="300" y2="118"
-          stroke="#9b9a97" stroke-width="1.5" marker-end="url(#a)"/>
-  </svg>
-
-Light interaction is welcome: highlight a node on hover.
 Do not hand back a bulleted list dressed up as a diagram.`
 
-const SIMULATION = `REQUIRED TYPE: SIMULATION.
+const SIMULATION = String.raw`REQUIRED TYPE: SIMULATION.
 
 Build something with parameters the user changes and a result that recomputes
 live: sliders, number inputs, selects.
@@ -79,7 +67,7 @@ live: sliders, number inputs, selects.
 If the fragment contains no obvious numbers, pick the variables that would
 matter, state the assumption you made, and let the user change it.`
 
-const MODEL = `REQUIRED TYPE: MANIPULABLE MODEL.
+const MODEL = String.raw`REQUIRED TYPE: MANIPULABLE MODEL.
 
 Build something the user handles directly: items that reorder, drag, toggle
 or connect, with the effect visible immediately.

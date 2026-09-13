@@ -88,7 +88,14 @@ Lo que informa las directivas de `src/artifact/tipos.js`:
 - Few-shot: enseñar un esqueleto de la estructura funciona mejor que describirla.
 - Planificar el layout antes de emitir el marcado.
 
+Y del system prompt de Claude Design (filtrado), los principios de oficio que se
+trasladaron al prompt del artefacto: "cada elemento se gana su sitio", "menos es más,
+nada de data slop", "CSS/HTML/JS/SVG dan para mucho, sorprende", descomponer el sujeto
+en partes. Para ilustración concreta, la técnica es dibujar la cosa por partes con
+formas primitivas, no encajonarla.
+
 Fuentes:
+- [system_prompts_leaks — Anthropic (Claude Design)](https://github.com/asgeirtj/system_prompts_leaks)
 - [Best approach for generating SVG graphics with LLMs — HN](https://news.ycombinator.com/item?id=46665639)
 - [Chat2SVG (CVPR 2025)](https://openaccess.thecvf.com/content/CVPR2025/papers/Wu_Chat2SVG_Vector_Graphics_Generation_with_Large_Language_Models_and_Image_CVPR_2025_paper.pdf)
 - [Using LLMs to Generate Math Diagrams with Vector Graphics](https://people.umass.edu/~andrewlan/papers/25aied-svg.pdf)

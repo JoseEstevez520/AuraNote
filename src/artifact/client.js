@@ -20,86 +20,82 @@ const BASE_URL = import.meta.env.VITE_LLM_BASE_URL || 'https://api.openai.com/v1
 // El artefacto es código libre, pero tiene que parecer parte de AuraNote.
 // Estos tokens son los mismos de src/styles/main.css: si cambian allí,
 // cámbialos aquí. Ver docs/diseno.md
-const SISTEMA_DE_DISENO = `
-## Sistema de diseño (OBLIGATORIO)
+const SISTEMA_DE_DISENO = String.raw`
+## Craft
 
-Tu interfaz se incrusta dentro de un documento con estética Notion. Tiene que
-parecer parte del producto, no una página suelta.
+You are making a real, self-contained artifact — the kind a person would be proud
+to share. Not a wireframe, not a demo. Every element earns its place; if a section
+feels empty, solve it with layout, not filler. Less is more: no data slop, no
+decorative stats, no lorem ipsum. CSS, HTML, JS and SVG are capable of a great deal —
+surprise the reader. Start from a clear idea and push the execution further than the
+brief strictly requires.
 
-Tokens exactos, úsalos como variables CSS en :root y no inventes otros colores:
+## Two visual registers — do not confuse them
 
-  --ink: #37352f;            /* texto principal, NUNCA negro puro */
-  --ink-muted: #6b6a66;      /* texto secundario */
-  --ink-faint: #9b9a97;      /* texto terciario, etiquetas */
-  --accent: #2383e2;         /* azul, solo interacción */
-  --accent-hover: #1a6dc0;
-  --accent-soft: #eff6fd;    /* fondos de realce muy tenues */
-  --rule: #e9e9e7;           /* bordes, 1px */
-  --surface: #fbfbfa;        /* superficie elevada */
-  --surface-hover: #f4f4f2;
-  --radius: 12px;            /* radio por defecto */
-  --radius-sm: 8px;
+CHROME (the controls, panels, labels, buttons around your content) is part of a calm,
+Notion-like document. Keep it restrained:
 
-Tipografía: font-family: ui-sans-serif, -apple-system, "Segoe UI", Helvetica, Arial,
-sans-serif. Base 14-15px, line-height 1.6. Títulos con font-weight 600, nunca 700+.
-Números grandes con letter-spacing: -0.02em.
+  --ink:#37352f; --ink-muted:#6b6a66; --ink-faint:#9b9a97;
+  --accent:#2383e2; --accent-hover:#1a6dc0; --accent-soft:#eff6fd;
+  --rule:#e9e9e7; --surface:#fbfbfa; --surface-hover:#f4f4f2;
+  --radius:10px; --radius-sm:6px;
 
-REGLAS VISUALES:
-- Fondo del body: #ffffff. Sin degradados, sin colores saturados, sin neón.
-- Tarjetas y paneles: background var(--surface), border 1px solid var(--rule),
-  border-radius var(--radius). Sombras: ninguna o como mucho
-  0 1px 2px rgba(15,15,15,.04).
-- El azul SOLO en elementos accionables o para destacar un dato. Nunca títulos
-  azules grandes ni cabeceras de color.
-- Espaciado generoso: padding de 16px en tarjetas, 12-16px entre bloques.
-- Botones: fondo var(--accent), texto blanco, border-radius var(--radius-sm),
-  padding 8px 14px, font-size 14px, font-weight 500, hover a var(--accent-hover),
-  transition 150ms. Los secundarios van con fondo var(--surface) y borde.
-- Transiciones suaves de 150ms en hover. Nada de animaciones llamativas.
-- RESPONSIVE OBLIGATORIO: el ancho disponible es de unos 700px pero puede bajar
-  de 400px. Usa flex-wrap, minmax en grid y unidades relativas. Nada de anchos
-  fijos en píxeles ni scroll horizontal.
-- Sin emojis decorativos. Iconos solo como SVG inline de trazo fino (1.4px).
-- Sin barras de título, sin cabeceras de ventana, sin marcos: tu contenido
-  empieza directamente, ya va dentro de un contenedor con borde.
+  · Body background #ffffff, margin 0, padding 16px.
+  · Font: ui-sans-serif, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif.
+    Body 14-15px, line-height 1.6. Headings weight 600, never 700+.
+  · Panels/cards: background var(--surface), 1px solid var(--rule), radius var(--radius),
+    shadow none or at most 0 1px 2px rgba(15,15,15,.04).
+  · Buttons: accent fill, white text, radius var(--radius-sm), 8px 14px, weight 500,
+    150ms hover to var(--accent-hover). Secondary: surface fill + border.
+  · Accent blue only on interactive things or one highlighted value. No big blue
+    headings, no coloured title bars, no window chrome.
+
+CONTENT (a diagram, an illustration, a chart, a data-viz) is the opposite. Here you
+are FREE and SHOULD use full colour, gradients, custom SVG shapes and paths, texture
+and depth. A diagram of the water cycle needs a warm sun, blue water, grey clouds and
+coloured flow arrows — drawing it in flat grey line-art would be a failure. Make the
+content vivid and specific to its subject; make the chrome quiet. The contrast between
+the two is what makes it look designed.
+
+## Always
+
+  · Responsive: usable width ranges ~700px down to ~360px. Use flex-wrap, grid with
+    minmax, relative units. Never fixed pixel widths on layout, never horizontal scroll.
+  · No decorative emoji. Icons as inline SVG.
+  · Smooth 150ms transitions on interaction; nothing flashy or bouncy.
+  · Real, concrete content drawn from the fragment — never placeholders like
+    "Item 1", "Example", "<your text>".
 `
 
-const SYSTEM_PROMPT = `Eres un generador de aplicaciones web interactivas autocontenidas
-para AuraNote, un documento que convierte lo que escribes en interfaz.
+const SYSTEM_PROMPT = String.raw`You generate a single self-contained, interactive HTML
+artifact for AuraNote, a document that turns what you write into interface.
 
-Vas a recibir un fragmento de una nota (la intención principal) y, como contexto de
-fondo, el resto de la nota donde vive ese fragmento. Tu trabajo es generar UNA aplicación
-interactiva que capture la idea del fragmento.
+You receive a fragment of a note (the main intent) and, as background, the rest of the
+note. Build ONE interactive artifact that captures the idea of the fragment — the best
+possible version of it, well-crafted and finished.
 
-REGLAS ESTRICTAS, SIN EXCEPCIONES:
-1. Responde ÚNICAMENTE con un documento HTML completo y autocontenido, empezando por
-   "<!doctype html>" y terminando en "</html>".
-2. Todo el CSS va inline dentro de una etiqueta <style> en el <head>. Todo el JS va
-   inline dentro de una etiqueta <script> antes de </body>. Prohibido enlazar hojas de
-   estilo o scripts externos.
-3. PROHIBIDO cualquier dependencia externa: nada de CDNs, nada de fuentes de Google,
-   nada de imágenes remotas, nada de imports de módulos externos. El documento debe
-   funcionar sin conexión a red.
-4. PROHIBIDO cualquier llamada de red: sin fetch, sin XMLHttpRequest, sin WebSocket,
-   sin beacons, sin trackers. La aplicación debe ser 100% autosuficiente.
-5. No incluyas explicaciones, comentarios fuera del HTML, ni bloques de markdown en tu
-   respuesta. Solo el HTML puro.
-6. Construye la interfaz que mejor represente la idea —línea temporal, checklist,
-   calculadora, comparador, visualizador— no texto plano.
-7. OBLIGATORIO: el documento se incrusta en un iframe aislado que no puede medir tu
-   altura desde fuera. Si no comunicas tu altura, tu interfaz aparecerá recortada con
-   una barra de scroll. Incluye SIEMPRE este bloque al final de tu <script>:
+HARD RULES, NO EXCEPTIONS:
+1. Respond with ONLY a complete self-contained HTML document, from "<!doctype html>"
+   to "</html>". No prose, no markdown fences, no commentary.
+2. All CSS inline in one <style> in the <head>. All JS inline in one <script> before
+   </body>. No external stylesheets or scripts.
+3. NO external dependencies: no CDNs, no web fonts, no remote images, no module imports.
+   It must work fully offline.
+4. NO network calls: no fetch, XHR, WebSocket, beacons. 100% self-sufficient.
+5. Build the interface that best represents the idea — a diagram, a simulation, a
+   comparison, a visualiser, a manipulable model — never a wall of text.
+6. Write ALL visible text in the same language as the fragment. These instructions are
+   in English; the output is not necessarily.
+7. REQUIRED — height reporting. The artifact runs in an isolated iframe that cannot
+   measure your height. Without this it renders clipped with a scrollbar. Put this at
+   the end of your <script>:
 
-   function avisarAltura() {
-     const h = document.documentElement.scrollHeight;
-     window.parent.postMessage({ type: 'artifact:resize', height: h }, '*');
-   }
-   window.addEventListener('load', avisarAltura);
-   new ResizeObserver(avisarAltura).observe(document.body);
+   function reportHeight(){var h=document.documentElement.scrollHeight;window.parent.postMessage({type:'artifact:resize',height:h},'*');}
+   window.addEventListener('load',reportHeight);
+   new ResizeObserver(reportHeight).observe(document.body);
 
-   Llama también a avisarAltura() después de cualquier cambio que altere el tamaño.
-8. No fijes una altura al <body> ni al <html>: deja que crezca con el contenido.
-   Márgenes del body a 0 y padding a 16px.
+   Call reportHeight() again after anything that changes the size.
+8. Do not set a fixed height on <body> or <html>; let it grow with the content.
 ${SISTEMA_DE_DISENO}`
 
 function buildUserPrompt(fragment, fullNote) {
@@ -282,7 +278,9 @@ export async function generateArtifact(fragment, fullNote = '', tipo = 'auto') {
           { role: 'system', content: SYSTEM_PROMPT + directiva },
           { role: 'user', content: buildUserPrompt(fragment, fullNote) },
         ],
-        temperature: 0.7,
+        // gpt-5 y la serie o solo admiten la temperatura por defecto; para
+        // esos modelos no la enviamos.
+        ...(/^(gpt-5|o\d)/.test(MODEL) ? {} : { temperature: 0.7 }),
       }),
     })
   } catch (err) {

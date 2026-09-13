@@ -107,3 +107,40 @@ diseño está garantizado por construcción.
 **Nivel 2** — el artefacto es código libre, así que los tokens y las reglas van
 literalmente en el system prompt (constante `SISTEMA_DE_DISENO` en
 `src/artifact/client.js`).
+
+
+## Los artefactos: dos registros
+
+Un artefacto mezcla dos cosas que deben verse distintas, y confundirlas era lo que hacía
+que salieran pobres:
+
+- **Chrome** (controles, paneles, botones): sobrio, como el documento. Tokens de arriba,
+  sin degradados, sin color saturado.
+- **Contenido** (un diagrama, una ilustración, una gráfica): libre. Color pleno,
+  degradados, formas SVG a medida, `<path>`, profundidad. Un ciclo del agua tiene que
+  parecer un paisaje, no un diagrama de flujo.
+
+El contraste entre ambos es lo que hace que se vea diseñado. La primera versión aplicaba
+las reglas sobrias del chrome también al contenido —"sin degradados, iconos de trazo
+fino"— y por eso los diagramas salían en gris plano. Ver `src/artifact/client.js`.
+
+### Diagramas: ilustrar, no encajonar
+
+El prompt de diagrama (`src/artifact/tipos.js`) distingue dos casos:
+
+- **Ilustrativo** — el tema existe en el mundo real (un ciclo, una anatomía, una
+  máquina). Se dibuja *la cosa*, descomponiéndola en formas primitivas (sol = círculo +
+  rayos; nube = elipses solapadas; montaña = polígono + cima nevada).
+- **Estructural** — solo cuando la relación es abstracta (organigrama, arquitectura).
+  Ahí sí, cajas redondeadas y flechas, pero limpias.
+
+La versión anterior prohibía `<path>` y forzaba cajas para todo; por eso un "diagrama del
+ciclo del agua" salía como cuatro rectángulos.
+
+### Modelo
+
+Los artefactos usan **gpt-5.2** (vía la clave de OpenAI). gpt-4o servía para el texto,
+pero para SVG ilustrativo y composiciones ricas la diferencia es enorme. Tarda más
+(1-3 min por artefacto), lo cual es aceptable para una acción deliberada. gpt-5 y la
+serie o solo aceptan la temperatura por defecto, así que el cliente no la envía para
+esos modelos.
