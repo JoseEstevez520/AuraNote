@@ -77,6 +77,8 @@ async function maquetar(fragmento, plan, conHueco) {
   const sys = `Generas UN artefacto HTML autocontenido para AuraNote. Solo HTML, de
 <!doctype html> a </html>. CSS y JS inline, sin red, sin dependencias externas.
 Estética Notion sobria para el chrome; escribe el texto en el idioma del fragmento.
+Usa TODO el ancho disponible (body width:100%); no dejes el contenido en una columna
+estrecha pegada a la izquierda con hueco vacío. Texto largo: centrado o en columnas.
 Para iconos usa <span data-icon="nombre"></span> con nombres de: ${ICON_NAMES.join(', ')}.
 ${conHueco ? 'Donde vaya la ilustración principal pon EXACTAMENTE <div id="ilustracion"></div> y NO la dibujes tú; el resto (texto, secciones, lógica) sí.' : 'Construye la interfaz que mejor represente la idea.'}
 Cierra el <script> con:

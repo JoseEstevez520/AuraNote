@@ -49,5 +49,7 @@ export default {
   app: {
     simulated: 'Simulated mode · add your keys to .env to generate for real',
     language: 'Language',
+    suggestions: 'Suggestions',
+    suggestionsHint: 'Offer ideas when you finish a paragraph',
   },
 }

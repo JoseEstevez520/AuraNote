@@ -91,6 +91,11 @@ makes it look designed.
 
   · Responsive: usable width ranges ~950px down to ~360px. Use flex-wrap, grid with
     minmax, relative units. Never fixed pixel widths on layout, never horizontal scroll.
+  · FILL THE WIDTH. The body is width:100%; use the whole available width. Do NOT put
+    the content in a narrow column pinned to the left leaving an empty gutter. If it is
+    long-form text, either center a comfortable measure OR split into columns — never a
+    lopsided narrow block. Visual/data layouts (diagrams, dashboards, tables) should
+    span the full width.
   · No decorative emoji — but inline SVG icons are encouraged (see above).
   · Smooth 150ms transitions on interaction; nothing flashy or bouncy.
   · Real, concrete content drawn from the fragment — never placeholders like

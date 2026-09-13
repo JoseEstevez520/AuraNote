@@ -82,6 +82,34 @@ Pastilla flotante con iconos, en el mismo lenguaje que la barra de selección
 (`src/ui/BlockControls.vue`). Aparece al pasar por encima y no ocupa sitio cuando no
 está. Antes eran enlaces de texto sueltos sobre el contenido y quedaban mal.
 
+## Sugerencias ambiente (en uso)
+
+La interacción ya no obliga a seleccionar todo el rato. Al **cerrar un párrafo** (el
+cursor sale de él), un modelo pequeño y barato (el router, `src/suggest/router.js`,
+`gpt-4.1-mini`) decide si merece la pena ofrecer algo. Si sí, aparece una pista tenue al
+final del párrafo — un chip "＋ ver itinerario" / "＋ comparar" — que al pulsarla genera
+la sección o el artefacto justo debajo.
+
+- **Detectar es automático; generar sigue siendo un clic.** El chip es barato; el bloque
+  solo aparece si lo pulsas.
+- **Nunca en el párrafo activo**, solo al cerrarlo. Debounce de 400 ms sobre la llamada.
+- **El router es exigente**: la mayoría de párrafos no reciben sugerencia. Una buena vale
+  más que tres regulares.
+- **Descartar** (× del chip) marca ese párrafo para no volver a ofrecerlo. Aceptar
+  también lo retira.
+- **Opt-in**: interruptor "Sugerencias" en la barra de pie, apagado por defecto (sin
+  coste ni ruido hasta que se enciende). Se recuerda en localStorage.
+- El resultado se cachea por texto de párrafo, así que editar en otro sitio no repite
+  llamadas.
+
+Piezas: `src/suggest/router.js` (el modelo pequeño que decide), `suggestionExtension.js`
+(la extensión de TipTap que detecta el cierre y pinta el chip como decoración), y
+`state.js` (el interruptor). Es la "opción 3" de las interacciones dinámicas y devuelve
+la magia original: el documento reacciona a lo que escribes.
+
+Pendiente de afinar: el router es algo conservador (p.ej. "no sé cómo organizar..." no
+siempre dispara, aunque la sección lo haría bien). El umbral se ajusta en su prompt.
+
 ## Abierto
 
 - **Refinar un bloque ya generado** — la salida cuando el modo falla.

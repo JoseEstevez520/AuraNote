@@ -49,5 +49,7 @@ export default {
   app: {
     simulated: 'Modo simulado · añade tus claves en .env para generar de verdad',
     language: 'Idioma',
+    suggestions: 'Sugerencias',
+    suggestionsHint: 'Ofrecer ideas al cerrar un párrafo',
   },
 }
