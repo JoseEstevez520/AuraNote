@@ -1,12 +1,13 @@
 <script setup>
-// Fila horizontal. Envuelve en pantallas estrechas en lugar de desbordar:
-// la columna del documento es de 720px y no siempre caben dos piezas anchas.
+// Fila horizontal. Envuelve en pantallas estrechas en lugar de desbordar.
+// gap acepta 'sm'|'md'|'lg' o un número en px (tolerante a lo que emita el modelo).
 defineProps({
-  gap: { type: String, default: 'md' },
+  gap: { type: [String, Number], default: 'md' },
   align: { type: String, default: 'stretch' },
 })
 
-const huecos = { sm: 'gap-2', md: 'gap-3', lg: 'gap-5' }
+const escala = { sm: 8, md: 12, lg: 20 }
+const gapPx = (g) => (typeof g === 'number' ? `${g}px` : `${escala[g] ?? escala.md}px`)
 const alineaciones = {
   start: 'items-start',
   center: 'items-center',
@@ -18,7 +19,8 @@ const alineaciones = {
 <template>
   <div
     class="flex flex-wrap [&>*]:min-w-[180px] [&>*]:flex-1"
-    :class="[huecos[gap] ?? huecos.md, alineaciones[align] ?? alineaciones.stretch]"
+    :class="alineaciones[align] ?? alineaciones.stretch"
+    :style="{ gap: gapPx(gap) }"
   >
     <slot />
   </div>
