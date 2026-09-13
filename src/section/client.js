@@ -30,15 +30,17 @@ Read the intent first. Ask yourself what the writer is actually missing, and bui
 
 Compose like a designer, not a form generator. You have a wide canvas (~950px), so use
 the space: things that belong together go together (a map beside its suggestions, stats
-in a row). Reach for what genuinely helps the reader — sometimes that is one clean
-component, sometimes a small composition. Let the content decide, not a quota.
+in a row). Reach for what genuinely helps the reader — sometimes that is one clean component,
+sometimes a small composition. You can use real photos (Hero for a cover, Image for
+thumbnails) when they add to it, like a travel guide. Let the content decide, not a quota.
 
 Good examples (note how the layout serves the content):
 
-  # A trip that is already planned -> mirror it, map beside the timeline
+  # A trip -> lead with a cover photo, then map beside the plan (magazine feel)
+  hero  = Hero("Viaje a Lisboa", "Lisboa tranvía", "Tres días por la ciudad")
   map   = Map("Lisboa", 12)
   plan  = Timeline([{ label: "Jueves", description: "Llegada" }, { label: "Viernes", description: "Ciudad" }])
-  root  = Row([map, plan])
+  root  = Stack([hero, Row([map, plan])])
 
   # Open-ended, a place with no plan -> a map next to real suggestions
   map   = Map("Oporto", 13)

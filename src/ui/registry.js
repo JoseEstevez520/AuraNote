@@ -16,6 +16,8 @@ import Steps from './Steps.vue'
 import Tree from './Tree.vue'
 import Code from './Code.vue'
 import Callout from './Callout.vue'
+import Hero from './Hero.vue'
+import Imagen from './Image.vue'
 
 export const registry = {
   Stack,
@@ -33,6 +35,8 @@ export const registry = {
   Tree,
   Code,
   Callout,
+  Hero,
+  Image: Imagen,
 }
 
 export default registry

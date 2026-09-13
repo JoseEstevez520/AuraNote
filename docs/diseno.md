@@ -147,3 +147,19 @@ gpt-5.2 para máxima calidad, gpt-4.1 para rapidez.
 
 gpt-5 y la serie o solo aceptan la temperatura por defecto, así que el cliente no la
 envía para esos modelos (detección por el nombre en `client.js`).
+
+## Imágenes reales (Unsplash)
+
+Las secciones se renderizan en la app (no en el iframe sandbox), así que pueden cargar
+fotos reales — esto es lo que da el salto al look tipo OpenUI (su demo "Plan a trip to
+tokyo"). Dos componentes:
+
+- **Hero** — portada con foto de fondo y título encima (viajes, lugares, temas).
+- **Image** — foto por consulta, para miniaturas o apoyo.
+
+Las fotos vienen de **Unsplash** (`src/ui/unsplash.js`), buscadas por texto, con caché en
+localStorage para no gastar el límite (50 req/h en desarrollo). Se hotlinkea la URL
+original, se atribuye al autor y se notifica el uso, según sus normas. La clave va en
+`.env` (`VITE_UNSPLASH_KEY`); en dev viaja en el bundle, en producción iría tras un proxy.
+
+Solo aplica a **secciones**. El artefacto sigue sin fotos remotas por el sandbox sin red.

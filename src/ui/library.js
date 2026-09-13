@@ -26,6 +26,8 @@ import Steps from './Steps.vue'
 import Tree from './Tree.vue'
 import Code from './Code.vue'
 import Callout from './Callout.vue'
+import Hero from './Hero.vue'
+import Imagen from './Image.vue'
 
 // Los componentes de src/ui/ reciben props normales de Vue, pero openui-lang
 // los invoca con { props, renderNode }. Este adaptador traduce entre ambos.
@@ -255,6 +257,29 @@ const CalloutDef = defineComponent({
   component: adaptar(Callout),
 })
 
+const HeroDef = defineComponent({
+  name: 'Hero',
+  description:
+    'Portada con una foto de fondo y un título encima. Da un arranque visual potente a una sección sobre un lugar, un viaje, un tema o un evento. La foto se busca por `query`.',
+  props: z.object({
+    title: z.string().describe('Título grande sobre la foto'),
+    query: z.string().describe('Qué foto buscar, p.ej. "Tokio skyline" o "costa de Oporto"'),
+    subtitle: z.string().optional().describe('Línea secundaria bajo el título'),
+  }),
+  component: adaptar(Hero),
+})
+
+const ImageDef = defineComponent({
+  name: 'Image',
+  description:
+    'Una foto real buscada por `query`. Úsala como miniatura o apoyo visual, por ejemplo dentro de las tarjetas de un itinerario.',
+  props: z.object({
+    query: z.string().describe('Qué foto buscar'),
+    caption: z.string().optional().describe('Pie de foto opcional'),
+  }),
+  component: adaptar(Imagen),
+})
+
 export const library = createLibrary({
   components: [
     StackDef,
@@ -272,6 +297,8 @@ export const library = createLibrary({
     TreeDef,
     CodeDef,
     CalloutDef,
+    HeroDef,
+    ImageDef,
   ],
   root: 'Stack',
 })
