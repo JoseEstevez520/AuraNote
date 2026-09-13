@@ -70,9 +70,17 @@ async function construir() {
         zoomControl: true,
         scrollWheelZoom: false, // no capturar el scroll de la nota
       })
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap',
-        maxZoom: 19,
+      // Teselas Esri "Light Gray": limpias, claras y minimalistas, tipo Apple
+      // Maps. Gratis y sin API key. Base + una capa de etiquetas encima para
+      // que se vean los nombres de calles y lugares.
+      const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services'
+      L.tileLayer(`${esri}/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`, {
+        attribution: '&copy; Esri',
+        maxZoom: 16,
+      }).addTo(mapa)
+      L.tileLayer(`${esri}/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`, {
+        maxZoom: 16,
+        pane: 'overlayPane',
       }).addTo(mapa)
       capaMarcadores = L.layerGroup().addTo(mapa)
     }
