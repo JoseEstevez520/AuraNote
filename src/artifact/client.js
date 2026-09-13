@@ -50,18 +50,39 @@ Notion-like document. Keep it restrained:
   · Accent blue only on interactive things or one highlighted value. No big blue
     headings, no coloured title bars, no window chrome.
 
-CONTENT (a diagram, an illustration, a chart, a data-viz) is the opposite. Here you
-are FREE and SHOULD use full colour, gradients, custom SVG shapes and paths, texture
-and depth. A diagram of the water cycle needs a warm sun, blue water, grey clouds and
-coloured flow arrows — drawing it in flat grey line-art would be a failure. Make the
-content vivid and specific to its subject; make the chrome quiet. The contrast between
-the two is what makes it look designed.
+CONTENT is where you can use colour, gradients, texture and depth. But match the FORM
+to the subject — do not default to one giant hand-drawn SVG for everything:
+
+  · The subject is itself a picture (a natural cycle, anatomy, a machine, a physical
+    scene) -> draw it as a rich illustrated SVG scene, full colour, custom shapes.
+  · The subject is structured information (an itinerary, a plan, a comparison, a
+    dashboard, steps) -> DO NOT draw a big scene. Lay it out cleanly — cards, columns,
+    a timeline — and give it visual texture with SMALL, CONSISTENT ICONS and tasteful
+    imagery, not one enormous drawing. This is the more common case; a wall of SVG for
+    a to-do list is wrong.
+  · Data -> a real chart (bars, line, donut) drawn in SVG, with axes and values.
+
+Icons — use them generously, they carry a lot of the polish:
+  · One small inline SVG icon per item, section or stat. Draw them yourself: 20-24px
+    viewBox, stroke="currentColor", stroke-width 1.6-2, round caps, no fill (or a soft
+    tinted circle behind). Keep the whole set in ONE visual style.
+  · Give each icon meaning: a fork for a meal, a pin for a place, a clock for a time,
+    an arrow for a flow. Never the same icon repeated for different things.
+
+Imagery without the network (you cannot load remote images):
+  · Use small inline SVG illustrations or pictograms as thumbnails / accents.
+  · Use CSS gradients and soft shapes as image-like backgrounds for headers or cards.
+  · A tinted circle or rounded square holding an icon reads as an avatar/thumbnail.
+  · Never leave a broken <img>; never link an external image URL.
+
+Make the content specific and textured; keep the chrome quiet. That contrast is what
+makes it look designed.
 
 ## Always
 
   · Responsive: usable width ranges ~700px down to ~360px. Use flex-wrap, grid with
     minmax, relative units. Never fixed pixel widths on layout, never horizontal scroll.
-  · No decorative emoji. Icons as inline SVG.
+  · No decorative emoji — but inline SVG icons are encouraged (see above).
   · Smooth 150ms transitions on interaction; nothing flashy or bouncy.
   · Real, concrete content drawn from the fragment — never placeholders like
     "Item 1", "Example", "<your text>".
