@@ -163,3 +163,17 @@ original, se atribuye al autor y se notifica el uso, según sus normas. La clave
 `.env` (`VITE_UNSPLASH_KEY`); en dev viaja en el bundle, en producción iría tras un proxy.
 
 Solo aplica a **secciones**. El artefacto sigue sin fotos remotas por el sandbox sin red.
+
+## Fotos en los artefactos
+
+El iframe del artefacto tiene `sandbox="allow-scripts"`, que bloquea fetch/JS de red
+pero **no** la carga de `<img>` remotas. Así que el artefacto también puede llevar fotos:
+el modelo escribe `<img data-unsplash="consulta">` y el host (client.js / pipeline.js)
+resuelve cada uno a una foto real de Unsplash antes de renderizar (`inlineImages`), igual
+que hace con los iconos (`inlineIcons`). Se fuerza `object-fit:cover` para que se vean
+bien pase lo que pase con el CSS del modelo.
+
+Con esto el artefacto tiene las mismas herramientas visuales que las secciones: iconos
+Lucide + fotos Unsplash. Aviso: el plan de desarrollo de Unsplash son 50 req/h; con la
+caché por consulta basta para uso normal, pero en pruebas intensivas se agota (las fotos
+que no resuelven caen a un degradado suave).

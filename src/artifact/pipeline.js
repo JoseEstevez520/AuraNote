@@ -5,6 +5,7 @@
 //
 // Corre en el navegador (dev) con la clave del bundle, igual que client.js.
 import { ICON_NAMES, iconSvg } from './icons.js'
+import { buscarFoto, marcarUso } from '../ui/unsplash.js'
 
 const KEY = import.meta.env.VITE_LLM_API_KEY || ''
 const MODEL = import.meta.env.VITE_LLM_MODEL || 'gpt-4.1'
@@ -39,6 +40,29 @@ const extraerJSON = (t) => JSON.parse((t.match(/\{[\s\S]*\}/) || ['{}'])[0])
 const extraerHTML = (t) => {
   const m = t.match(/<!doctype[\s\S]*<\/html>/i) || t.match(/<html[\s\S]*<\/html>/i)
   return m ? m[0] : t.replace(/```html?|```/g, '').trim()
+}
+
+async function inlineImages(html) {
+  const re = /<img[^>]*data-unsplash=["']([^"']+)["'][^>]*>/gi
+  const qs = [...new Set([...html.matchAll(re)].map((m) => m[1]))]
+  if (qs.length === 0) return html
+  const mapa = {}
+  await Promise.all(
+    qs.map(async (q) => {
+      const foto = await buscarFoto(q)
+      if (foto) { marcarUso(foto.descarga); mapa[q] = foto }
+    }),
+  )
+  return html.replace(re, (tag, q) => {
+    const foto = mapa[q]
+    if (!foto) {
+      return tag.replace(/src=["'][^"']*["']/i, '').replace(/<img/i, '<div')
+        .replace(/\/?>$/, ' style="background:linear-gradient(135deg,#eef2f7,#f6efe8);min-height:120px"></div>')
+    }
+    const alt = (tag.match(/alt=["']([^"']*)["']/i) || [, ''])[1]
+    const cls = (tag.match(/class=["']([^"']*)["']/i) || [, ''])[1]
+    return `<img src="${foto.url}" alt="${alt}"${cls ? ` class="${cls}"` : ''} loading="lazy" style="display:block;width:100%;height:100%;min-height:160px;object-fit:cover;border-radius:inherit">`
+  })
 }
 
 function inlineIcons(html) {
@@ -80,6 +104,7 @@ Estética Notion sobria para el chrome; escribe el texto en el idioma del fragme
 Usa TODO el ancho disponible (body width:100%); no dejes el contenido en una columna
 estrecha pegada a la izquierda con hueco vacío. Texto largo: centrado o en columnas.
 Para iconos usa <span data-icon="nombre"></span> con nombres de: ${ICON_NAMES.join(', ')}.
+Para fotos usa <img data-unsplash="consulta en inglés" ...> con width/height/object-fit; el host pone el src. Úsalas cuando aporten (un lugar, un plato), sin abusar.
 ${conHueco ? 'Donde vaya la ilustración principal pon EXACTAMENTE <div id="ilustracion"></div> y NO la dibujes tú; el resto (texto, secciones, lógica) sí.' : 'Construye la interfaz que mejor represente la idea.'}
 Cierra el <script> con:
 function reportHeight(){window.parent.postMessage({type:'artifact:resize',height:document.documentElement.scrollHeight},'*');}
@@ -101,7 +126,7 @@ export async function generarArtefactoDividido(fragmento, opts = {}) {
     preferencia === 'ilustracion' || (plan.necesita_ilustracion && plan.ilustracion)
 
   if (!conIlustracion) {
-    return inlineIcons(await maquetar(fragmento, plan, false))
+    return inlineImages(inlineIcons(await maquetar(fragmento, plan, false)))
   }
 
   const descripcion = plan.ilustracion || fragmento
@@ -111,5 +136,5 @@ export async function generarArtefactoDividido(fragmento, opts = {}) {
   ])
   let final = html
   if (svg) final = final.replace(/<div[^>]*id=["']ilustracion["'][^>]*>\s*<\/div>/i, svg)
-  return inlineIcons(final)
+  return inlineImages(inlineIcons(final))
 }

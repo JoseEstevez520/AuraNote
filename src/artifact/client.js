@@ -11,6 +11,7 @@
 
 import { porId } from './tipos.js'
 import { ICON_NAMES, iconSvg } from './icons.js'
+import { buscarFoto, marcarUso } from '../ui/unsplash.js'
 import { generarArtefactoDividido, planificar } from './pipeline.js'
 
 const API_KEY = import.meta.env.VITE_LLM_API_KEY || ''
@@ -78,11 +79,18 @@ Instead drop a placeholder and the host injects a matching Lucide icon:
     __ICON_NAMES__
   · If you genuinely need a symbol not in the set, THEN draw it as inline SVG.
 
-Imagery without the network (you cannot load remote images):
-  · Use small inline SVG illustrations or pictograms as thumbnails / accents.
-  · Use CSS gradients and soft shapes as image-like backgrounds for headers or cards.
-  · A tinted circle or rounded square holding an icon reads as an avatar/thumbnail.
-  · Never leave a broken <img>; never link an external image URL.
+Photos — you CAN use real photography. Drop a placeholder and the host injects a
+matching Unsplash photo:
+
+    <img data-unsplash="Tokyo skyline at dusk" alt="Tokio" style="width:100%;height:180px;object-fit:cover;border-radius:10px">
+
+  · Put the query in data-unsplash (English works best). The host sets the src; you must
+    still give it width/height/object-fit so it lays out well. It reads as a cover photo,
+    a card thumbnail, a hero background image, etc.
+  · Use photos when they genuinely lift the result (a place, a dish, a product, a mood).
+    A couple of well-placed photos beat a dozen. Do not photo-spam.
+  · Do NOT hardcode any external image URL yourself and do NOT fetch images in JS — only
+    the data-unsplash mechanism. CSS gradients are still fine as accents.
 
 Make the content specific and textured; keep the chrome quiet. That contrast is what
 makes it look designed.
@@ -114,8 +122,9 @@ HARD RULES, NO EXCEPTIONS:
    to "</html>". No prose, no markdown fences, no commentary.
 2. All CSS inline in one <style> in the <head>. All JS inline in one <script> before
    </body>. No external stylesheets or scripts.
-3. NO external dependencies: no CDNs, no web fonts, no remote images, no module imports.
-   It must work fully offline.
+3. NO external dependencies: no CDNs, no web fonts, no module imports. The ONLY remote
+   content allowed is photos via the data-unsplash mechanism (see below); everything
+   else must be inline.
 4. NO network calls: no fetch, XHR, WebSocket, beacons. 100% self-sufficient.
 5. Build the interface that best represents the idea — a diagram, a simulation, a
    comparison, a visualiser, a manipulable model — never a wall of text.
@@ -165,6 +174,46 @@ export function inlineIcons(html) {
       return svg || ''
     },
   )
+}
+
+// Resuelve las fotos del artefacto. El modelo escribe <img data-unsplash="query">
+// y aquí sustituimos el src por una foto real de Unsplash. El iframe sandbox SÍ
+// carga <img> remotas (solo bloquea fetch/JS de red), así que esto funciona
+// dentro del artefacto. Ver docs/diseno.md
+export async function inlineImages(html) {
+  const re = /<img\b[^>]*\bdata-unsplash=["']([^"']+)["'][^>]*>/gi
+  const consultas = [...new Set([...html.matchAll(re)].map((m) => m[1]))]
+  if (consultas.length === 0) return html
+
+  const mapa = {}
+  await Promise.all(
+    consultas.map(async (q) => {
+      const foto = await buscarFoto(q)
+      if (foto) {
+        marcarUso(foto.descarga)
+        mapa[q] = foto
+      }
+    }),
+  )
+
+  return html.replace(re, (etiqueta, q) => {
+    const foto = mapa[q]
+    if (!foto) {
+      // Sin foto: un fondo de degradado suave en vez de una imagen rota.
+      return etiqueta
+        .replace(/\bsrc=["'][^"']*["']/i, '')
+        .replace(/<img/i, '<div')
+        .replace(/\/?>$/, ' style="background:linear-gradient(135deg,#eef2f7,#f6efe8);min-height:120px"></div>')
+    }
+    // Reconstruimos un <img> limpio con estilo forzado, para que se vea bien
+    // pase lo que pase con el CSS del modelo (a veces dejaba cajas grises).
+    const alt = (etiqueta.match(/\balt=["']([^"']*)["']/i) || [, ''])[1]
+    const cls = (etiqueta.match(/\bclass=["']([^"']*)["']/i) || [, ''])[1]
+    return (
+      `<img src="${foto.url}" alt="${alt}"${cls ? ` class="${cls}"` : ''} loading="lazy"` +
+      ` style="display:block;width:100%;height:100%;min-height:160px;object-fit:cover;border-radius:inherit">`
+    )
+  })
 }
 
 export function extractHtml(raw) {
@@ -402,7 +451,7 @@ export async function generateArtifact(fragment, fullNote = '', tipo = 'auto') {
     )
   }
 
-  return inlineIcons(html)
+  return inlineImages(inlineIcons(html))
 }
 
 export const artifactClientConfig = {
