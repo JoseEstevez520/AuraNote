@@ -260,9 +260,7 @@ estructura** (un zorro sale como un triángulo; un gato como una línea). El 8B 
 lento (~100 s) y da peor resultado. Para iconos Lucide ya gana en velocidad y
 consistencia; para ilustración gpt-4.1 es muy superior.
 
-**Qué se conserva:** `server/omnisvg.mjs`, el endpoint `/api/omnisvg` y la demo, por si
-en el futuro aparece un modelo de texto→SVG mejor (StarVector, versiones nuevas). No se
-usa por defecto.
+**Eliminado del repo.** Se probó y no dio la talla, así que se retiró el cliente (`server/omnisvg.mjs`), el endpoint `/api/omnisvg` y la demo. Si en el futuro aparece un modelo texto→SVG mejor (StarVector u otra versión), se reengancharía desde cero.
 
 **Coste:** se activó HF Pro (~10 €/mes) para hacer esta prueba sin toparse con la cuota.
 No malgastado —quita el muro y sirve para todo HuggingFace— pero la premisa de que

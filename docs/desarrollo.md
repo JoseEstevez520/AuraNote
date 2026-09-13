@@ -40,7 +40,6 @@ banco de pruebas aislado sin tocar la app:
 | `/`                   | La aplicación                                   |
 | `/ui-demo.html`       | La librería de componentes, sin modelos          |
 | `/openui-demo.html`   | El renderer oficial + el system prompt generado  |
-| `/omnisvg-demo.html`  | OmniSVG texto→SVG vía /api/omnisvg (dev)         |
 
 Esa separación es deliberada: permite saber si un fallo viene del renderer o del modelo.
 Ver [roadmap](../ROADMAP.md), fase 4.
@@ -75,9 +74,3 @@ rinden mejor y evita mantener dos juegos. Llevan la instrucción explícita de e
 el texto visible en el idioma del fragmento.
 
 
-## OmniSVG en desarrollo
-
-`vite.config.js` monta un middleware que expone `POST /api/omnisvg` en el dev-server.
-Llama a `server/omnisvg.mjs` con el `HF_TOKEN` del entorno (nunca llega al navegador).
-Necesita `HF_TOKEN` en `.env`. En producción esto viviría en un backend real; hoy es
-solo para dev y para el banco de pruebas `/omnisvg-demo.html`. Ver [agentes.md](agentes.md).

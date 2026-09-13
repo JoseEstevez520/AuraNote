@@ -1,6 +1,8 @@
 # Arquitectura agentizada (diseño)
 
-> **Actualización tras probarlo (13 sep):** OmniSVG se descartó del camino real. En
+> **Actualización: OmniSVG ELIMINADO del repo.** Se probó, no dio la talla en ilustración, y se ha retirado el código (cliente, endpoint `/api/omnisvg` y demo). Lo que sigue queda como registro de por qué.
+>
+> **Prueba original (13 sep):** OmniSVG se descartó del camino real. En
 > pruebas con Pro (sin cuota), el 4B y el 8B solo producen iconos de formas simples;
 > en cuanto el objeto tiene estructura (un zorro, un gato) fallan (triángulos, líneas).
 > El 8B es más lento (~100 s) y peor. Para iconos Lucide ya gana; para ilustración
