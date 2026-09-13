@@ -1,3 +1,8 @@
+# Configuración de agentes / asistentes — nunca se distribuye con este repo
+CLAUDE.md
+.claude/
+AGENTS.md
+
 # Dependencias
 node_modules/
 .pnp

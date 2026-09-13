@@ -1,76 +1,115 @@
-# AuraNote
+<h1 align="center">The interface a note deserves is not designed in advance — it emerges from what you write</h1>
 
-> Un documento cuya interfaz no está prediseñada: emerge de lo que escribes.
+<p align="center">
+  <strong>AuraNote turns a passage you select into the interface it deserves: a live section built from your own component library, or a sandboxed interactive artifact.</strong>
+</p>
 
-![Concepto](docs/assets/mockup-concepto.png)
+<p align="center">
+  A note-taking app for studying — things to see, and things to touch.
+</p>
 
-## Qué es
+<p align="center">
+  <a href="docs/concepto.md"><img src="https://img.shields.io/badge/Docs-Read-2563eb?style=flat-square&logo=readthedocs&logoColor=white" alt="AuraNote documentation"></a>
+</p>
 
-Una app de **notas para estudiar** donde el contenido genera la interfaz. No resume ni
-corrige ni hay un chat lateral: seleccionas un fragmento, pulsas **Generar**, y el
-documento lo convierte en la interfaz que ese texto merece. Escribes sobre un viaje a
-Lisboa → un mapa con la ruta y un itinerario; escribes "simulador de tiro parabólico" →
-un simulador interactivo con su trayectoria. Mismo gesto, resultado distinto, porque
-**el texto es la materia prima de la interfaz**.
+<p align="center">
+  <a href="docs/desarrollo.md">Run locally</a> ·
+  <a href="README.es.md">Español</a>
+</p>
 
-```
-ESCRIBES  →  el modelo LO ENTIENDE  →  GENERA  →  EXPLORAS / TOCAS
-```
+<p align="center">
+  <img src="docs/assets/mockup-concepto.png" alt="A study note whose passages turn into a map, a timeline and an interactive widget" width="100%">
+</p>
 
-## Un gesto, dos resultados — lo decide el modelo
+## What is AuraNote?
 
-Seleccionas texto, pulsas **Generar**, y un router pequeño decide qué aporta más valor,
-sin que elijas tú entre opciones:
+Study notes tend to end up in one of two places: plain text you reread, or a wall of
+pre-built widgets waiting for their keyword to appear. Neither reacts to what the passage
+actually is. AuraNote takes the opposite bet — the interface is not designed in advance, it
+is generated from the content you just wrote.
 
-|                | Sección                          | Artefacto (widget)                     |
-| -------------- | -------------------------------- | -------------------------------------- |
-| **Cuándo**     | VER: mostrar/organizar info      | HACER: interactuar, o VISUAL a medida  |
-| **Ejemplos**   | mapa, itinerario, comparación    | simulador, quiz, diagrama, modelo      |
-| **Salida**     | `openui-lang` → tu librería      | HTML libre                             |
-| **Render**     | componentes Vue nativos          | `<iframe sandbox>`                     |
-| **Garantía**   | siempre encaja con el diseño     | puede ser cualquier cosa               |
+You write normally. You select a fragment, you press **Generar**, and the document turns
+that text into the interface it deserves. Write about a trip to Lisbon and you get a map
+with the route and an itinerary; write "parabolic-shot simulator" and you get an
+interactive simulator with its trajectory. Same gesture, different result, because the text
+is the raw material of the interface. There is no side chat, no summariser, no corrector,
+and no "insert block" menu: the UI is born from the document, not pasted on top of it.
 
-> La sección muestra; el artefacto se toca. El router elige; ante la duda, sección.
+## How it works
+
+One gesture, two outcomes. When you press **Generar**, a small router (gpt-4.1-mini) decides
+which one adds more value, so you never have to choose between options. The heavy model
+(gpt-4.1) only generates when it is actually needed. When in doubt, the router picks a
+section.
+
+|              | Section                          | Artifact (widget)                       |
+| ------------ | -------------------------------- | --------------------------------------- |
+| **When**     | SEE: show / organise information | DO: interact, or a bespoke visual       |
+| **Examples** | map, itinerary, comparison       | simulator, quiz, diagram, model         |
+| **Output**   | `openui-lang` → your library     | free-form HTML                          |
+| **Render**   | native Vue components            | `<iframe sandbox>`                       |
+| **Guarantee**| always fits the design system    | can be anything                         |
+
+The section shows; the artifact is touched. The technical thesis is to use the smallest
+model that solves each task: the mini router classifies and routes, the large model only
+generates on demand.
+
+## What you can do today
+
+- **Generate a section** from a selected passage, rendered with the native Vue component
+  library (maps, timelines, tables, cards, stats) via `@openuidev/vue-lang`.
+- **Generate an artifact** as self-contained interactive HTML — a simulator, quiz or
+  diagram — isolated inside a sandboxed iframe under the paragraph you selected.
+- **Let the model route** each request between section and artifact with gpt-4.1-mini,
+  falling back to a section when unsure.
+- **Keep everything in the document**: generated blocks are stored in the TipTap JSON and
+  survive a page reload, autosaved to `localStorage`.
+- **Switch language** at runtime between English and Spanish; the UI resolves it from your
+  choice, the browser, then English.
 
 ## Stack
 
-| Capa       | Elección                          | Notas                                              |
+| Layer      | Choice                            | Notes                                              |
 | ---------- | --------------------------------- | -------------------------------------------------- |
-| Front      | Vue 3 + Vite + TipTap             | Editor Notion con node views y decorations         |
-| Estilos    | Tailwind + Motion                 | Sistema propio (inspirado en Crayon, de OpenUI)    |
-| Generar    | **gpt-4.1** (contenido)           | Secciones y artefactos                             |
-| Router     | **gpt-4.1-mini**                  | Decide sección/artefacto y sugerencias ambiente    |
-| Renderer   | `@openuidev/vue-lang`             | Oficial de OpenUI; el prompt sale de tu librería   |
-| Mapas      | **Stadia** (Alidade Smooth)       | Estilo iOS; respaldo Esri sin key                  |
-| Imágenes   | **Unsplash**                      | Fotos en secciones y artefactos                    |
-| Iconos     | **Lucide** (incrustados)          | Offline, por `data-icon`                           |
-| Back       | Ninguno (proxy dev para las keys) |                                                    |
+| Front      | Vue 3 + Vite + TipTap             | Notion-like editor with node views and decorations |
+| Styles     | Tailwind + Motion                 | In-house system                                    |
+| Generate   | **gpt-4.1**                       | Sections and artifacts                             |
+| Router     | **gpt-4.1-mini**                  | Decides section vs. artifact                        |
+| Renderer   | `@openuidev/vue-lang`             | Prompt derived from your own library               |
+| Maps       | **Stadia** (Alidade Smooth)       | iOS look; Esri fallback with no key                |
+| Images     | **Unsplash**                      | Photos in sections and artifacts                   |
+| Icons      | **Lucide** (embedded)             | Offline, via `data-icon`                           |
+| Back       | None (dev proxy for the keys)     |                                                    |
 
-## Documentación
+## Run it locally
 
-| Documento                                        | Contenido                                          |
-| ------------------------------------------------ | -------------------------------------------------- |
-| [Concepto](docs/concepto.md)                     | La idea, los dos niveles, qué **no** es            |
-| [Arquitectura](docs/arquitectura.md)             | Pipeline y decisiones técnicas razonadas           |
-| [Componentes](docs/componentes.md)               | La librería que OUI-1 puede componer               |
-| [UX](docs/ux.md)                                 | Cuándo generar, reglas anti-molestia               |
-| [Diseño](docs/diseno.md)                         | Tokens, los dos registros visuales, movimiento     |
-| [Agentes](docs/agentes.md)                       | Arquitectura agentizada: director + especialistas  |
-| [Decisiones](docs/decisiones.md)                 | Registro de lo decidido **y lo descartado**        |
-| [Roadmap](ROADMAP.md)                            | Fases con criterios de "listo"                     |
-| [Referencias](docs/referencias.md)               | OUI-1, Disco, GLiNER, TipTap                       |
-| [Conversación original](docs/conversacion-original.md) | De dónde salió todo esto                     |
+Requires Node 24.
 
-## Estado
+```bash
+npm install
+cp .env.example .env   # fill in your keys
+npm run dev
+```
 
-🌿 **Funcionando de punta a punta.** Un gesto "Generar" que el modelo enruta; secciones
-con mapa iOS, fotos y composición; artefactos interactivos (simulador, quiz, diagrama);
-sugerencias ambiente al cerrar párrafo. Checkpoint etiquetado en `v0.1-genui-notes`.
-Exploración de una forma de interactuar al servicio del estudio — no un producto cerrado.
+Full guide, directory ownership and test pages in [docs/desarrollo.md](docs/desarrollo.md).
 
-## Tesis técnica
+## Documentation
 
-Usar **el modelo más pequeño que resuelva cada tarea**: un router de gpt-4.1-mini decide
-y clasifica; el modelo grande solo genera cuando hace falta. La interactividad entra solo
-cuando ayuda a **comprender** o **experimentar** con lo que estudias. Ver
-[interacción](docs/interaccion.md) y [decisiones](docs/decisiones.md).
+- [Concepto](docs/concepto.md): the idea, the two levels, and what it is **not**.
+- [Arquitectura](docs/arquitectura.md): pipeline and reasoned technical decisions.
+- [Componentes](docs/componentes.md): the library the model can compose.
+- [Interacción](docs/interaccion.md): when generating helps and when it gets in the way.
+- [UX](docs/ux.md): when to generate, anti-annoyance rules.
+- [Diseño](docs/diseno.md): tokens, the two visual registers, motion.
+- [Agentes](docs/agentes.md): agentised architecture — director + specialists.
+- [Decisiones](docs/decisiones.md): what was decided **and what was ruled out**.
+- [Referencias](docs/referencias.md): OUI-1, Disco, GLiNER, TipTap.
+- [Desarrollo](docs/desarrollo.md): how to run it and directory ownership.
+- [Roadmap](ROADMAP.md): phases with "done" criteria.
+
+## Status
+
+Private proof of concept, working end to end: one **Generar** gesture that the model routes;
+sections with an iOS map, photos and composition; interactive artifacts (simulator, quiz,
+diagram); ambient suggestions when a paragraph closes. It is an exploration of a way to
+interact in service of studying, not a finished product, and it is not open source yet.
