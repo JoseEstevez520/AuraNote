@@ -11,6 +11,7 @@
 
 import { porId } from './tipos.js'
 import { ICON_NAMES, iconSvg } from './icons.js'
+import { generarArtefactoDividido, planificar } from './pipeline.js'
 
 const API_KEY = import.meta.env.VITE_LLM_API_KEY || ''
 const MODEL = import.meta.env.VITE_LLM_MODEL || 'gpt-4o-mini'
@@ -291,6 +292,38 @@ function wait(ms) {
  * @param {string} fullNote - el resto de la nota, como contexto de fondo
  * @returns {Promise<string>} el HTML autocontenido generado
  */
+// Orquestador: decide cómo generar según el tipo.
+//   · diagrama            -> pipeline dividido, ilustración a fondo
+//   · auto + tema visual  -> pipeline dividido (el director lo detecta)
+//   · auto + no visual    -> llamada única (mantiene el oficio del prompt base)
+//   · simulacion/modelo   -> llamada única con su directiva (interactivo)
+// El pipeline dividido saca ilustraciones más limpias (A/B). Ver docs/agentes.md
+export async function generateArtifactSmart(fragment, fullNote = '', tipo = 'auto') {
+  if (!fragment || !fragment.trim()) {
+    throw new Error('No hay ningún fragmento seleccionado para generar el artefacto.')
+  }
+  // Sin clave: modo simulado, como la llamada única.
+  if (!API_KEY) return generateArtifact(fragment, fullNote, tipo)
+
+  try {
+    if (tipo === 'diagrama') {
+      return await generarArtefactoDividido(fragment, { preferencia: 'ilustracion' })
+    }
+    if (tipo === 'auto') {
+      const plan = await planificar(fragment)
+      if (plan.necesita_ilustracion && plan.ilustracion) {
+        return await generarArtefactoDividido(fragment, { plan })
+      }
+      // No es visual: la llamada única con el prompt base da mejor resultado.
+      return await generateArtifact(fragment, fullNote, 'auto')
+    }
+  } catch (e) {
+    // Si el pipeline falla, caemos a la llamada única en vez de romper.
+    console.warn('[AuraNote] pipeline dividido falló, usando llamada única:', e.message)
+  }
+  return generateArtifact(fragment, fullNote, tipo)
+}
+
 export async function generateArtifact(fragment, fullNote = '', tipo = 'auto') {
   // El tipo solo anade una directiva al system prompt; el resto del flujo
   // (simulado, extraccion del HTML, errores) es identico. Ver tipos.js

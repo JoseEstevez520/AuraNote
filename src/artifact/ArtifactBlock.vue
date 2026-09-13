@@ -9,7 +9,7 @@ import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
 import { motion } from 'motion-v'
 import BlockControls from '../ui/BlockControls.vue'
 import { textos } from '../i18n/index.js'
-import { generateArtifact } from './client.js'
+import { generateArtifactSmart } from './client.js'
 
 const props = defineProps(nodeViewProps)
 
@@ -54,7 +54,7 @@ async function run() {
     // El resto de la nota como contexto de fondo: se extrae del documento
     // completo del editor, si está disponible.
     const fullNote = props.editor ? props.editor.getText() : ''
-    const generatedHtml = await generateArtifact(source.value, fullNote, props.node.attrs.kind)
+    const generatedHtml = await generateArtifactSmart(source.value, fullNote, props.node.attrs.kind)
     props.updateAttributes({ html: generatedHtml, status: 'ready', error: null })
   } catch (err) {
     props.updateAttributes({ status: 'error', error: err.message || String(err) })
