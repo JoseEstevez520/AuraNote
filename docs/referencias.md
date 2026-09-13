@@ -109,6 +109,12 @@ Fuentes:
 - [lucide-static](https://www.npmjs.com/package/lucide-static) — 2098 iconos, ISC. Set
   curado incrustado en `src/artifact/icons.js`.
 
+## Mapas
+
+- [Stadia Maps](https://stadiamaps.com) — teselas "Alidade Smooth", estilo limpio
+  tipo iOS Maps. Requiere API key (gratis). `VITE_STADIA_KEY` en `.env`.
+- Respaldo sin key: Esri World Light Gray.
+
 ## Herramientas
 
 | Qué                | Para qué                                    |

@@ -70,17 +70,19 @@ async function construir() {
         zoomControl: true,
         scrollWheelZoom: false, // no capturar el scroll de la nota
       })
-      // Teselas Esri "Light Gray": limpias, claras y minimalistas, tipo Apple
-      // Maps. Gratis y sin API key. Base + una capa de etiquetas encima para
-      // que se vean los nombres de calles y lugares.
-      const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services'
-      L.tileLayer(`${esri}/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`, {
-        attribution: '&copy; Esri',
-        maxZoom: 16,
-      }).addTo(mapa)
-      L.tileLayer(`${esri}/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`, {
-        maxZoom: 16,
-        pane: 'overlayPane',
+      // Teselas Stadia "Alidade Smooth": estilo limpio y suave, muy tipo Apple
+      // Maps. Requiere API key (gratis). {r} sirve teselas @2x en retina.
+      const stadiaKey = import.meta.env.VITE_STADIA_KEY || ''
+      const estilo = stadiaKey
+        ? 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=' +
+          stadiaKey
+        : // Respaldo sin key: Esri Light Gray.
+          'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+      L.tileLayer(estilo, {
+        attribution: stadiaKey
+          ? '&copy; Stadia Maps &copy; OpenStreetMap'
+          : '&copy; Esri',
+        maxZoom: 20,
       }).addTo(mapa)
       capaMarcadores = L.layerGroup().addTo(mapa)
     }
