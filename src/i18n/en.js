@@ -4,6 +4,7 @@ export default {
     saved: 'Saved',
   },
   menu: {
+    generate: 'Generate',
     bold: 'Bold',
     italic: 'Italic',
     code: 'Code',

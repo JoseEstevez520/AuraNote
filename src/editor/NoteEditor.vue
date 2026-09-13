@@ -16,7 +16,7 @@ const props = defineProps({
   extensions: { type: Array, default: () => [] },
 })
 
-const emit = defineEmits(['generate-section', 'generate-artifact'])
+const emit = defineEmits(['generate'])
 
 const { status, loadDocument, scheduleSave } = useAutosave()
 
@@ -69,12 +69,8 @@ watch(idioma, () => editor.view.dispatch(editor.state.tr))
 
 defineExpose({ editor })
 
-function handleGenerateSection(payload) {
-  emit('generate-section', payload)
-}
-
-function handleGenerateArtifact(payload) {
-  emit('generate-artifact', payload)
+function handleGenerate(payload) {
+  emit('generate', payload)
 }
 </script>
 
@@ -91,11 +87,7 @@ function handleGenerateArtifact(payload) {
       aria-hidden="true"
     />
 
-    <SelectionMenu
-      :editor="editor"
-      @generate-section="handleGenerateSection"
-      @generate-artifact="handleGenerateArtifact"
-    />
+    <SelectionMenu :editor="editor" @generate="handleGenerate" />
 
     <!-- Indicador de guardado, discreto, aparece y se desvanece -->
     <p

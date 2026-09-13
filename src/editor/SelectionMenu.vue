@@ -1,23 +1,16 @@
 <script setup>
-// Barra flotante que aparece al seleccionar texto.
-// Patrón Notion/Medium: formato básico + las dos acciones de generación.
-//
-// Compacta a propósito: con etiquetas largas se desbordaba de la ventana en
-// pantallas estrechas. Ahora usa iconos, oculta el texto en móvil y tippy
-// tiene activado el anti-desbordamiento.
+// Barra flotante al seleccionar texto: formato básico + UN botón "Generar".
+// El modelo decide qué generar (sección o interactivo); el usuario no elige
+// entre opciones. Ver docs/interaccion.md
 import { BubbleMenu } from '@tiptap/vue-3'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { motion, AnimatePresence } from 'motion-v'
-import { TIPOS } from '../artifact/tipos.js'
+import { motion } from 'motion-v'
 import { textos } from '../i18n/index.js'
 
 const props = defineProps({
   editor: { type: Object, required: true },
 })
+const emit = defineEmits(['generate'])
 
-const emit = defineEmits(['generate-section', 'generate-artifact'])
-
-// Mantiene la barra dentro de la ventana y la voltea si no cabe arriba.
 const opcionesTippy = {
   duration: 120,
   placement: 'top',
@@ -36,43 +29,15 @@ function seleccionActual() {
 }
 
 const alternar = (marca) => props.editor.chain().focus()[marca]().run()
-
-// Desplegable de tipos de artefacto. El clic normal en el botón usa 'auto';
-// el desplegable existe para dirigirlo cuando ya sabes qué quieres.
-const abierto = ref(false)
-
-function generarArtefacto(tipo = 'auto') {
-  abierto.value = false
-  emit('generate-artifact', { ...seleccionActual(), tipo })
-}
-
-// El desplegable vive dentro del popup de tippy, así que hay que cerrarlo a
-// mano: ni el clic fuera ni Escape llegan solos.
-const raiz = ref(null)
-function alPulsarFuera(e) {
-  if (abierto.value && raiz.value && !raiz.value.contains(e.target)) abierto.value = false
-}
-function alTeclear(e) {
-  if (e.key === 'Escape' && abierto.value) abierto.value = false
-}
-onMounted(() => {
-  document.addEventListener('pointerdown', alPulsarFuera, true)
-  document.addEventListener('keydown', alTeclear)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('pointerdown', alPulsarFuera, true)
-  document.removeEventListener('keydown', alTeclear)
-})
 </script>
 
 <template>
-  <BubbleMenu :editor="editor" :tippy-options="opcionesTippy" @hidden="abierto = false">
+  <BubbleMenu :editor="editor" :tippy-options="opcionesTippy">
     <motion.div
       :initial="{ opacity: 0, y: 6, scale: 0.97 }"
       :animate="{ opacity: 1, y: 0, scale: 1 }"
       :transition="{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }"
-      ref="raiz"
-      class="relative flex max-w-[calc(100vw-24px)] items-center gap-0.5 rounded-[var(--radius-md)] border border-rule bg-white/95 p-1 backdrop-blur"
+      class="flex max-w-[calc(100vw-24px)] items-center gap-0.5 rounded-[var(--radius-md)] border border-rule bg-white/95 p-1 backdrop-blur"
       style="box-shadow: 0 4px 16px rgba(15, 15, 15, 0.08)"
     >
       <button
@@ -94,83 +59,21 @@ onBeforeUnmount(() => {
 
       <button
         type="button"
-        :title="textos.menu.sectionTitle"
-        class="flex shrink-0 items-center gap-1.5 rounded-[var(--radius-sm)] px-2 py-1 text-sm text-ink-muted transition-colors hover:bg-surface-hover hover:text-ink"
-        @click="emit('generate-section', seleccionActual())"
+        class="flex shrink-0 items-center gap-1.5 rounded-[var(--radius-sm)] px-2.5 py-1 text-sm font-medium text-accent transition-colors hover:bg-accent-soft"
+        @click="emit('generate', seleccionActual())"
       >
-        <svg class="size-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
-          <rect x="2" y="2.5" width="12" height="5" rx="1.5" />
-          <rect x="2" y="9.5" width="5.5" height="4" rx="1.5" />
-          <rect x="9.5" y="9.5" width="4.5" height="4" rx="1.5" />
+        <svg
+          class="size-4"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+          stroke-linejoin="round"
+        >
+          <path d="M8 1.8l1.7 3.9 4.2.4-3.2 2.8.96 4.1L8 10.9l-3.66 2.1.96-4.1L2.1 6.1l4.2-.4z" />
         </svg>
-        <span class="hidden whitespace-nowrap sm:inline">{{ textos.menu.section }}</span>
+        <span class="whitespace-nowrap">{{ textos.menu.generate }}</span>
       </button>
-
-      <!-- Botón partido: el cuerpo genera en automático, el chevron abre tipos -->
-      <div class="flex shrink-0 items-center">
-        <button
-          type="button"
-          :title="textos.menu.artifactTitle"
-          class="flex items-center gap-1.5 rounded-l-[var(--radius-sm)] px-2 py-1 text-sm text-ink-muted transition-colors hover:bg-surface-hover hover:text-ink"
-          @click="generarArtefacto('auto')"
-        >
-          <svg
-            class="size-4"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linejoin="round"
-          >
-            <path d="M8 1.8l1.7 3.9 4.2.4-3.2 2.8.96 4.1L8 10.9l-3.66 2.1.96-4.1L2.1 6.1l4.2-.4z" />
-          </svg>
-          <span class="hidden whitespace-nowrap sm:inline">{{ textos.menu.artifact }}</span>
-        </button>
-
-        <button
-          type="button"
-          :title="textos.menu.artifactType"
-          class="rounded-r-[var(--radius-sm)] px-1 py-1.5 text-ink-faint transition-colors hover:bg-surface-hover hover:text-ink"
-          :class="abierto ? 'bg-surface-hover text-ink' : ''"
-          @click="abierto = !abierto"
-        >
-          <svg
-            class="size-3 transition-transform duration-200"
-            :class="abierto ? 'rotate-180' : ''"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M4 6.5 8 10.5 12 6.5" />
-          </svg>
-        </button>
-      </div>
-
-      <AnimatePresence>
-        <motion.div
-          v-if="abierto"
-          :initial="{ opacity: 0, y: -4 }"
-          :animate="{ opacity: 1, y: 0 }"
-          :exit="{ opacity: 0, y: -4 }"
-          :transition="{ duration: 0.14, ease: [0.22, 1, 0.36, 1] }"
-          class="absolute right-0 top-full z-30 mt-1.5 w-56 overflow-hidden rounded-[var(--radius-md)] border border-rule bg-white p-1"
-          style="box-shadow: 0 4px 16px rgba(15, 15, 15, 0.1)"
-        >
-          <button
-            v-for="t in TIPOS"
-            :key="t.id"
-            type="button"
-            class="flex w-full flex-col items-start rounded-[var(--radius-sm)] px-2.5 py-1.5 text-left transition-colors hover:bg-surface-hover"
-            @click="generarArtefacto(t.id)"
-          >
-            <span class="text-sm text-ink">{{ textos.types[t.clave] }}</span>
-            <span class="text-xs text-ink-faint">{{ textos.types[t.clave + 'Hint'] }}</span>
-          </button>
-        </motion.div>
-      </AnimatePresence>
     </motion.div>
   </BubbleMenu>
 </template>

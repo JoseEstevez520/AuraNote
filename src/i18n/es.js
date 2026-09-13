@@ -4,6 +4,7 @@ export default {
     saved: 'Guardado',
   },
   menu: {
+    generate: 'Generar',
     bold: 'Negrita',
     italic: 'Cursiva',
     code: 'Código',

@@ -13,6 +13,7 @@ import { modoSimulado as seccionSimulada } from './section/client.js'
 import { textos, idioma, setIdioma, IDIOMAS } from './i18n/index.js'
 import { SuggestionExtension, suggestionKey, hashParrafo } from './suggest/suggestionExtension.js'
 import { sugerenciasActivas } from './suggest/state.js'
+import { clasificar } from './generate/router.js'
 
 const editorRef = ref(null)
 
@@ -60,27 +61,23 @@ function insertarEn(nodo, pos, text, tipo) {
     .run()
 }
 
-// Desde la barra de selección: insertar tras el bloque donde acaba la selección.
-function insertarBajoLaSeleccion(nodo, { text, to, tipo = 'auto' }) {
+// Un solo gesto "Generar": el router decide sección o artefacto, y se inserta
+// tras el bloque donde acaba la selección. El usuario no elige entre opciones.
+async function onGenerate({ text, to }) {
   const editor = editorRef.value?.editor
   if (!editor || !text?.trim()) return
   const $to = editor.state.doc.resolve(Math.min(to, editor.state.doc.content.size))
   const pos = $to.depth > 0 ? $to.after(1) : editor.state.doc.content.size
-  insertarEn(nodo, pos, text, tipo)
-}
 
-const onSection = (p) => insertarBajoLaSeleccion('sectionBlock', p)
-const onArtifact = (p) => insertarBajoLaSeleccion('artifactBlock', p)
+  const { mode, kind } = await clasificar(text)
+  const nodo = mode === 'artifact' ? 'artifactBlock' : 'sectionBlock'
+  insertarEn(nodo, pos, text, kind)
+}
 </script>
 
 <template>
   <main class="min-h-screen bg-white">
-    <NoteEditor
-      ref="editorRef"
-      :extensions="extensions"
-      @generate-section="onSection"
-      @generate-artifact="onArtifact"
-    />
+    <NoteEditor ref="editorRef" :extensions="extensions" @generate="onGenerate" />
 
     <!-- Barra de pie: modo simulado, interruptor de sugerencias e idioma. -->
     <div class="pointer-events-none fixed inset-x-0 bottom-3 flex items-center justify-between px-6 text-xs text-ink-faint">
