@@ -6,45 +6,45 @@
 
 ## Qué es
 
-No es "notas con IA" — no resume, no corrige, no hay un chat en un panel lateral.
-
-Es un editor de texto donde **el contenido genera la interfaz**. Escribes un párrafo
-sobre un viaje a Lisboa y ese párrafo puede convertirse en un mapa, una línea temporal
-y unas sugerencias. Escribes otro comparando Spring Boot y FastAPI y da algo
-completamente distinto. Mismo gesto, resultado distinto, porque **el texto es la
-materia prima de la interfaz**.
+Una app de **notas para estudiar** donde el contenido genera la interfaz. No resume ni
+corrige ni hay un chat lateral: seleccionas un fragmento, pulsas **Generar**, y el
+documento lo convierte en la interfaz que ese texto merece. Escribes sobre un viaje a
+Lisboa → un mapa con la ruta y un itinerario; escribes "simulador de tiro parabólico" →
+un simulador interactivo con su trayectoria. Mismo gesto, resultado distinto, porque
+**el texto es la materia prima de la interfaz**.
 
 ```
-WRITE  →  UNDERSTAND  →  GENERATE  →  EXPLORE
+ESCRIBES  →  el modelo LO ENTIENDE  →  GENERA  →  EXPLORAS / TOCAS
 ```
 
-## Los dos niveles
+## Un gesto, dos resultados — lo decide el modelo
 
-Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en ambición.
+Seleccionas texto, pulsas **Generar**, y un router pequeño decide qué aporta más valor,
+sin que elijas tú entre opciones:
 
-|                | Convertir en sección          | Generar artefacto              |
-| -------------- | ----------------------------- | ------------------------------ |
-| **Modelo**     | LLM + prompt de tu librería   | LLM, código libre              |
-| **Tiempo**     | ~5 s (~1 s con OUI-1 local)   | 10-30 s                        |
-| **Salida**     | `openui-lang` con tus piezas  | Código libre                   |
-| **Render**     | Componentes Vue nativos       | `<iframe sandbox>`             |
-| **Garantía**   | Siempre encaja con el diseño  | Puede ser cualquier cosa       |
+|                | Sección                          | Artefacto (widget)                     |
+| -------------- | -------------------------------- | -------------------------------------- |
+| **Cuándo**     | VER: mostrar/organizar info      | HACER: interactuar, o VISUAL a medida  |
+| **Ejemplos**   | mapa, itinerario, comparación    | simulador, quiz, diagrama, modelo      |
+| **Salida**     | `openui-lang` → tu librería      | HTML libre                             |
+| **Render**     | componentes Vue nativos          | `<iframe sandbox>`                     |
+| **Garantía**   | siempre encaja con el diseño     | puede ser cualquier cosa               |
 
-> Tu librería de componentes es el vocabulario del documento.
-> El artefacto es la fuga de ese vocabulario.
+> La sección muestra; el artefacto se toca. El router elige; ante la duda, sección.
 
 ## Stack
 
-| Capa       | Elección                    | Por qué                                                    |
-| ---------- | --------------------------- | ---------------------------------------------------------- |
-| Front      | Vue 3 + Vite                | TipTap nació como librería de Vue                          |
-| Editor     | TipTap (ProseMirror)        | Node views y decorations — ver [arquitectura](docs/arquitectura.md) |
-| Estilos    | Tailwind + Motion           | Sistema propio; OpenUI no distribuye componentes           |
-| Nivel 1    | GPT-4o + `library.prompt()` | C1 no sirve OUI-1; autoalojarlo es la mejora de latencia   |
-| Renderer   | `@openuidev/vue-lang`       | Oficial. Genera el system prompt desde tu librería         |
-| Nivel 2    | GPT-4o vía API              | Cualquier endpoint compatible con OpenAI                   |
-| Mapas      | Leaflet + OpenStreetMap     | Sin API key                                                |
-| Back       | Ninguno al principio        | Solo proxy para las keys. FastAPI entra con GLiNER         |
+| Capa       | Elección                          | Notas                                              |
+| ---------- | --------------------------------- | -------------------------------------------------- |
+| Front      | Vue 3 + Vite + TipTap             | Editor Notion con node views y decorations         |
+| Estilos    | Tailwind + Motion                 | Sistema propio (inspirado en Crayon, de OpenUI)    |
+| Generar    | **gpt-4.1** (contenido)           | Secciones y artefactos                             |
+| Router     | **gpt-4.1-mini**                  | Decide sección/artefacto y sugerencias ambiente    |
+| Renderer   | `@openuidev/vue-lang`             | Oficial de OpenUI; el prompt sale de tu librería   |
+| Mapas      | **Stadia** (Alidade Smooth)       | Estilo iOS; respaldo Esri sin key                  |
+| Imágenes   | **Unsplash**                      | Fotos en secciones y artefactos                    |
+| Iconos     | **Lucide** (incrustados)          | Offline, por `data-icon`                           |
+| Back       | Ninguno (proxy dev para las keys) |                                                    |
 
 ## Documentación
 
@@ -63,12 +63,14 @@ Ambos operan sobre lo mismo: **un fragmento que seleccionas**. Se diferencian en
 
 ## Estado
 
-🌿 **Funcionando de punta a punta.** Los dos niveles generan con modelos reales.
-Prueba de concepto — Proyecto de fin de semana para validar la idea y
-experimentar con generación libre de interfaces. No es un producto.
+🌿 **Funcionando de punta a punta.** Un gesto "Generar" que el modelo enruta; secciones
+con mapa iOS, fotos y composición; artefactos interactivos (simulador, quiz, diagrama);
+sugerencias ambiente al cerrar párrafo. Checkpoint etiquetado en `v0.1-genui-notes`.
+Exploración de una forma de interactuar al servicio del estudio — no un producto cerrado.
 
 ## Tesis técnica
 
-Usar **el modelo más pequeño que resuelva cada tarea** en vez de mandarlo todo a uno
-gigante. Un modelo de 4B genera la interfaz en un segundo; el modelo grande solo
-aparece cuando pides algo ambicioso. Ver [decisiones](docs/decisiones.md).
+Usar **el modelo más pequeño que resuelva cada tarea**: un router de gpt-4.1-mini decide
+y clasifica; el modelo grande solo genera cuando hace falta. La interactividad entra solo
+cuando ayuda a **comprender** o **experimentar** con lo que estudias. Ver
+[interacción](docs/interaccion.md) y [decisiones](docs/decisiones.md).
