@@ -249,6 +249,28 @@ hovers de 150 ms.
 
 ---
 
+### 18 · OmniSVG descartado tras probarlo
+
+**Decisión:** los iconos van con **Lucide** y las ilustraciones con **gpt-4.1**. OmniSVG
+queda fuera del camino real.
+
+**Por qué:** se probó con HF Pro (sin límite de cuota), 4B y 8B, con más tokens. Genera
+bien iconos de una sola forma (café, pin, sol) pero **falla en cualquier objeto con
+estructura** (un zorro sale como un triángulo; un gato como una línea). El 8B es más
+lento (~100 s) y da peor resultado. Para iconos Lucide ya gana en velocidad y
+consistencia; para ilustración gpt-4.1 es muy superior.
+
+**Qué se conserva:** `server/omnisvg.mjs`, el endpoint `/api/omnisvg` y la demo, por si
+en el futuro aparece un modelo de texto→SVG mejor (StarVector, versiones nuevas). No se
+usa por defecto.
+
+**Coste:** se activó HF Pro (~10 €/mes) para hacer esta prueba sin toparse con la cuota.
+No malgastado —quita el muro y sirve para todo HuggingFace— pero la premisa de que
+OmniSVG brillaría en objetos sueltos no se sostuvo. El valor fue justo ese: probarlo
+antes de construir el orquestador encima.
+
+---
+
 ## Abierto
 
 | Cuestión                                          | Estado                          |

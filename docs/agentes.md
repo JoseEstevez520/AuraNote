@@ -1,5 +1,17 @@
 # Arquitectura agentizada (diseño)
 
+> **Actualización tras probarlo (13 sep):** OmniSVG se descartó del camino real. En
+> pruebas con Pro (sin cuota), el 4B y el 8B solo producen iconos de formas simples;
+> en cuanto el objeto tiene estructura (un zorro, un gato) fallan (triángulos, líneas).
+> El 8B es más lento (~100 s) y peor. Para iconos Lucide ya gana; para ilustración
+> gpt-4.1 es muy superior (el ciclo del agua). Así que OmniSVG queda **fuera del camino
+> por defecto**: el cliente y el endpoint siguen en el repo por si aparece un modelo de
+> SVG mejor (StarVector u otra versión), pero no se usa. Lo que sigue es el diseño
+> original, conservado como referencia.
+
+---
+
+
 > Estado: **diseño + piezas probadas**. El sistema completo aún no está montado; lo que
 > sí está probado y en uso se marca ✅.
 
@@ -38,7 +50,7 @@ paralelo**, y el director nunca vuelve a dibujar un icono de reloj a mano.
 | Pieza | Herramienta | Estado | Notas |
 | --- | --- | --- | --- |
 | Iconos ubicuos | **Lucide** (set curado, incrustado) | ✅ en uso | `src/artifact/icons.js`, offline, instantáneo |
-| Ilustración a medida | **OmniSVG 4B** (texto→SVG) | ✅ probado | `server/omnisvg.mjs` + `/api/omnisvg`. ~20-40 s, cola en gratis |
+| Ilustración a medida | ~~OmniSVG 4B~~ → **gpt-4.1** | ❌ descartado | OmniSVG falla en objetos con estructura; ver nota arriba |
 | Maquetación + lógica | **gpt-4.1** | ✅ en uso | El artefacto actual |
 | Diagrama estructural | **Mermaid** (determinista) | ⏳ pendiente | Nunca se sale del viewBox |
 | Director + ensamblador | **gpt-4.1** | ⏳ pendiente | El orquestador |
