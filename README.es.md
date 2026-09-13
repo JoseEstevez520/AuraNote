@@ -1,11 +1,11 @@
 <h1 align="center">La interfaz que una nota merece no se diseña de antemano: emerge de lo que escribes</h1>
 
 <p align="center">
-  <strong>AuraNote convierte el fragmento que seleccionas en la interfaz que merece: una sección viva construida con tu propia librería de componentes, o un artefacto interactivo aislado en un sandbox.</strong>
+  <strong>AuraNote es una exploración de interfaces generativas sobre notas de estudio: seleccionas un fragmento y el modelo lo convierte en la interfaz que merece, una sección viva o un artefacto interactivo.</strong>
 </p>
 
 <p align="center">
-  Una app de notas para estudiar, cosas para ver, y cosas para tocar.
+  Un experimento personal de una forma de interactuar, no un producto.
 </p>
 
 <p align="center">
@@ -110,7 +110,20 @@ Guía completa, propiedad de directorios y páginas de prueba en
 
 ## Estado
 
-Prueba de concepto privada, funcionando de punta a punta: un gesto **Generar** que el modelo
-enruta; secciones con mapa iOS, fotos y composición; artefactos interactivos (simulador,
-quiz, diagrama); sugerencias ambiente al cerrar un párrafo. Es una exploración de una forma
-de interactuar al servicio del estudio, no un producto cerrado, y todavía no es open source.
+Una exploración, funciona de punta a punta pero no es un producto cerrado. Un gesto
+**Generar** que el modelo enruta; secciones con mapa iOS, fotos y composición; artefactos
+interactivos (simulador, quiz, diagrama); sugerencias ambiente al cerrar un párrafo. Privado
+por ahora, todavía no es open source. La idea es tantear una forma de interactuar mientras
+tomas notas de estudio, no publicar una app.
+
+## Roadmap
+
+Sigue siendo una exploración, así que esto va de probar cosas, no de sacar features.
+
+- Seguir mejorando la calidad de lo que se genera, tanto secciones como artefactos.
+- Probar un modelo dedicado para SVG complejos cuando haya uno lo bastante bueno. OmniSVG se
+  quedó corto y se eliminó; la búsqueda sigue (StarVector y otros).
+- Seguir experimentando con formas de interactuar: afinar las sugerencias ambiente, y tantear
+  ideas como remodelar un bloque generado apuntándolo, o un botón cuyo comportamiento se
+  genera al pulsarlo.
+- Explorar el autoexamen desde tus propias notas más allá del quiz actual.

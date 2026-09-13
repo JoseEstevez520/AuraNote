@@ -19,19 +19,16 @@ Así que la pregunta no es *"¿cuándo genero?"* sino *"¿qué puedo hacer sin m
 
 ### Detectar
 
-Cuando entre GLiNER: corre en pausa (~800 ms sin teclear) y subraya entidades. Es seguro
-hacerlo automático porque no mueve nada, es un subrayado de 1px sobre texto que ya
-estaba ahí.
+Al cerrar un párrafo, el router de sugerencias mira el texto y, si merece la pena, ofrece
+un chip. Es seguro hacerlo automático porque no mueve el texto que estás escribiendo: el
+chip aparece al final del párrafo ya cerrado. Ver [interaccion.md](interaccion.md).
 
 ### Ofrecer
 
-Al seleccionar texto aparece el `BubbleMenu` flotante, junto a negrita y cursiva:
-
-- **Convertir en sección** → nivel 1
-- **Generar artefacto** → nivel 2
-
-Es el patrón de Notion y Medium: ya lo conoce todo el mundo y no añade nada de chrome
-a la página. El botón no existe hasta que hace falta.
+Al seleccionar texto aparece el `BubbleMenu` flotante, junto a negrita y cursiva, con un
+único botón **Generar**. No hay que elegir entre sección y artefacto: un router lo decide
+(ver [interaccion.md](interaccion.md)). Es el patrón de Notion y Medium, ya lo conoce todo
+el mundo y no añade chrome a la página. El botón no existe hasta que hace falta.
 
 ### Generar
 
@@ -52,9 +49,8 @@ El botón de generar es **siempre sobre el fragmento seleccionado**, nunca globa
   artefacto salió de ahí, no de un chat en otro sitio.
 - **Lo global es innecesario.** Quien quiera un artefacto de la nota entera, Ctrl+A.
 
-Los dos niveles quedan como el mismo gesto en dos escalas: un **punto** (click en una
-entidad, futuro) y un **rango** (selección). Misma familia de interacción, se descubre
-solo.
+Sección y artefacto son el mismo gesto (seleccionar y **Generar**); lo que cambia es qué
+genera el modelo, no lo que hace el usuario.
 
 ---
 

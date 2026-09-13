@@ -13,12 +13,15 @@ verificable por su cuenta.
 | Directorio      | Área                     | Contenido                                              |
 | --------------- | ------------------------ | ------------------------------------------------------ |
 | `src/editor/`   | El documento             | TipTap, estilos Notion, autoguardado, barra de selección |
-| `src/ui/`       | Librería de componentes  | Las piezas que OUI-1 puede componer                    |
-| `src/openui/`   | Renderer                 | Parser de `openui-lang` → componentes Vue              |
-| `src/artifact/` | Nivel 2                  | Nodo de artefacto, iframe sandbox, cliente del modelo  |
+| `src/generate/` | Router de generación     | Decide sección o artefacto para el gesto "Generar"     |
+| `src/ui/`       | Librería de componentes  | Las piezas que el modelo compone en una sección        |
+| `src/section/`  | Sección (nivel 1)        | Nodo de sección, cliente del modelo, render con `@openuidev/vue-lang` |
+| `src/artifact/` | Artefacto (nivel 2)      | Nodo de artefacto, iframe sandbox, cliente y pipeline  |
+| `src/suggest/`  | Sugerencias ambiente     | Router al cerrar párrafo + extensión de TipTap         |
+| `src/i18n/`     | Idiomas                  | Cadenas EN/ES y el resolutor                           |
 | `src/styles/`   | Lenguaje visual          | Tokens y la columna del documento                      |
 
-`src/App.vue` es el punto de integración: une las áreas cuando cada una funciona sola.
+`src/App.vue` es el punto de integración: une las áreas.
 
 ## Convenciones
 
@@ -29,20 +32,6 @@ verificable por su cuenta.
 - Alias `@` → `src/`.
 - Vue 3 `<script setup>`.
 - Comentarios y nombres de cara al usuario en español.
-
-## Páginas de prueba
-
-Vite sirve en desarrollo cualquier `.html` de la raíz, así que cada área puede tener su
-banco de pruebas aislado sin tocar la app:
-
-| Página                | Para qué                                        |
-| --------------------- | ----------------------------------------------- |
-| `/`                   | La aplicación                                   |
-| `/ui-demo.html`       | La librería de componentes, sin modelos          |
-| `/openui-demo.html`   | El renderer oficial + el system prompt generado  |
-
-Esa separación es deliberada: permite saber si un fallo viene del renderer o del modelo.
-Ver [roadmap](../ROADMAP.md), fase 4.
 
 ## Antes de dar algo por terminado
 

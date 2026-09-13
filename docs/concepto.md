@@ -35,26 +35,23 @@ Seleccionas ese párrafo y el documento puede convertirlo en:
 Y si en vez de eso hubieras escrito *"estoy comparando Spring Boot y FastAPI"*, la
 misma acción produce una comparativa. **Texto distinto, interfaz distinta.**
 
-## Los dos niveles
+## Un gesto, dos resultados
 
-Ambos operan sobre **un fragmento seleccionado**. Es el mismo gesto en dos ambiciones.
+Seleccionas un fragmento y pulsas **Generar**. No eliges entre opciones: un router
+pequeño decide qué aporta más valor.
 
 ```
                     FRAGMENTO SELECCIONADO
                             │
+                    router (gpt-4.1-mini)
               ┌─────────────┴─────────────┐
               ↓                           ↓
-      "conviértelo en            "conviértelo en
-          una sección"             una aplicación"
-              │                           │
-           OUI-1                    Modelo grande
-        (4B, difusión)                 (API)
+           SECCIÓN                    ARTEFACTO
+       (ver / organizar)          (hacer / visual a medida)
               │                           │
         openui-lang                  código libre
               │                           │
        tus componentes              iframe sandbox
-              │                           │
-            ~1 s                       10-30 s
               │                           │
      siempre encaja con         puede ser cualquier
         tu diseño                       cosa
@@ -62,30 +59,30 @@ Ambos operan sobre **un fragmento seleccionado**. Es el mismo gesto en dos ambic
 
 ### Por qué dos y no uno
 
-Si ambos generasen lo mismo, el nivel 2 sería "el nivel 1 pero más lento". El contraste
-**es** el producto:
+Si ambos generasen lo mismo, el artefacto sería "la sección pero más lenta". El contraste
+**es** la idea:
 
 > Tu librería de componentes es el vocabulario del documento.
 > El artefacto es la fuga de ese vocabulario.
 
-El nivel 1 es la red de seguridad: lo cotidiano siempre se ve bien porque son tus
-piezas. El nivel 2 es la ambición: aislado en un sandbox, puede intentar cualquier cosa.
+La sección es la red de seguridad: lo cotidiano siempre se ve bien porque son tus piezas.
+El artefacto es la ambición: aislado en un sandbox, puede intentar cualquier cosa.
 
 ## Por qué modelos pequeños
 
-La tesis técnica del proyecto: **usar el modelo más pequeño que resuelva cada tarea**.
+La tesis técnica del proyecto: **usar el modelo más pequeño que resuelva cada tarea**. Un
+router de gpt-4.1-mini clasifica y enruta; el modelo grande (gpt-4.1) solo genera cuando
+hace falta. La interactividad entra solo cuando ayuda a comprender o experimentar con lo
+que estudias.
 
-OUI-1 tiene 4B de parámetros activos y es de difusión, no autoregresivo, genera bloques
-de 256 tokens partiendo de ruido, así que una pantalla llega en ~1 segundo. Eso hace
-viable generar interfaz *como parte de la interacción*, no como algo que esperas.
-
-El modelo grande solo aparece cuando pides algo ambicioso, y entonces sí se le perdona
-tardar 20 segundos porque lo has pedido explícitamente.
+(Al principio se exploró OUI-1, un modelo de difusión de 4B para generar la interfaz en
+~1 s; se descartó porque su servicio no lo ofrecía y autoalojarlo no compensaba. Queda en
+[decisiones.md](decisiones.md) como registro.)
 
 ## Referentes
 
 - **Google Disco / GenTabs** (Labs, dic 2025), Gemini 3 remezcla tus pestañas abiertas
-  en aplicaciones a medida. Es el nivel 2 llevado al navegador entero.
+  en aplicaciones a medida. Es el artefacto llevado al navegador entero.
 - **Artifacts de Claude**, código generado que se renderiza y persiste.
 - **Notion**, el lenguaje visual. Columna estrecha, mucho blanco, controles en hover.
 

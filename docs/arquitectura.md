@@ -5,25 +5,25 @@
 ```
                         DOCUMENTO (TipTap)
                                │
-                        seleccionas un fragmento
+                     seleccionas un fragmento + Generar
                                │
+                       router (gpt-4.1-mini)
               ┌────────────────┴────────────────┐
               ↓                                 ↓
-       NIVEL 1 · sección                 NIVEL 2 · artefacto
+            SECCIÓN                          ARTEFACTO
               │                                 │
-       proxy → Thesys C1                 proxy → modelo grande
+       gpt-4.1 → openui-lang            gpt-4.1 → HTML autocontenido
               │                                 │
-        OUI-1 (4B, difusión)              HTML autocontenido
-              │                                 │
-        openui-lang                        iframe sandbox
-              │                                 │
-  @openuidev/vue-lang                  │
-              │                                 │
+       @openuidev/vue-lang               iframe sandbox
+       (render en Vue)                          │
               └────────────────┬────────────────┘
                                ↓
                     nodo insertado en el documento
                        (persiste en el JSON)
 ```
+
+Un router pequeño clasifica el fragmento y decide el camino. Iconos (Lucide) y fotos
+(Unsplash) se inyectan en el HTML antes de renderizar. Ver [interaccion.md](interaccion.md).
 
 ---
 
@@ -60,9 +60,9 @@ Y como es un nodo del árbol, **se guarda con el documento gratis**. El requisit
 
 ### Decorations
 
-Marcas visuales que se pintan *encima* del texto sin modificar el documento. Cuando
-entre GLiNER, los subrayados de entidades serán esto: capa efímera, texto guardado
-limpio. Si se cambia de modelo de entidades, no se ha ensuciado ninguna nota.
+Marcas visuales que se pintan *encima* del texto sin modificar el documento. Las
+sugerencias ambiente las usan: el chip que aparece al cerrar un párrafo es una decoración,
+así que el texto guardado queda limpio. Ver [interaccion.md](interaccion.md).
 
 ### Vue
 
@@ -70,114 +70,56 @@ TipTap nació como librería de Vue (v1 era Vue-only, se volvió agnóstica en v
 `@tiptap/vue-3` no es un puerto de segunda. El renderer de `openui-lang` también tiene
 versión Vue.
 
-Único riesgo asumido: OUI-1 es de septiembre de 2026, así que el renderer de Vue estará
-menos rodado que el de React.
+---
+
+## El router
+
+Un solo gesto **Generar**. Un modelo pequeño (`gpt-4.1-mini`, en `src/generate/router.js`)
+clasifica el fragmento y decide el camino, sin reglas rígidas:
+
+- **VER** (mostrar u organizar: un lugar, fechas, una comparación, una explicación) →
+  **sección**.
+- **HACER / VISUAL A MEDIDA** (simular, manipular, un quiz, un diagrama propio) →
+  **artefacto**.
+
+Ante la duda, sección. Es la tesis del proyecto: el modelo pequeño clasifica, el grande
+solo genera cuando hace falta.
 
 ---
 
-## Nivel 1, OUI-1
+## La sección
 
-### Qué es
+Genera `openui-lang` con **gpt-4.1** y el prompt de `library.prompt()`, que sale de las
+firmas de la librería (`src/ui/library.js`). Lo renderiza `@openuidev/vue-lang` contra
+esos mismos componentes Vue.
 
-Finetune de DiffusionGemma 26B-A4B (26B totales, **4B activos**) que escribe interfaces
-en `openui-lang`. Apache 2.0.
+**El modelo compone, no elige.** El valor está en decidir que *este* párrafo merece un
+mapa grande arriba, un timeline al lado y una lista debajo; y que el siguiente merece otra
+cosa. Por eso la unidad es **fragmento → sección compuesta**, no **entidad → widget**.
 
-No es autoregresivo: genera bloques de 256 tokens partiendo de ruido, comprometiendo
-cada token cuando está seguro (48 pasos de denoising). **~1 s** para pantallas simples,
-3-6 s para complejas. Eso es lo que lo hace viable dentro de una interacción.
-
-`openui-lang` cuesta ~67% menos tokens que JSON y **streamea**, así que la interfaz
-empieza a renderizar antes de terminar de generarse.
-
-### Cómo lo llamamos
-
-**No a través de C1.** C1 solo sirve modelos de Anthropic y OpenAI, no OUI-1
-(comprobado contra `GET /v1/embed/models`). Ver [decisión 16](decisiones.md).
-
-Hoy el nivel 1 llama a **GPT-4o** con el prompt de `library.prompt()`, que es el flujo
-para el que `lang-core` está diseñado. Autoalojar OUI-1 es la mejora de latencia:
-
-Como el modelo es abierto, se puede autoalojar más tarde cambiando la URL:
-
-| Modo   | VRAM      | Nota                              |
-| ------ | --------- | --------------------------------- |
-| bf16   | ~52 GiB   | A100 / H100                       |
-| FP8    | ~25.8 GiB | RTX 5090 sí; 4090 (24 GB) no      |
-| GGUF   | menos     | Ollama, LM Studio, llama.cpp      |
-
-No merece la pena pelearse con vLLM antes de saber si la idea funciona.
-
-### Los paquetes
-
-| Paquete                 | Versión | Para qué                                          |
-| ----------------------- | ------- | -------------------------------------------------- |
-| `@openuidev/lang-core`  | 0.2.18  | Parser, validación, generación del system prompt   |
-| `@openuidev/vue-lang`   | 0.1.4   | `<Renderer>`, `defineComponent`, `createLibrary`   |
-
-Ojo a las versiones: el runtime de Vue va por detrás del de React (0.2.15). Fue el
-riesgo asumido al elegir Vue, y de momento funciona.
-
-### El punto clave: composición, no selección
-
-**OUI-1 no elige un componente. Compone una sección.**
-
-Una tabla `tipo de entidad → componente` sería un `switch`, no un modelo, no haría
-falta IA para eso. El valor está en decidir que *este* párrafo merece un mapa grande
-arriba, un timeline estrecho al lado y una lista debajo a dos columnas; y que el
-siguiente párrafo merece algo completamente distinto.
-
-Por eso la unidad de generación es **fragmento → sección**, no **entidad → widget**.
+Paquetes: `@openuidev/lang-core` (parser, validación, generación del prompt) y
+`@openuidev/vue-lang` (`<Renderer>`, `defineComponent`, `createLibrary`).
 
 ---
 
-## Nivel 2, el artefacto
+## El artefacto
 
-- **Disparo:** selección + botón en el `BubbleMenu`. Nunca automático, nunca global.
-  La selección *es* el prompt: el usuario acaba de decir sobre qué generar.
+- **Disparo:** el mismo gesto, cuando el router elige este camino.
 - **Contexto:** el fragmento manda; el resto de la nota va como contexto de fondo.
-- **Salida:** un único HTML autocontenido, CSS y JS inline, sin dependencias externas.
-- **Render:** `<iframe sandbox>`. Aislamiento obligatorio, es código generado.
-- **Anclaje:** el fragmento origen queda marcado y el bloque se inserta bajo el párrafo
-  donde acaba la selección. Eso hace que "regenerar" esté bien definido y que el usuario
-  sienta que el artefacto *salió de ahí*.
+- **Salida:** un único HTML autocontenido con **gpt-4.1**. Iconos (Lucide) y fotos
+  (Unsplash) se inyectan antes de renderizar.
+- **Render:** `<iframe sandbox>`. Aislamiento obligatorio, es código generado. El sandbox
+  bloquea fetch/JS de red pero permite `<img>`, por eso las fotos cargan.
+- **Anclaje:** el bloque se inserta bajo el párrafo donde acaba la selección, así
+  "regenerar" está bien definido.
+
+El artefacto es un **widget** para incrustar, no una página: se reserva a lo interactivo o
+al visual a medida que la sección no puede dar.
 
 ---
 
-## Backend
+## Sin backend
 
-**Al principio, ninguno.** Solo hace falta esconder las API keys: el proxy de Vite en
-desarrollo, o 30 líneas de lo que sea.
-
-FastAPI entra cuando entre GLiNER, y entonces sí tiene sentido, porque GLiNER es una
-librería de Python (`pip install gliner`). En cualquier otro lenguaje habría que ir por
-ONNX Runtime y montar a mano el pre y post-procesado.
-
-```
-POST /extract     texto → entidades              (GLiNER, local)   ← futuro
-POST /section     fragmento → openui-lang        (proxy C1)
-POST /artifact    fragmento + contexto → HTML    (proxy modelo grande)
-```
-
----
-
-## GLiNER, aplazado, no descartado
-
-NER zero-shot: le pasas las etiquetas que quieras (`lugar`, `fecha`, `evento`,
-`tecnología`…) y las encuentra aunque no las viera en entrenamiento. Corre en CPU en
-milisegundos.
-
-Su papel **original** era enrutar entidad → componente. Ese trabajo desapareció al
-decidir que OUI-1 compone en vez de elegir. Y como enriquecedor es marginal: un modelo
-grande ya entiende que Lisboa es una ciudad sin que se lo anoten.
-
-Le quedan dos trabajos, ambos buenos, ninguno urgente:
-
-1. **Affordance.** Los subrayados son lo único que le dice al usuario que el documento
-   está vivo. Sin ellos hay un editor normal y una barra de selección que nadie sabe que
-   existe. Es la parte central del mockup, de hecho.
-2. **Precarga predictiva.** Es tan barato que puede correr sobre la nota entera
-   constantemente: sabes qué hay, precalientas lo que probablemente se pulse, y el click
-   responde en cero en vez de en un segundo.
-
-Lo segundo es una optimización de latencia, y las optimizaciones no van en un PoC.
-Aplazado al post-fin de semana.
+No hay servidor. Las claves viven en `.env` para desarrollo y el navegador las usa
+directamente. Un backend real (para esconder las claves) queda para si esto dejara de ser
+una exploración; hoy no hace falta.

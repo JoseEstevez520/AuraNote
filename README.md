@@ -1,11 +1,11 @@
 <h1 align="center">The interface a note deserves is not designed in advance, it emerges from what you write</h1>
 
 <p align="center">
-  <strong>AuraNote turns a passage you select into the interface it deserves: a live section built from your own component library, or a sandboxed interactive artifact.</strong>
+  <strong>AuraNote is an exploration of generative interfaces on study notes: select a passage and the model turns it into the interface it deserves, a live section or an interactive artifact.</strong>
 </p>
 
 <p align="center">
-  A note-taking app for studying, things to see, and things to touch.
+  A personal experiment in a way to interact, not a product.
 </p>
 
 <p align="center">
@@ -109,7 +109,20 @@ Full guide, directory ownership and test pages in [docs/desarrollo.md](docs/desa
 
 ## Status
 
-Private proof of concept, working end to end: one **Generar** gesture that the model routes;
-sections with an iOS map, photos and composition; interactive artifacts (simulator, quiz,
-diagram); ambient suggestions when a paragraph closes. It is an exploration of a way to
-interact in service of studying, not a finished product, and it is not open source yet.
+An exploration, working end to end but not a finished product. One **Generar** gesture that
+the model routes; sections with an iOS map, photos and composition; interactive artifacts
+(simulator, quiz, diagram); ambient suggestions when a paragraph closes. Private for now,
+not open source yet. The point is to probe a way to interact while taking study notes, not
+to ship an app.
+
+## Roadmap
+
+It stays an exploration, so this is about trying things, not shipping features.
+
+- Keep improving the quality of what gets generated, both sections and artifacts.
+- Try a dedicated model for complex SVG once one is good enough. OmniSVG fell short and was
+  removed; the search continues (StarVector and others).
+- Keep experimenting with ways to interact: sharpen the ambient suggestions, and probe ideas
+  like reshaping a generated block by pointing at it, or a button whose behaviour is
+  generated the moment you click it.
+- Explore self-testing from your own notes beyond the current quiz.

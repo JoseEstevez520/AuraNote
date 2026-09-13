@@ -1,11 +1,11 @@
 # Librería de componentes
 
-> El vocabulario del documento. OUI-1 solo puede componer con estas piezas, así que
+> El vocabulario del documento. el modelo solo puede componer con estas piezas, así que
 > **todo lo que genere se ve bien**. Esa es la ventaja que no tiene el código libre.
 
 ## Principio de diseño
 
-Si OUI-1 **compone** en vez de elegir, las piezas tienen que ser **componibles**:
+Si el modelo **compone** en vez de elegir, las piezas tienen que ser **componibles**:
 apilarse, ponerse en fila, anidarse. No son seis widgets terminados, son primitivas
 más contenedores de layout.
 
@@ -91,7 +91,7 @@ bien (fase 4 del roadmap).
 Esto separa *"¿mi renderer funciona?"* de *"¿el modelo genera bien?"*. Si se juntan y
 algo falla, no hay forma de saber cuál de los dos es.
 
-## Cómo se la damos a OUI-1
+## Cómo se la damos al modelo
 
 En `src/ui/library.js`. Cada pieza se declara con `defineComponent`, nombre, esquema
 **Zod** y **descripción**, y de ahí sale el system prompt automáticamente:
