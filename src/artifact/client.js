@@ -10,6 +10,7 @@
 // claves. Esto es deliberado, no un atajo temporal.
 
 import { porId } from './tipos.js'
+import { ICON_NAMES, iconSvg } from './icons.js'
 
 const API_KEY = import.meta.env.VITE_LLM_API_KEY || ''
 const MODEL = import.meta.env.VITE_LLM_MODEL || 'gpt-4o-mini'
@@ -62,12 +63,19 @@ to the subject — do not default to one giant hand-drawn SVG for everything:
     a to-do list is wrong.
   · Data -> a real chart (bars, line, donut) drawn in SVG, with axes and values.
 
-Icons — use them generously, they carry a lot of the polish:
-  · One small inline SVG icon per item, section or stat. Draw them yourself: 20-24px
-    viewBox, stroke="currentColor", stroke-width 1.6-2, round caps, no fill (or a soft
-    tinted circle behind). Keep the whole set in ONE visual style.
-  · Give each icon meaning: a fork for a meal, a pin for a place, a clock for a time,
-    an arrow for a flow. Never the same icon repeated for different things.
+Icons — use them generously, they carry a lot of the polish. DO NOT hand-draw icons.
+Instead drop a placeholder and the host injects a matching Lucide icon:
+
+    <span data-icon="map-pin"></span>
+    <span data-icon="coffee" data-icon-size="16"></span>
+
+  · The icon inherits the current text color and defaults to 20px (set data-icon-size
+    to override). Style the surrounding element for colour/tint, not the icon itself.
+  · Choose the name that MEANS the thing: a fork for a meal, a pin for a place, a clock
+    for a time. Never reuse one name for different things.
+  · Use ONLY names from this set (anything else renders empty):
+    __ICON_NAMES__
+  · If you genuinely need a symbol not in the set, THEN draw it as inline SVG.
 
 Imagery without the network (you cannot load remote images):
   · Use small inline SVG illustrations or pictograms as thumbnails / accents.
@@ -117,7 +125,7 @@ HARD RULES, NO EXCEPTIONS:
 
    Call reportHeight() again after anything that changes the size.
 8. Do not set a fixed height on <body> or <html>; let it grow with the content.
-${SISTEMA_DE_DISENO}`
+${SISTEMA_DE_DISENO.replace('__ICON_NAMES__', ICON_NAMES.join(', '))}`
 
 function buildUserPrompt(fragment, fullNote) {
   return `FRAGMENTO SELECCIONADO (es la intención principal, genera la app sobre esto):
@@ -137,6 +145,22 @@ Genera ahora el HTML autocontenido para el fragmento seleccionado.`
  * Extrae el HTML de la respuesta del modelo, incluso si viene envuelto en
  * un bloque de código markdown (```html ... ```) o con texto alrededor.
  */
+// Sustituye los marcadores de icono del modelo por SVG de Lucide incrustados.
+// El artefacto va en un iframe sin red, así que los iconos no pueden venir de
+// una CDN: se inyectan aquí, antes de renderizar. Ver docs/diseno.md
+export function inlineIcons(html) {
+  return html.replace(
+    /<(?:span|i)[^>]*data-icon=["']([a-z0-9-]+)["'][^>]*><\/(?:span|i)>/gi,
+    (etiqueta, nombre) => {
+      const mSize = etiqueta.match(/data-icon-size=["'](\d+)["']/)
+      const size = mSize ? Number(mSize[1]) : 20
+      const svg = iconSvg(nombre, size)
+      // Si el nombre no existe, dejamos un hueco vacío en vez de romper.
+      return svg || ''
+    },
+  )
+}
+
 export function extractHtml(raw) {
   if (!raw || typeof raw !== 'string') return null
   let text = raw.trim()
@@ -340,7 +364,7 @@ export async function generateArtifact(fragment, fullNote = '', tipo = 'auto') {
     )
   }
 
-  return html
+  return inlineIcons(html)
 }
 
 export const artifactClientConfig = {
