@@ -60,7 +60,8 @@ Anotadas para no perderlas. Ninguna se mete aún.
 Jev (TypeSafe, sept. 2026) es un clasificador que no genera texto: devuelve elecciones,
 puntuaciones y verdadero/falso con probabilidad, en 70 a 500 ms y muy barato. `decidir()`
 es justo eso (sección o artefacto, si merece, qué tipo). Solo la etiqueta del chip
-necesita un modelo que escriba. Pendiente: probarlo en español, que no es su idioma fuerte.
+necesita un modelo que escriba. Es cerrado y está en acceso anticipado: esperar a poder
+usarlo y probarlo en español, que no es su idioma fuerte.
 
 ### Sistema de coherencia
 Como "buscar usos" al cambiar una función, pero en la nota:
