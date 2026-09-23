@@ -85,7 +85,7 @@ está. Antes eran enlaces de texto sueltos sobre el contenido y quedaban mal.
 ## Sugerencias ambiente (en uso)
 
 La interacción ya no obliga a seleccionar todo el rato. Al **cerrar un párrafo** (el
-cursor sale de él), un modelo pequeño y barato (el router, `src/suggest/router.js`,
+cursor sale de él), un modelo pequeño y barato (el router, `src/generate/router.js` en modo exigente,
 `gpt-4.1-mini`) decide si merece la pena ofrecer algo. Si sí, aparece una pista tenue al
 final del párrafo, un chip "＋ ver itinerario" / "＋ comparar", que al pulsarla genera
 la sección o el artefacto justo debajo.
@@ -102,7 +102,7 @@ la sección o el artefacto justo debajo.
 - El resultado se cachea por texto de párrafo, así que editar en otro sitio no repite
   llamadas.
 
-Piezas: `src/suggest/router.js` (el modelo pequeño que decide), `suggestionExtension.js`
+Piezas: `src/generate/router.js` (el modelo pequeño que decide, el mismo que usa Generar), `suggestionExtension.js`
 (la extensión de TipTap que detecta el cierre y pinta el chip como decoración), y
 `state.js` (el interruptor). Es la "opción 3" de las interacciones dinámicas y devuelve
 la magia original: el documento reacciona a lo que escribes.

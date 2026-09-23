@@ -7,7 +7,7 @@
 import { Extension } from '@tiptap/core'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
-import { enrutar } from './router.js'
+import { decidir } from '../generate/router.js'
 import { sugerenciasActivas } from './state.js'
 
 const key = new PluginKey('sugerencias')
@@ -34,7 +34,7 @@ export const SuggestionExtension = Extension.create({
 
   addOptions() {
     return {
-      // Se llama al aceptar una sugerencia: { action, label, text, pos }.
+      // Se llama al aceptar una sugerencia: { action, tipo, label, text, pos }.
       onAccept: () => {},
     }
   },
@@ -54,7 +54,7 @@ export const SuggestionExtension = Extension.create({
             if (!meta) return valor
             if (meta.tipo === 'add') {
               const s = new Map(valor.sugerencias)
-              s.set(meta.hash, { label: meta.label, action: meta.action })
+              s.set(meta.hash, { label: meta.label, action: meta.action, kind: meta.kind })
               return { ...valor, sugerencias: s }
             }
             if (meta.tipo === 'descartar') {
@@ -92,15 +92,16 @@ export const SuggestionExtension = Extension.create({
                 const estado = key.getState(vista.state)
                 const h = hash(texto)
                 if (estado.descartados.has(h) || estado.sugerencias.has(h)) return
-                const r = await enrutar(texto)
-                if (!r.suggest) return
+                const r = await decidir(texto, { exigente: true })
+                if (!r.merece) return
                 // Comprobar que el párrafo sigue existiendo antes de pintar
                 vista.dispatch(
                   vista.state.tr.setMeta(key, {
                     tipo: 'add',
                     hash: h,
                     label: r.label,
-                    action: r.action,
+                    action: r.mode,
+                    kind: r.kind,
                   }),
                 )
               }, 400)
@@ -156,7 +157,7 @@ function construirChip(sug, texto, posInsertar, opciones) {
     '<span>' + escapar(sug.label) + '</span>'
   boton.addEventListener('mousedown', (e) => {
     e.preventDefault()
-    opciones.onAccept({ action: sug.action, label: sug.label, text: texto, pos: posInsertar })
+    opciones.onAccept({ action: sug.action, tipo: sug.kind, label: sug.label, text: texto, pos: posInsertar })
   })
 
   const cerrar = document.createElement('button')

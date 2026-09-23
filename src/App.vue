@@ -13,7 +13,7 @@ import { modoSimulado as seccionSimulada } from './section/client.js'
 import { textos, idioma, setIdioma, IDIOMAS } from './i18n/index.js'
 import { SuggestionExtension, suggestionKey, hashParrafo } from './suggest/suggestionExtension.js'
 import { sugerenciasActivas } from './suggest/state.js'
-import { clasificar } from './generate/router.js'
+import { decidir } from './generate/router.js'
 
 const editorRef = ref(null)
 
@@ -69,7 +69,7 @@ async function onGenerate({ text, to }) {
   const $to = editor.state.doc.resolve(Math.min(to, editor.state.doc.content.size))
   const pos = $to.depth > 0 ? $to.after(1) : editor.state.doc.content.size
 
-  const { mode, kind } = await clasificar(text)
+  const { mode, kind } = await decidir(text)
   const nodo = mode === 'artifact' ? 'artifactBlock' : 'sectionBlock'
   insertarEn(nodo, pos, text, kind)
 }
