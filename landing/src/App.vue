@@ -7,6 +7,7 @@ import StackTable from './components/StackTable.vue'
 import StatusSection from './components/StatusSection.vue'
 import RoadmapSection from './components/RoadmapSection.vue'
 import ReferencesSection from './components/ReferencesSection.vue'
+import S3File from './components/S3File.vue'
 import TheFooter from './components/TheFooter.vue'
 </script>
 
@@ -21,6 +22,7 @@ import TheFooter from './components/TheFooter.vue'
       <StatusSection />
       <RoadmapSection />
       <ReferencesSection />
+      <S3File />
     </main>
     <TheFooter />
   </div>
